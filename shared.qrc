@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>favicon.png</file>
+        <file>graphics/sheute.png</file>
+        <file>graphics/smorgen.png</file>
+    </qresource>
+</RCC>

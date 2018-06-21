@@ -4,14 +4,16 @@ import QtQuick.Controls 2.2
 Page {
     id: root
     anchors.fill: parent
-    header: ToolBar {
+    header: AppToolBar {
         contentHeight: toolButton.implicitHeight
 
         ToolButton {
             id: toolButton
-            text: stackView.depth > 1 ? "\u25C0" : "\u2630"
+            text: stackView.depth > 1 ? "\u25C0" : "\u4E09"
             font.pixelSize: Qt.application.font.pixelSize * 1.6
+
             onClicked: {
+                console.log(toolButton.font.styleName)
                 if (stackView.depth > 1) {
                     stackView.pop()
                 } else {
@@ -33,21 +35,42 @@ Page {
 
         Column {
             anchors.fill: parent
-
             ItemDelegate {
-                text: qsTr("page 1")
+                text: qsTr("Fanny Webseite")
                 width: parent.width
                 onClicked: {
-                    stackView.push("Page1Form.qml")
+                    stackView.push("WebsitePage.qml")
                     drawer.close()
                 }
             }
             ItemDelegate {
-                text: qsTr("Page 2")
+                text: qsTr("abmelden")
                 width: parent.width
                 onClicked: {
-                    stackView.push("Page2Form.qml")
-                    drawer.close()
+                    confirmationDialog.open()
+                }
+                Dialog {
+                    id: confirmationDialog
+
+                    x: (window.width - width) / 2
+                    y: (window.height - height) / 2
+                    parent: ApplicationWindow.overlay
+
+
+                    modal: true
+                    standardButtons: Dialog.Cancel | Dialog.Ok
+                    Column {
+                        spacing: 20
+                        anchors.fill: parent
+                        Label {
+                            text: "Möchtest du dich wirklich abmelden?"
+                        }
+                    }
+                    onAccepted: {
+                        _cppServerConn.logout()
+                        drawer.close()
+                        root.StackView.view.push("LoginPage.qml")
+                    }
                 }
             }
         }

@@ -1,4 +1,4 @@
-QT += quick
+QT += qml quick quickcontrols2
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -12,15 +12,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+TEMPLATE = app
+TARGET = fannyapp
+
 SOURCES += \
     source/serverconn.cpp \
-    source/main.cpp
+    source/main.cpp \
+    source/appsettings.cpp
 
 HEADERS += \
-    headers/serverconn.h
+    headers/serverconn.h \
+    headers/appsettings.h
 
 RESOURCES += \
-    qml/qml.qrc
+    qml/qml.qrc \
+    shared.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -32,5 +38,13 @@ QML_DESIGNER_IMPORT_PATH =
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+android {
+    ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android-sources
+}
+
+DISTFILES += \
+    favicon.png \
+    android-sources/AndroidManifest.xml
 
 

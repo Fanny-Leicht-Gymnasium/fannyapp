@@ -2,8 +2,12 @@
 #define SERVERCONN_H
 
 #include <QObject>
+#include <QDir>
 #include <QtNetwork>
 #include <QAuthenticator>
+#include <QDesktopServices>
+
+#include "headers/appsettings.h"
 
 typedef struct strReturnData{
     int status_code;
@@ -13,10 +17,20 @@ typedef struct strReturnData{
 class ServerConn : public QObject
 {
     Q_OBJECT
+
 public:
+    QString username;
+    QString password;
     QNetworkAccessManager *networkManager;
+    QNetworkAccessManager *refreshNetworkManager;
+public:
     explicit ServerConn(QObject *parent = nullptr);
-    Q_INVOKABLE QString login();
+    ~ServerConn();
+
+    Q_INVOKABLE QString login(QString username, QString password, bool permanent);
+    Q_INVOKABLE int logout();
+    Q_INVOKABLE QString getDay(QString day);
+    Q_INVOKABLE int checkConn();
     ReturnData_t senddata(QUrl serviceUrl, QUrlQuery postData);
 
 signals:
