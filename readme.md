@@ -23,4 +23,5 @@ schreibe bitte eine Mail an contact@itsblue.de, oder frag mich in der Schule.</p
 </a>
 <p>- <a href="https://git.itsblue.de/dorian/fanny-app/raw/master/release/mac%20OS/fannyapp.app.zip">Mac OS</a>
 <br>
-Verantwortlicher: Dorian Zedler
+<br>
+Verantwortlicher Programmierer: Dorian Zedler
