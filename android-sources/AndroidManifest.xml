@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
-<manifest package="com.itsblue.fannyapp" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="0.01" android:versionCode="2" android:installLocation="auto">
-    <application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="fannyapp" android:icon="@drawable/icon">
+<manifest package="com.itsblue.flgvertretung" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="0.01" android:versionCode="1" android:installLocation="auto">
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-path name="external_files" path="."/>
+</paths>
+<application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="fannyapp" android:icon="@drawable/icon">
         <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation" android:name="org.qtproject.qt5.android.bindings.QtActivity" android:label="fannyapp" android:screenOrientation="unspecified" android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -65,7 +68,7 @@
 
     </application>
 
-    <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="26"/>
+    <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="16"/>
     <supports-screens android:largeScreens="true" android:normalScreens="true" android:anyDensity="true" android:smallScreens="true"/>
 
     <!-- The following comment will be replaced upon deployment with default permissions based on the dependencies of the application.

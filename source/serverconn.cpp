@@ -1,5 +1,6 @@
 #include "headers/serverconn.h"
 
+
 ServerConn::ServerConn(QObject *parent) : QObject(parent)
 {
     qDebug("serverconn konstruktor");
@@ -105,6 +106,7 @@ QString ServerConn::getDay(QString day)
         if(status_code == 200){
             qDebug("OK");
             QString path = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
+
             QDir dir;
             dir.mkdir(path + "/.fannyapp-tmp");
             QFile file(path + "/.fannyapp-tmp/" + day + ".pdf");

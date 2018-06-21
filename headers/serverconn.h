@@ -3,11 +3,14 @@
 
 #include <QObject>
 #include <QDir>
+#include <QUrl>
 #include <QtNetwork>
 #include <QAuthenticator>
 #include <QDesktopServices>
+#include <QXmlNamespaceSupport>
 
 #include "headers/appsettings.h"
+
 
 typedef struct strReturnData{
     int status_code;
