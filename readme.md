@@ -1,6 +1,5 @@
 <h1>Dies ist die offizielle entwicklungs - repo der Fanny-App</h1>
-<p>Die App für das Fanny-Leicht-gymnasium in Stuttgart wird die Möglichkeit bieten,
-komfortabel auf den Vertretungsplan zuzugreifen.</p>
+<p>Die App bietet die Möglichkeit, komfortabel auf den Vertretungsplan des Fanny-Leicht-Gymnasiums in Stuttgart zuzugreifen.</p>
 
 <h4>Funktionen</h4>
 <p>- Zugriff auf den Vertretungsplan</p>
