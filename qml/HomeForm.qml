@@ -8,7 +8,7 @@ Page {
 
     Label {
         id: laWelcome
-        text: "Hier kannst du dir den Vertretungsplan des Fannys anschuen"
+        text: "Hier kannst du dir den Vertretungsplan des Fannys anschauen"
         font.pixelSize: 20
         wrapMode: Label.Wrap
         width: window.width / 1.2
