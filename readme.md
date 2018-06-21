@@ -18,7 +18,8 @@ schreibe bitte eine Mail an contact@itsblue.de, oder frag mich in der Schule.</p
 <p>Warte auf die Anpassung des Vertretungsplanes.</p>
 
 <h4>Downloads:</h4>
-
-<img src="https://play.google.com/intl/en_us/badges/images/badge_new.png" href="https://play.google.com/store/apps/details?id=com.itsblue.flgvertretung"/>
+<a href="https://play.google.com/store/apps/details?id=com.itsblue.flgvertretung">
+<img src="https://play.google.com/intl/en_us/badges/images/badge_new.png" />
+</a>
 <br>
 Verantwortlicher: Dorian Zedler
