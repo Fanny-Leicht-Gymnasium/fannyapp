@@ -1,6 +1,10 @@
 <h1>Dies ist die offizielle entwicklungs - repo der Fanny-App</h1>
 <p>Die App für das Fanny-Leicht-gymnasium in Stuttgart wird die Möglichkeit bieten,
 komfortabel auf den Vertretungsplan zuzugreifen.</p>
+
+<h4>Funktionen</h4>
+<p>- --Keine-- </p>
+
 <h4>Geplante Funktionen</h4>
 <p>- Zugriff auf den Vertretungsplan</p>
 <p>- Sortierung der Ereignsse pro Klasse</p>
