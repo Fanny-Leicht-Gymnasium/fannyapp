@@ -5,7 +5,7 @@ komfortabel auf den Vertretungsplan zuzugreifen.</p>
 <p>- Zugriff auf den Vertretungsplan</p>
 <p>- Sortierung der Ereignsse pro Klasse</p>
 
-<h4>Weitere Informationen:>/h4>
+<h4>Weitere Informationen:</h4>
 <p>Wenn du eine Idee für eine neue Funktion hast, erstelle einfach eine issue,<br>
 oder schreibe eine Mail an contact@itsblue.de</p>
 <h5>Aktueller Status</h5>
