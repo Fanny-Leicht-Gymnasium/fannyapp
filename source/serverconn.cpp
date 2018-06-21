@@ -76,7 +76,7 @@ int ServerConn::logout()
     pGlobalAppSettings->writeSetting("permanent", "0");
     pGlobalAppSettings->writeSetting("username", "");
     pGlobalAppSettings->writeSetting("password", "");
-
+    return(200);
 }
 
 QString ServerConn::getDay(QString day)

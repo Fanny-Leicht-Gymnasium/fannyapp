@@ -15,6 +15,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 TEMPLATE = app
 TARGET = fannyapp
 
+RC_ICONS = favicon.ico
+
 SOURCES += \
     source/serverconn.cpp \
     source/main.cpp \
@@ -45,7 +47,5 @@ android {
 
 DISTFILES += \
     favicon.png \
-    android-sources/AndroidManifest.xml \
-    android-sources/res/xml/provider_paths.xml
-
+    android-sources/AndroidManifest.xml
 
