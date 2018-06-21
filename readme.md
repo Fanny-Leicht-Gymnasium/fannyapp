@@ -3,10 +3,10 @@
 komfortabel auf den Vertretungsplan zuzugreifen.</p>
 
 <h4>Funktionen</h4>
-<p>- --Keine-- </p>
+<p>- Zugriff auf den Vertretungsplan</p>
+<p>- Zugriff auf die Fanny-Webseite (www.fanny-leicht.de)
 
 <h4>Geplante Funktionen</h4>
-<p>- Zugriff auf den Vertretungsplan</p>
 <p>- Sortierung der Ereignsse pro Klasse</p>
 
 <h4>Weitere Informationen:</h4>
