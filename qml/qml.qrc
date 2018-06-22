@@ -7,5 +7,6 @@
         <file>MainPage.qml</file>
         <file>AppToolBar.qml</file>
         <file>WebsitePage.qml</file>
+        <file>FoodPlanForm.qml</file>
     </qresource>
 </RCC>

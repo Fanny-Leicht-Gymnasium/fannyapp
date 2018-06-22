@@ -43,6 +43,16 @@ Page {
                     drawer.close()
                 }
             }
+
+            ItemDelegate {
+                text: qsTr("Speiseplan")
+                width: parent.width
+                onClicked: {
+                    stackView.push("FoodPlanForm.qml")
+                    drawer.close()
+                }
+            }
+
             ItemDelegate {
                 text: qsTr("abmelden")
                 width: parent.width

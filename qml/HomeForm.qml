@@ -123,7 +123,6 @@ Page {
             anchors.centerIn: parent
             Label {
                 id: progress
-                anchors.fill: parent
                 anchors.centerIn: parent
                 text: _cppServerConn.getProgress()
             }
@@ -135,14 +134,17 @@ Page {
                 onTriggered: {
                     var ret = _cppServerConn.getProgress()
                     console.log(ret)
-                    progress.text = ret + "%"
+                    progress.text = Math.round( ret * 100 ) + "%"
+                    progressBar.value = ret
                 }
             }
         }
         ProgressBar {
-            anchors.bottom: parent.bottom
+            id: progressBar
+            anchors.top: parent.top
             anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.topMargin: busyDialog.height / 1.5
         }
     }
-
 }
