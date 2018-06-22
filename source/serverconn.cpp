@@ -98,6 +98,9 @@ QString ServerConn::getDay(QString day)
         QNetworkReply*reply = this->networkManager->post(request, pdata.toString(QUrl::FullyEncoded).toUtf8());
         //QNetworkReply*reply = networkManager->get( request );
 
+        connect(reply, SIGNAL(downloadProgress(qint64, qint64)),
+                    this, SLOT(updateProgress(qint64, qint64)));
+
         QEventLoop loop;
         loop.connect(this->networkManager, SIGNAL(finished(QNetworkReply*)), SLOT(quit()));
         loop.exec();
@@ -161,6 +164,21 @@ int ServerConn::checkConn()
 
 }
 
+void ServerConn::updateProgress(qint64 read, qint64 total)
+{
+    int read_int = read;
+    int total_int = total;
+    float percent = ((float)read_int / (float)total_int) * 100;
+
+    percent = (int)percent;
+    this->progress = percent;
+//    qDebug() << read << total << percent << "%";
+}
+
+float ServerConn::getProgress()
+{
+    return(this->progress);
+}
 
 ReturnData_t ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata)
 {

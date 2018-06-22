@@ -121,6 +121,27 @@ Page {
             id: busyIndicator
             visible: true
             anchors.centerIn: parent
+            Label {
+                id: progress
+                anchors.fill: parent
+                anchors.centerIn: parent
+                text: _cppServerConn.getProgress()
+            }
+            Timer {
+                id: refreshTimer
+                interval: 1;
+                running: busyDialog.visible
+                repeat: true
+                onTriggered: {
+                    var ret = _cppServerConn.getProgress()
+                    console.log(ret)
+                    progress.text = ret + "%"
+                }
+            }
+        }
+        ProgressBar {
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
         }
     }
 
