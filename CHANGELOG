@@ -5,7 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.03] - 2018-06-25
 ### Hinzugefügt
+- Bug behoben, durch den man fehlerhafter weise abgemeldet wurde, wenn die App
+ohne Internetverbindung gestertet und diese dann während die app lief wieder hergestellt wurde
+- Vollständige Anzeige für den Speiseplan
 - Handler für den Speiseplan
 - die alten pdf dateien werden vor dem herunterladen der neuen gelöscht
 
