@@ -5,24 +5,50 @@ Page {
     anchors.fill: parent
 
     title: qsTr("Speiseplanplan")
+    property bool loaded: false
 
-    Label {
-        id: laWelcome
-        text: "Hier kannst du dir den Vertretungsplan des Fannys anschauen"
-        font.pixelSize: 20
-        wrapMode: Label.Wrap
-        width: window.width / 1.2
-
-        anchors {
-            top: parent.top
+    Timer {
+        id: firstLoadTimer
+        interval: 1;
+        running: true
+        repeat: false
+        onTriggered: {
+            _cppServerConn.getFoodPlan()
+            loaded = true
         }
     }
-    Button {
-        id: butt
-        text: "load"
-        onClicked: {
-            var ret = _cppServerConn.getFoodPlan();
-            laWelcome.text = ret
+
+    ScrollView {
+        anchors.fill: parent
+
+        ListView {
+            enabled: loaded
+            width: parent.width
+            model: 8
+            delegate: ItemDelegate {
+                //text: getText(index, "cookteam")
+                width: parent.width
+                Label {
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    id: cookteam
+                    text: _cppServerConn.getFoodPlanData(index).cookteam
+                }
+                Label {
+                    anchors.left: parent.left
+                    anchors.bottom: parent.bottom
+                    id: date
+                    text: _cppServerConn.getFoodPlanData(index).date
+                }
+            }
         }
+
+    }
+    function getText(indexvar, type){
+        if(!loaded){
+            _cppServerConn.getFoodPlan()
+            loaded = true
+        }
+        //console.log(_cppServerConn.getFoodPlanData(indexvar))
     }
 }

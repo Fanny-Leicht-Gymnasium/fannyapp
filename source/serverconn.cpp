@@ -207,29 +207,48 @@ QString ServerConn::getFoodPlan()
     //get the status code
     QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
 
-    ret.text = QString::fromUtf8(reply->readAll());
-    ret.text.replace("\n","");
+    if(status_code != 200){
+        return(status_code.toString());
+    }
+
+    //initialize the weekplan to store information to it
+    m_weekplan.empty();             //empty the weekplan
+    //m_weekplan is a list, that contains a list for each day, which contains: cookteam, date, main dish, vagi main dish, garnish(Beilage) and Dessert.
+
+    ret.text = QString::fromUtf8(reply->readAll()); //read the whole website
+    ret.text.replace("\n","");  //remove unnecessary stuff
     ret.text.replace("\r","");
     ret.text.replace("\t","");
 
-    QStringList stringlist_0 = ret.text.split( "<table class=\"speiseplan\">" );
+    QStringList stringlist_0 = ret.text.split( "<table class=\"speiseplan\">" );    //split the
+
+    //prepare the table of the first week
     QString table1 = stringlist_0[1];
-    QStringList stringlist_1 = table1.split( "</table>" );
+    QStringList stringlist_1 = table1.split( "</table>" ); //remove everything after "</table>"
     table1 = stringlist_1[0];
+    table1.remove(0,71);    //remove "<tbody><tr style=\"border: 1px solid #999;\" align=\"center\" valign=\"top\">" at the beginning
+    table1 = table1.left(table1.length() - 13); //remove "</tr></tbody>" at the end
+    QStringList table1list = table1.split("<td width=\"25%\">"); //split at the days to get a list of all days
+    table1list.takeFirst(); //remove the first item, as it is empty
+
+    //prepare the table of the second week
+    QString table2 = stringlist_0[2];
+    QStringList stringlist_2 = table2.split( "</table>" ); //remove everything after "</table>"
+    table2 = stringlist_2[0];
+    table2.remove(0,39);    //remove "<tbody><tr align=\"center\" valign=\"top\">" at the beginning
+    table2.remove(table2.length() - 13, table2.length());   //remove "</tr></tbody>" at the end
+    QStringList table2list = table2.split("<td width=\"25%\">"); //split at the days to get a list of all days
+    table2list.takeFirst(); //remove the first item, as it is empty
 
 
-    table1.remove(0,71);
-    table1 = table1.left(table1.length() - 13);
-    //qDebug() << table1;
-
-    QStringList table1list = table1.split("<td width=\"25%\">");
-
-    qDebug() << table1list;
+    QStringList weeklist = table1list + table2list;  //put both weeks into one big list
+    qDebug() << weeklist;
+    //qDebug() << table1list;
     qDebug() << "           ";
-    for (int i = 1; i <=4; i ++){
-       QString temp = table1list[i]; //store item temporarly to edit it
-       table1list[i] = temp.left(temp.length()-5); //remove "</td>" at the and of the Item
-       temp = table1list[i];
+    for (int i = 0; i <=7; i ++){
+       QString temp = weeklist[i]; //store item temporarly to edit it
+       weeklist[i] = temp.left(temp.length()-5); //remove "</td>" at the and of the Item
+       temp = weeklist[i];
        //table list[i] looks now like:
        //<strong>Red Hot Chili Peppers</strong>
        //<br />
@@ -245,29 +264,51 @@ QString ServerConn::getFoodPlan()
        for (int i = 0; i <=2; i ++){
             temp += templist[i]; //convert the list to a big string
        }
+
        temp.replace("<br />","");
        templist = temp.split("</strong>");
-       QStringList Weekplan[0][i];
-       Weekplan[0][i][0] = templist[0];     //store the cookteam in the weeklist
-       Weekplan[0][i][1] = templist[1];     //store the date in the weeklist
+       m_weekplan.append({templist[0], templist[1]}); //store cookteam and date
+       temp = templist[2]; //store information in temp (looks like: "<hr />Gulasch mit Kartoffeln<hr />Pellkartoffeln mit Quark<hr />Gemischter Salat<hr />Eaton Mess ( Erdbeer-Nachtisch )")
+       templist = temp.split("<hr />"); //seperate the information
+       templist.takeFirst(); //remove first item
+
+       m_weekplan[i].append(templist);
 
 
     }
 
-    QString table2 = stringlist_0[2];
-    QStringList stringlist_2 = table2.split( "</table>" );
-    table2 = stringlist_2[0];
-
-//    QString fulltable = "<html><table>" + stringlist_1[0] + stringlist_2[0] + "</table></html>";
-//    fulltable.replace("\n","");
-//    fulltable.replace("\r","");
-//    fulltable.replace("\t","");
-//    qDebug() << fulltable;
-//    return(fulltable);
-
-
-    //qDebug() << ret.text;
+    qDebug() << m_weekplan;
     return("");
+}
+
+QVariantMap ServerConn::getFoodPlanData(int index)
+{
+    //cookteam, date, main dish, vagi main dish, garnish(Beilage) and Dessert.
+    QString cookteam;
+    QString date;
+    QString main_dish;
+    QString main_dish_veg;
+    QString garnish;
+    QString Dessert;
+
+    QStringList ret; //list to return
+    qDebug() << index;
+    for(int i=0;i<=5;i++){
+        qDebug() << i << m_weekplan.size();
+        if(m_weekplan.size() > index){
+            if(m_weekplan.at(index).size() > i){
+                ret.append(m_weekplan[index][i]);
+            }
+            else {
+                ret.append(NULL);
+            }
+        }
+        else {
+            ret.append(NULL);
+        }
+    }
+    return { {"cookteam", ret[0]}, {"date", ret[1]}, {"main", ret[2]}, {"main_veg", ret[3]}, {"garnish", ret[4]}, {"dessert", ret[5]} };
+
 }
 
 ReturnData_t ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata)

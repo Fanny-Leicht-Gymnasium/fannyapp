@@ -17,11 +17,6 @@ typedef struct strReturnData{
     QString text;
 }ReturnData_t;
 
-typedef struct Weekplan{
-    QString Cookteam;
-    QString date;
-}ReturnData_t;
-
 class ServerConn : public QObject
 {
     Q_OBJECT
@@ -41,12 +36,27 @@ public:
     Q_INVOKABLE int checkConn();
     Q_INVOKABLE float getProgress();
     Q_INVOKABLE QString getFoodPlan();
+    Q_INVOKABLE QVariantMap getFoodPlanData(int index);
     ReturnData_t senddata(QUrl serviceUrl, QUrlQuery postData);
 
 signals:
 
 public slots:
     void updateProgress(qint64 read, qint64 total);
+
+private:
+
+struct Day
+{
+    QString Cookteam;
+    QString Date;
+    QString Main;
+    QString Main_veg;
+    QString Salad;
+    QString Dessert;
+};
+
+QList<QList<QString>> m_weekplan;
 
 };
 

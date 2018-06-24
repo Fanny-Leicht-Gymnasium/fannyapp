@@ -26,6 +26,15 @@ Page {
             text: stackView.currentItem.title
             anchors.centerIn: parent
         }
+        Button {
+            id: butt
+            text: "load"
+            anchors.right: parent.right
+            visible: stackView.currentItem.title === "Speiseplanplan"
+            onClicked: {
+                var ret = _cppServerConn.getFoodPlan();
+            }
+        }
     }
 
     Drawer {
