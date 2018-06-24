@@ -50,6 +50,7 @@ QString ServerConn::login(QString username, QString password, bool permanent)
             this->username = username;
             this->password = password;
             if(permanent){
+                qDebug() << "permanent";
                 pGlobalAppSettings->writeSetting("permanent", "1");
                 pGlobalAppSettings->writeSetting("username", username);
                 pGlobalAppSettings->writeSetting("password", password);
@@ -183,7 +184,7 @@ float ServerConn::getProgress()
     return(this->progress);
 }
 
-QString ServerConn::getFoodPlan()
+int ServerConn::getFoodPlan()
 {
     ReturnData_t ret; //this is a custom type to store the returned data
     // Call the webservice
@@ -199,6 +200,8 @@ QString ServerConn::getFoodPlan()
     QUrlQuery pdata;
     reply = this->networkManager->post(request, pdata.toString(QUrl::FullyEncoded).toUtf8());
 
+    connect(reply, SIGNAL(downloadProgress(qint64, qint64)),
+                this, SLOT(updateProgress(qint64, qint64)));
     //wait until the request has finished
     QEventLoop loop;
     loop.connect(this->networkManager, SIGNAL(finished(QNetworkReply*)), SLOT(quit()));
@@ -208,7 +211,7 @@ QString ServerConn::getFoodPlan()
     QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
 
     if(status_code != 200){
-        return(status_code.toString());
+        return(status_code.toInt());
     }
 
     //initialize the weekplan to store information to it
@@ -285,7 +288,7 @@ QString ServerConn::getFoodPlan()
     this->m_weekplan = temp_weekplan;
 
 
-    return("");
+    return(200);
 }
 
 QVariantMap ServerConn::getFoodPlanData(int index)

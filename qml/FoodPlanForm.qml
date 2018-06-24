@@ -137,6 +137,7 @@ Page {
                 else {
                     return(Qt.formatDateTime(_cppServerConn.getFoodPlanData(index).date, "dddd, d.M.yy"))
                 }
+
             }
             function isDayVisible(index){
                 var date = _cppServerConn.getFoodPlanData(index).date

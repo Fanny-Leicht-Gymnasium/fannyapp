@@ -22,6 +22,7 @@ Page {
 
     Button {
         id:buttToday
+        enabled: window.is_error === false
         anchors {
             left: parent.left
             leftMargin: (window.width / 4) -  (buttToday.width / 2)
@@ -40,6 +41,7 @@ Page {
 
     Button {
         id: buttTomorrow
+        enabled: window.is_error === false
         anchors {
             right: parent.right
             rightMargin: (window.width / 4) -  (buttTomorrow.width / 2)
@@ -54,6 +56,17 @@ Page {
             id: smorgenImage
             source: "qrc:/graphics/smorgen.png"
         }
+    }
+
+    Rectangle {
+        id: buttonsDisabled
+        anchors.left: buttToday.left
+        anchors.right: buttTomorrow.right
+        anchors.top: buttToday.top
+        anchors.bottom: buttToday.bottom
+        color: "white"
+        opacity: 0.7
+        visible: window.is_error
     }
 
     Dialog {
@@ -133,7 +146,6 @@ Page {
                 repeat: true
                 onTriggered: {
                     var ret = _cppServerConn.getProgress()
-                    console.log(ret)
                     progress.text = Math.round( ret * 100 ) + "%"
                     progressBar.value = ret
                 }

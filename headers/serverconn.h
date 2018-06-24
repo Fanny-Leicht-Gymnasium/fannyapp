@@ -35,7 +35,7 @@ public:
     Q_INVOKABLE QString getDay(QString day);
     Q_INVOKABLE int checkConn();
     Q_INVOKABLE float getProgress();
-    Q_INVOKABLE QString getFoodPlan();
+    Q_INVOKABLE int getFoodPlan();
     Q_INVOKABLE QVariantMap getFoodPlanData(int index);
     ReturnData_t senddata(QUrl serviceUrl, QUrlQuery postData);
 

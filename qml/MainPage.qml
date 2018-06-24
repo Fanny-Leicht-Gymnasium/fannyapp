@@ -48,9 +48,14 @@ Page {
                 text: qsTr("Speiseplan")
                 width: parent.width
                 onClicked: {
-                    _cppServerConn.getFoodPlan();
-                    stackView.push("FoodPlanForm.qml")
+                    busyDialog.open()
+                    var ret = _cppServerConn.getFoodPlan();
+                    console.log(ret, _cppServerConn.getFoodPlanData(1).cookteam, isNaN(_cppServerConn.getFoodPlanData(0).date.toString))
                     drawer.close()
+                    busyDialog.close()
+                    if(ret === 200 || _cppServerConn.getFoodPlanData(1).cookteam !== ""){
+                        stackView.push("FoodPlanForm.qml")
+                    }
                 }
             }
 
@@ -91,5 +96,47 @@ Page {
         id: stackView
         initialItem: "HomeForm.qml"
         anchors.fill: parent
+    }
+
+    Dialog {
+        id: busyDialog
+        modal: true
+        focus: true
+        //title: "Please wait..."
+        x: (window.width - width) / 2
+        y: window.height / 6
+        //width: Math.min(window.width, window.height) / 3 * 2
+        height: contentHeight * 1.5
+        width: contentWidth * 1.5
+        contentHeight: busyIndicator.height
+        contentWidth: busyIndicator.width
+        BusyIndicator {
+            id: busyIndicator
+            visible: true
+            anchors.centerIn: parent
+            Label {
+                id: progress
+                anchors.centerIn: parent
+                text: _cppServerConn.getProgress()
+            }
+            Timer {
+                id: refreshTimer
+                interval: 1;
+                running: busyDialog.visible
+                repeat: true
+                onTriggered: {
+                    var ret = _cppServerConn.getProgress()
+                    progress.text = Math.round( ret * 100 ) + "%"
+                    progressBar.value = ret
+                }
+            }
+        }
+        ProgressBar {
+            id: progressBar
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.topMargin: busyDialog.height / 1.5
+        }
     }
 }

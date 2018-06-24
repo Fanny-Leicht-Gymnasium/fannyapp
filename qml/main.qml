@@ -9,14 +9,22 @@ ApplicationWindow {
 
     property bool is_error
     property string error
+    property bool initdone: false
 
     Timer {
         //runs only one time at applictaion lauch
         id: initTimer
         interval: 1;
         running: true
-        repeat: false
+        repeat: initdone === false
         onTriggered: {
+            var init = _cppAppSettings.loadSetting("init")
+            if(init !== "1"){
+                stackView.push("qrc:/LoginPage.qml")
+                initdone = true
+                return
+            }
+
             var perm = _cppAppSettings.loadSetting("permanent")
             console.log("checkoldlogin", perm);
             if(perm === "1"){
@@ -26,6 +34,12 @@ ApplicationWindow {
                     _cppAppSettings.writeSetting("init", 1);
                     window.is_error = false;
                 }
+                else if(ret === "Keine Verbindung zum Server."){
+                    handleError(0)
+                    initTimer.interval = 100
+                    return
+                }
+
                 else {
                     ret = _cppServerConn.checkConn()
                     handleError(ret)
@@ -34,13 +48,14 @@ ApplicationWindow {
             else {
                 stackView.push("qrc:/LoginPage.qml")
             }
+            initdone = true
         }
     }
 
     Timer {
         id: refreshTimer
         interval: 1000;
-        running: true
+        running: initdone
         repeat: true
         onTriggered: {
             var ret = _cppServerConn.checkConn()
@@ -60,6 +75,7 @@ ApplicationWindow {
             window.error = "";
         }
         else if(error_code === 401){
+            console.warn("401")
             _cppAppSettings.writeSetting("permanent", 0)
             _cppAppSettings.writeSetting("username", "")
             _cppAppSettings.writeSetting("password", "")
