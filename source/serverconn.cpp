@@ -212,7 +212,9 @@ QString ServerConn::getFoodPlan()
     }
 
     //initialize the weekplan to store information to it
-    m_weekplan.empty();             //empty the weekplan
+    //m_weekplan.empty();             //empty the weekplan
+    QList<QList<QString>> temp_weekplan;
+
     //m_weekplan is a list, that contains a list for each day, which contains: cookteam, date, main dish, vagi main dish, garnish(Beilage) and Dessert.
 
     ret.text = QString::fromUtf8(reply->readAll()); //read the whole website
@@ -224,11 +226,13 @@ QString ServerConn::getFoodPlan()
 
     //prepare the table of the first week
     QString table1 = stringlist_0[1];
+
     QStringList stringlist_1 = table1.split( "</table>" ); //remove everything after "</table>"
     table1 = stringlist_1[0];
     table1.remove(0,71);    //remove "<tbody><tr style=\"border: 1px solid #999;\" align=\"center\" valign=\"top\">" at the beginning
     table1 = table1.left(table1.length() - 13); //remove "</tr></tbody>" at the end
-    QStringList table1list = table1.split("<td width=\"25%\">"); //split at the days to get a list of all days
+
+    QStringList table1list = table1.split("<td style=\"width: 25%;\">"); //split at the days to get a list of all days
     table1list.takeFirst(); //remove the first item, as it is empty
 
     //prepare the table of the second week
@@ -237,7 +241,7 @@ QString ServerConn::getFoodPlan()
     table2 = stringlist_2[0];
     table2.remove(0,39);    //remove "<tbody><tr align=\"center\" valign=\"top\">" at the beginning
     table2.remove(table2.length() - 13, table2.length());   //remove "</tr></tbody>" at the end
-    QStringList table2list = table2.split("<td width=\"25%\">"); //split at the days to get a list of all days
+    QStringList table2list = table2.split("<td style=\"width: 25%;\">"); //split at the days to get a list of all days
     table2list.takeFirst(); //remove the first item, as it is empty
 
 
@@ -267,37 +271,36 @@ QString ServerConn::getFoodPlan()
 
        temp.replace("<br />","");
        templist = temp.split("</strong>");
-       m_weekplan.append({templist[0], templist[1]}); //store cookteam and date
+       temp_weekplan.append({templist[0], templist[1]}); //store cookteam and date
        temp = templist[2]; //store information in temp (looks like: "<hr />Gulasch mit Kartoffeln<hr />Pellkartoffeln mit Quark<hr />Gemischter Salat<hr />Eaton Mess ( Erdbeer-Nachtisch )")
        templist = temp.split("<hr />"); //seperate the information
        templist.takeFirst(); //remove first item
 
-       m_weekplan[i].append(templist);
+       temp_weekplan[i].append(templist);
 
 
     }
 
-    qDebug() << m_weekplan;
+    qDebug() << temp_weekplan;
+    this->m_weekplan = temp_weekplan;
+
+
     return("");
 }
 
 QVariantMap ServerConn::getFoodPlanData(int index)
 {
     //cookteam, date, main dish, vagi main dish, garnish(Beilage) and Dessert.
-    QString cookteam;
-    QString date;
-    QString main_dish;
-    QString main_dish_veg;
-    QString garnish;
-    QString Dessert;
 
     QStringList ret; //list to return
-    qDebug() << index;
+    //qDebug() << index;
     for(int i=0;i<=5;i++){
-        qDebug() << i << m_weekplan.size();
+
         if(m_weekplan.size() > index){
-            if(m_weekplan.at(index).size() > i){
+            //qDebug() << i << m_weekplan[index].size();
+            if(m_weekplan[index].size() > i){
                 ret.append(m_weekplan[index][i]);
+                //qDebug() << i << m_weekplan[index][i];
             }
             else {
                 ret.append(NULL);
@@ -307,7 +310,11 @@ QVariantMap ServerConn::getFoodPlanData(int index)
             ret.append(NULL);
         }
     }
-    return { {"cookteam", ret[0]}, {"date", ret[1]}, {"main", ret[2]}, {"main_veg", ret[3]}, {"garnish", ret[4]}, {"dessert", ret[5]} };
+    QString date_string_on_db = ret[1];
+    QDate Date = QDate::fromString(date_string_on_db," dd.MM.yyyy");
+//date_string_on_db
+    //qDebug() << Date;
+    return { {"cookteam", ret[0]}, {"date", Date}, {"main_dish", ret[2]}, {"main_dish_veg", ret[3]}, {"garnish", ret[4]}, {"dessert", ret[5]} };
 
 }
 
