@@ -20,7 +20,7 @@ schreibe bitte eine Mail an contact@itsblue.de, oder frag mich in der Schule.</p
 <a href="https://play.google.com/store/apps/details?id=com.itsblue.flgvertretung">
 <img src="https://play.google.com/intl/en_us/badges/images/badge_new.png" />
 </a>
-<p>- <a href="https://git.itsblue.de/dorian/fanny-app/raw/master/release/mac%20OS/fannyapp.app.zip">Mac OS</a></p>
+<p>- <a href="https://git.itsblue.de/dorian/fanny-app/raw/master/release/mac%20OS/fannyapp.dmg">Mac OS</a></p>
 <p>- Windows kommt demnächst (Du kannst aber den sourcecode herunterladen und es selbst kompilieren)</p>
 <br>
 <br>
