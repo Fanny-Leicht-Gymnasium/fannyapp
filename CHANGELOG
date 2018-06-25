@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.03.1] - 2018-06-25
+### Behoben
+- Problem, das dafür sorgte, dass die App beim Starten (im Zustand: Angemldet, Internetverbindung hergestellt)
+direkt abstürzte
+
 ## [0.03] - 2018-06-25
 ### Hinzugefügt
 - Bug behoben, durch den man fehlerhafter weise abgemeldet wurde, wenn die App
