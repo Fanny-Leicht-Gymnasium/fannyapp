@@ -17,7 +17,8 @@ direkt abstürzte
 ohne Internetverbindung gestertet und diese dann während die app lief wieder hergestellt wurde
 - Vollständige Anzeige für den Speiseplan
 - Handler für den Speiseplan
-- die alten pdf dateien werden vor dem herunterladen der neuen gelöscht
+- die alten pdf dateien werden vor dem herunterladen der neuen gelösch
+- Heute und Morgen Knöpfe werden deaktiviert, wenn eine Fehlermeldung (window.is_error === true) vorliegt
 
 ## [0.02] - 2018-06-22
 ### Hinzugefügt
