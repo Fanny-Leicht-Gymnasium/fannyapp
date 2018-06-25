@@ -186,6 +186,7 @@ float ServerConn::getProgress()
 
 int ServerConn::getFoodPlan()
 {
+    this->progress = 0;
     ReturnData_t ret; //this is a custom type to store the returned data
     // Call the webservice
 
@@ -209,7 +210,7 @@ int ServerConn::getFoodPlan()
 
     //get the status code
     QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-
+    this->progress = 1;
     if(status_code != 200){
         return(status_code.toInt());
     }

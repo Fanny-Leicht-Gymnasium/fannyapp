@@ -3,6 +3,7 @@ import QtQuick.Controls 2.2
 
 Page {
     id: root
+    objectName: "MainPage"
     anchors.fill: parent
     header: AppToolBar {
         contentHeight: toolButton.implicitHeight

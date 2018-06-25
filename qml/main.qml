@@ -10,20 +10,30 @@ ApplicationWindow {
     property bool is_error
     property string error
     property bool initdone: false
+    property bool firstinitdone: false
+
+    onBeforeRendering: {
+        if(!firstinitdone){
+            var isinit = _cppAppSettings.loadSetting("init")
+            console.log("getinit");
+            console.log(isinit);
+            if(isinit === "0"){
+                stackView.push("qrc:/LoginPage.qml", {});
+            }
+        }
+        firstinitdone = true
+    }
 
     Timer {
         //runs only one time at applictaion lauch
+        property bool finished: true
         id: initTimer
-        interval: 1;
-        running: true
-        repeat: initdone === false
+        interval: 10;
+        running: initdone === false
+        repeat: finished
         onTriggered: {
+            finished = false
             var init = _cppAppSettings.loadSetting("init")
-            if(init !== "1"){
-                stackView.push("qrc:/LoginPage.qml")
-                initdone = true
-                return
-            }
 
             var perm = _cppAppSettings.loadSetting("permanent")
             console.log("checkoldlogin", perm);
@@ -32,11 +42,15 @@ ApplicationWindow {
                 var ret = _cppServerConn.login(_cppAppSettings.loadSetting("username"), _cppAppSettings.loadSetting("password"), true);
                 if(ret === "OK"){
                     _cppAppSettings.writeSetting("init", 1);
+                    if(stackView.currentItem.objectName !== "MainPage"){
+                        stackView.push("qrc:/MainPage.qml", {});
+                    }
                     window.is_error = false;
                 }
                 else if(ret === "Keine Verbindung zum Server."){
                     handleError(0)
-                    initTimer.interval = 100
+                    //initTimer.interval = 1000
+                    finished = true
                     return
                 }
 
@@ -48,6 +62,7 @@ ApplicationWindow {
             else {
                 stackView.push("qrc:/LoginPage.qml")
             }
+            finished = true
             initdone = true
         }
     }
