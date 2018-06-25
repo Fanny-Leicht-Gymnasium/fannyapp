@@ -36,7 +36,7 @@ ApplicationWindow {
             var init = _cppAppSettings.loadSetting("init")
 
             var perm = _cppAppSettings.loadSetting("permanent")
-            console.log("checkoldlogin", perm);
+            console.log("checkoldlogin:", perm);
             if(perm === "1"){
                 console.log("Perm")
                 var ret = _cppServerConn.login(_cppAppSettings.loadSetting("username"), _cppAppSettings.loadSetting("password"), true);

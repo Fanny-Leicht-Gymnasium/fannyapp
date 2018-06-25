@@ -1,5 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+import QtGraphicalEffects 1.0
 
 Page {
     id:root
@@ -7,6 +8,23 @@ Page {
     property bool cookplanChanged
     title: qsTr("Speiseplanplan")
 
+//    Image{
+//        source: "qrc:/graphics/chat_background.jpg";
+//        height: parent.height
+//        width: parent.width
+//        fillMode: Image.Tile
+//        horizontalAlignment: Image.AlignLeft
+//        verticalAlignment: Image.AlignTop
+//    }
+    LinearGradient {
+        anchors.fill: parent
+        start: Qt.point(0, 0)
+        end: Qt.point(0, parent.height)
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#4db2b3" }
+            GradientStop { position: 1.0; color: "#8f4dae" }
+        }
+    }
 
     Timer {
         id: firstLoadTimer
@@ -27,7 +45,7 @@ Page {
             id: listView
             width: parent.width
             model: 8
-            spacing: 5
+            spacing: 0
             property var today: new Date
             anchors {
                 right: parent.right
@@ -36,16 +54,15 @@ Page {
                 bottom: parent.bottom
                 leftMargin: 5
                 rightMargin: 5
+                topMargin: 3
             }
 
             delegate: Button {
                 //text: getText(index, "cookteam")
                 width: parent.width
                 id: delegate
-                height: listView.isDayVisible(index) ? childrenRect.height + 10:0
+                height: listView.isDayVisible(index) ? childrenRect.height:0
                 visible: listView.isDayVisible(index)
-
-                //height: 150
 
                 Label {
                     anchors.left: parent.left
@@ -102,27 +119,13 @@ Page {
                     id: dessert
                     text: _cppServerConn.getFoodPlanData(index).dessert
                 }
-
-//                Timer {
-//                    id: reloadTimer
-//                    interval: 10;
-//                    running: cookplanChanged
-//                    repeat: true
-//                    onTriggered: {
-//                        //var today = new Date
-
-//                        cookteam.text = _cppServerConn.getFoodPlanData(index).cookteam
-//                        date.text = listView.getDateString(index)
-//                        //_cppServerConn.getFoodPlanData(index).date
-//                        main_dish.text = _cppServerConn.getFoodPlanData(index).main_dish
-//                        main_dish_veg.text = _cppServerConn.getFoodPlanData(index).main_dish_veg
-//                        garnish.text = _cppServerConn.getFoodPlanData(index).garnish
-//                        dessert.text = _cppServerConn.getFoodPlanData(index).dessert
-//                        if(index === 7) {
-//                            cookplanChanged = false
-//                        }
-//                    }
-//                }
+                Label {
+                    anchors.left: parent.left
+                    anchors.leftMargin: 10
+                    anchors.top: dessert.bottom
+                    id: spacer
+                    text: ""
+                }
             }
 
             function getDateString(index){

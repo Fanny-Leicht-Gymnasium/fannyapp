@@ -5,16 +5,25 @@ Page {
     id: root
     objectName: "MainPage"
     anchors.fill: parent
+
     header: AppToolBar {
         contentHeight: toolButton.implicitHeight
 
         ToolButton {
             id: toolButton
-            text: stackView.depth > 1 ? "\u25C0" : "\u4E09"
-            font.pixelSize: Qt.application.font.pixelSize * 1.6
+            anchors {
+                left: parent.left
+                verticalCenter: parent.verticalCenter
+                leftMargin: 5
+            }
+
+            background: Label {
+                text: stackView.depth > 1 ? "\u25C0" : "\u4E09"
+                font.pixelSize: Qt.application.font.pixelSize * 2
+                color: "white"
+            }
 
             onClicked: {
-                console.log(toolButton.font.styleName)
                 if (stackView.depth > 1) {
                     stackView.pop()
                 } else {
@@ -26,6 +35,7 @@ Page {
         Label {
             text: stackView.currentItem.title
             anchors.centerIn: parent
+            color: "white"
         }
     }
 
@@ -51,7 +61,6 @@ Page {
                 onClicked: {
                     busyDialog.open()
                     var ret = _cppServerConn.getFoodPlan();
-                    console.log(ret, _cppServerConn.getFoodPlanData(1).cookteam, isNaN(_cppServerConn.getFoodPlanData(0).date.toString))
                     drawer.close()
                     busyDialog.close()
                     if(ret === 200 || _cppServerConn.getFoodPlanData(1).cookteam !== ""){

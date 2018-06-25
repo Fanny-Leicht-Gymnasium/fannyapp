@@ -3,5 +3,6 @@
         <file>favicon.png</file>
         <file>graphics/sheute.png</file>
         <file>graphics/smorgen.png</file>
+        <file>graphics/chat_background.jpg</file>
     </qresource>
 </RCC>

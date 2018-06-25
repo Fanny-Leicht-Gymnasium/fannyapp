@@ -1,10 +1,31 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+import QtGraphicalEffects 1.0
 
 Page {
     anchors.fill: parent
 
     title: qsTr("Vertretungsplan")
+
+//    Image{
+//        source: "qrc:/graphics/chat_background.jpg";
+//        height: parent.height
+//        width: parent.width
+//        fillMode: Image.Tile
+//        horizontalAlignment: Image.AlignLeft
+//        verticalAlignment: Image.AlignTop
+//    }
+
+
+    LinearGradient {
+        anchors.fill: parent
+        start: Qt.point(0, 0)
+        end: Qt.point(0, parent.height)
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#4db2b3" }
+            GradientStop { position: 1.0; color: "#8f4dae" }
+        }
+    }
 
     Label {
         id: laWelcome
@@ -12,7 +33,7 @@ Page {
         font.pixelSize: 20
         wrapMode: Label.Wrap
         width: window.width / 1.2
-
+        color: "#424753"
         anchors {
             top: parent.top
             topMargin: window.height / 8 - laWelcome.height / 2
@@ -23,6 +44,8 @@ Page {
     Button {
         id:buttToday
         enabled: window.is_error === false
+        height: 200
+        width: 200
         anchors {
             left: parent.left
             leftMargin: (window.width / 4) -  (buttToday.width / 2)

@@ -250,9 +250,7 @@ int ServerConn::getFoodPlan()
 
 
     QStringList weeklist = table1list + table2list;  //put both weeks into one big list
-    qDebug() << weeklist;
-    //qDebug() << table1list;
-    qDebug() << "           ";
+
     for (int i = 0; i <=7; i ++){
        QString temp = weeklist[i]; //store item temporarly to edit it
        weeklist[i] = temp.left(temp.length()-5); //remove "</td>" at the and of the Item
@@ -285,8 +283,8 @@ int ServerConn::getFoodPlan()
 
     }
 
-    qDebug() << temp_weekplan;
-    this->m_weekplan = temp_weekplan;
+    //qDebug() << temp_weekplan;
+    this->m_weekplan = temp_weekplan;   //write changes to global foodplan
 
 
     return(200);
