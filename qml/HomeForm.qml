@@ -151,8 +151,6 @@ Page {
                 id: text
                 visible: true
                 width: verificationDialog.availableWidth
-
-
                 wrapMode: Label.Wrap
                 text: "Vertretungsplan, vertraulich, nur zum persönlichen Gebrauch, keine Speicherung!"
             }

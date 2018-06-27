@@ -25,6 +25,13 @@ Page {
         value: webView.loadProgress == 100 ? 0 : webView.loadProgress / 100
     }
 
+    Button {
+        z: 1
+        anchors.top: parent.top
+        text:"\u21BA"
+        onClicked: webView.reload()
+    }
+
     WebView {
         id: webView
         anchors {
@@ -36,7 +43,6 @@ Page {
 
         url: "http://www.fanny-leicht.de/j34"
         onLoadingChanged: {
-
             if (loadRequest.errorString)
                 console.error(loadRequest.errorString);
         }
