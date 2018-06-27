@@ -16,15 +16,15 @@ Page {
 //        horizontalAlignment: Image.AlignLeft
 //        verticalAlignment: Image.AlignTop
 //    }
-    LinearGradient {
-        anchors.fill: parent
-        start: Qt.point(0, 0)
-        end: Qt.point(0, parent.height)
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: "#4db2b3" }
-            GradientStop { position: 1.0; color: "#8f4dae" }
-        }
-    }
+//    LinearGradient {
+//        anchors.fill: parent
+//        start: Qt.point(0, 0)
+//        end: Qt.point(0, parent.height)
+//        gradient: Gradient {
+//            GradientStop { position: 0.0; color: "#4db2b3" }
+//            GradientStop { position: 1.0; color: "#8f4dae" }
+//        }
+//    }
 
     Timer {
         id: firstLoadTimer
@@ -61,8 +61,10 @@ Page {
                 //text: getText(index, "cookteam")
                 width: parent.width
                 id: delegate
-                height: listView.isDayVisible(index) ? childrenRect.height:0
+                height: visible ? cookteam.height + date.height + main_dish.height + main_dish_veg.height + garnish.height + dessert.height + spacer.height + cust_spacing*9 + 5:0
                 visible: listView.isDayVisible(index)
+
+                property int cust_spacing: 5
 
                 Label {
                     anchors.left: parent.left
@@ -72,6 +74,9 @@ Page {
                     font.bold: true
                     id: cookteam
                     text: _cppServerConn.getFoodPlanData(index).cookteam
+                    width: parent.width - 10
+                    wrapMode: Label.Wrap
+                    height: text!=""? none:0
                 }
                 Label {
                     anchors.left: parent.left
@@ -80,49 +85,106 @@ Page {
                     font.bold: true
                     id: date
                     text: listView.getDateString(index)
+                    width: parent.width - 10
+                    wrapMode: Label.Wrap
                 }
                 Rectangle {
                     anchors.top:  date.bottom
+                    anchors.topMargin: cust_spacing
                     anchors.left: parent.left
                     anchors.leftMargin: 10
                     anchors.right: parent.right
                     anchors.rightMargin: 10
-                    height: 1
+                    height: 2
                     color: "grey"
+
                 }
 
                 Label {
                     anchors.left: parent.left
                     anchors.leftMargin: 10
                     anchors.top: date.bottom
+                    anchors.topMargin: cust_spacing * 2
+                    width: parent.width - 10
+                    wrapMode: Label.Wrap
                     id: main_dish
                     text: _cppServerConn.getFoodPlanData(index).main_dish
+                    height: text!=""? none:0
                 }
+
+                Rectangle {
+                    anchors.top:  main_dish.bottom
+                    anchors.topMargin: cust_spacing
+                    anchors.left: parent.left
+                    anchors.leftMargin: 10
+                    width: parent.width / 10
+                    height: main_dish_veg.text!=""? 1:0
+                    color: "grey"
+
+                }
+
                 Label {
                     anchors.left: parent.left
                     anchors.leftMargin: 10
                     anchors.top: main_dish.bottom
+                    anchors.topMargin: cust_spacing * 2
                     id: main_dish_veg
                     text: _cppServerConn.getFoodPlanData(index).main_dish_veg
+                    width: parent.width - 10
+                    wrapMode: Label.Wrap
+                    height: text!=""? none:0
                 }
+
+                Rectangle {
+                    anchors.top:  main_dish_veg.bottom
+                    anchors.topMargin: cust_spacing
+                    anchors.left: parent.left
+                    anchors.leftMargin: 10
+                    width: parent.width / 10
+                    height: garnish.text!=""? 1:0
+                    color: "grey"
+                }
+
                 Label {
                     anchors.left: parent.left
                     anchors.leftMargin: 10
                     anchors.top: main_dish_veg.bottom
+                    anchors.topMargin: cust_spacing * 2
                     id: garnish
                     text: _cppServerConn.getFoodPlanData(index).garnish
+                    width: parent.width - 10
+                    wrapMode: Label.Wrap
+                    height: text!=""? none:0
                 }
+
+                Rectangle {
+                    anchors.top:  garnish.bottom
+                    anchors.topMargin: cust_spacing
+                    anchors.left: parent.left
+                    anchors.leftMargin: 10
+                    width: parent.width / 10
+                    height: dessert.text!=""? 1:0
+                    color: "grey"
+
+                }
+
                 Label {
                     anchors.left: parent.left
                     anchors.leftMargin: 10
                     anchors.top: garnish.bottom
+                    anchors.topMargin: cust_spacing * 2
                     id: dessert
                     text: _cppServerConn.getFoodPlanData(index).dessert
+                    width: parent.width - 10
+                    wrapMode: Label.Wrap
+                    height: text!=""? none:0
                 }
+
                 Label {
                     anchors.left: parent.left
                     anchors.leftMargin: 10
                     anchors.top: dessert.bottom
+                    anchors.topMargin: cust_spacing
                     id: spacer
                     text: ""
                 }

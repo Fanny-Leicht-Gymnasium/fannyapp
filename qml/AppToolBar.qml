@@ -11,8 +11,6 @@ ToolBar {
         height: 30
         visible: window.is_error & stackView.currentItem.objectName !== "LoginPage" & showErrorBar
         anchors.top: parent.bottom
-
-
         color: "red"
         Text {
             anchors.verticalCenter: parent.verticalCenter

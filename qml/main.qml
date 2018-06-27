@@ -12,6 +12,10 @@ ApplicationWindow {
     property bool initdone: false
     property bool firstinitdone: false
 
+    property string text_color: "black" //"#424753"
+    property string background_color: "white"
+    property string toolbar_color: "#312f38"
+
     onBeforeRendering: {
         if(!firstinitdone){
             var isinit = _cppAppSettings.loadSetting("init")
