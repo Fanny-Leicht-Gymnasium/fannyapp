@@ -18,7 +18,7 @@ schreibe bitte eine Mail an contact@itsblue.de, oder frag mich in der Schule.</p
 <p>Warte auf die Anpassung des Vertretungsplanes.</p>
 
 <h4>Downloads:</h4>
-<p><a href="https://play.google.com/store/apps/details?id=com.itsblue.flgvertretung&amp;pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1" target="_blank"><img src="https://play.google.com/intl/en_us/badges/images/generic/de_badge_web_generic.png" alt="Jetzt bei Google Play" /></a><p>
+<p><a href="https://play.google.com/store/apps/details?id=com.itsblue.flgvertretung&amp;pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1" target="_blank"><img src="https://play.google.com/intl/en_us/badges/images/generic/de_badge_web_generic.png" alt="Jetzt bei Google Play" width="25%"/></a><p>
 <!--p>- <a href="https://git.itsblue.de/dorian/fanny-app/raw/master/release/mac%20OS/fannyapp.dmg">Mac OS</a></p-->
 <p>- Windows kommt demnächst (Du kannst aber den sourcecode herunterladen und es selbst kompilieren)</p>
 <br>
