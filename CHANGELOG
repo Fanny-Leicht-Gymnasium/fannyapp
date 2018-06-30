@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.03.2]
 ### Hinzugefügt
 - Animation beim clicken der heute / morgen Tasten
 - Striche zwischen den einzelnen Reihen zur besseren Übersicht beim Speiseplan hinzugefügt
