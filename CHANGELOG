@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Die bisherige Fortschrittsanzeige durch eine kreisförmige erstezt
 ### Behoben
 - Der Text beim Spieseplan wird nicht mehr abgeschnitten
-- Beim Laden des Speiseplanes werden keine sehr große oder kleine mehr angezeigt
+- Beim Laden des Speiseplanes werden keine sehr großen oder kleinen Zahlen mehr angezeigt
 
 
 ## [0.03.1] - 2018-06-25
