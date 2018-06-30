@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Hinzugefügt
 - Animation beim clicken der heute / morgen Tasten
 - Striche zwischen den einzelnen Reihen zur besseren Übersicht beim Speiseplan hinzugefügt
+
+### Geändert
+- Die bisherige Fortschrittsanzeige durch eine kreisförmige erstezt
 ### Behoben
 - Der Text beim Spieseplan wird nicht mehr abgeschnitten
 
