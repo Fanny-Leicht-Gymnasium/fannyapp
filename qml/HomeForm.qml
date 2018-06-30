@@ -197,7 +197,6 @@ Page {
 
                      progressCircle.arcEnd = 360 * ret * 1.2
                      progress.text = Math.round( ret * 100 ) + "%"
-                     console.log(ret)
                  }
              }
         }

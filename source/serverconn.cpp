@@ -118,9 +118,7 @@ QString ServerConn::getDay(QString day)
             file.open(QIODevice::ReadWrite);
             file.write(reply->readAll());
             file.close();
-            qDebug("opening PDF...");
             QDesktopServices::openUrl(QUrl::fromLocalFile(path + "/.fannyapp-tmp/" + day + ".pdf"));
-            qDebug("open");
             return("OK");
         }
         else if(status_code == 401){
