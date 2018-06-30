@@ -6,6 +6,15 @@ Page {
     objectName: "MainPage"
     anchors.fill: parent
 
+    Shortcut {
+        sequences: ["Esc", "Back"]
+        enabled: stackView.depth > 1
+        onActivated: {
+            stackView.pop()
+            listView.currentIndex = -1
+        }
+    }
+
     header: AppToolBar {
         contentHeight: toolButton.implicitHeight
 
