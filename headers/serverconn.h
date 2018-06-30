@@ -42,7 +42,7 @@ public:
 signals:
 
 public slots:
-    void updateProgress(qint64 read, qint64 total);
+    Q_INVOKABLE void updateProgress(qint64 read, qint64 total);
 
 private:
 

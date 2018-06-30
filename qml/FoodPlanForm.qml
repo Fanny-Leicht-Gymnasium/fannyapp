@@ -76,7 +76,7 @@ Page {
                     text: _cppServerConn.getFoodPlanData(index).cookteam
                     width: parent.width - 10
                     wrapMode: Label.Wrap
-                    height: text!=""? none:0
+                    height: text!=""? undefined:0
                 }
                 Label {
                     anchors.left: parent.left
@@ -109,7 +109,7 @@ Page {
                     wrapMode: Label.Wrap
                     id: main_dish
                     text: _cppServerConn.getFoodPlanData(index).main_dish
-                    height: text!=""? none:0
+                    height: text!=""? undefined:0
                 }
 
                 Rectangle {
@@ -132,7 +132,7 @@ Page {
                     text: _cppServerConn.getFoodPlanData(index).main_dish_veg
                     width: parent.width - 10
                     wrapMode: Label.Wrap
-                    height: text!=""? none:0
+                    height: text!=""? undefined:0
                 }
 
                 Rectangle {
@@ -154,7 +154,7 @@ Page {
                     text: _cppServerConn.getFoodPlanData(index).garnish
                     width: parent.width - 10
                     wrapMode: Label.Wrap
-                    height: text!=""? none:0
+                    height: text!=""? undefined:0
                 }
 
                 Rectangle {
@@ -177,7 +177,7 @@ Page {
                     text: _cppServerConn.getFoodPlanData(index).dessert
                     width: parent.width - 10
                     wrapMode: Label.Wrap
-                    height: text!=""? none:0
+                    height: text!=""? undefined:0
                 }
 
                 Label {

@@ -8,5 +8,6 @@
         <file>AppToolBar.qml</file>
         <file>WebsitePage.qml</file>
         <file>FoodPlanForm.qml</file>
+        <file>ProgressCircle.qml</file>
     </qresource>
 </RCC>

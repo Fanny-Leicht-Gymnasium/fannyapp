@@ -13,6 +13,7 @@ Page {
     objectName: "WebsitePage";
 
     title: qsTr("Fanny Webseite")
+
     ProgressBar {
         id: progress
         width: parent.width
@@ -25,15 +26,9 @@ Page {
         value: webView.loadProgress == 100 ? 0 : webView.loadProgress / 100
     }
 
-    Button {
-        z: 1
-        anchors.top: parent.top
-        text:"\u21BA"
-        onClicked: webView.reload()
-    }
-
     WebView {
         id: webView
+        onLoadProgressChanged: console.log(loadProgress)
         anchors {
             top: webView.loadProgress < 100 ? progress.bottom:parent.top
             bottom: parent.bottom
@@ -46,7 +41,18 @@ Page {
             if (loadRequest.errorString)
                 console.error(loadRequest.errorString);
         }
+
+//        RoundButton {
+//            //z: -1
+//            anchors {
+//                bottom: parent.bottom
+//                bottomMargin: 10
+//                right: parent.right
+//                rightMargin: 10
+//            }
+
+//            text:"\u21BA"
+//            onClicked: webView.reload()
+//        }
     }
-
-
 }

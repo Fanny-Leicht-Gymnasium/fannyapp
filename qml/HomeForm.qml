@@ -123,11 +123,12 @@ Page {
         contentHeight: aboutColumn.height
         standardButtons: Dialog.Ok | Dialog.Cancel
         onAccepted: {
+            _cppServerConn.updateProgress(0,100)
             busyDialog.open()
             text.visible = false
-            console.log("getting file of ", day)
             var ret = _cppServerConn.getDay(day)
-            console.log(ret)
+            progressCircle.arcEnd = 36000
+            progress.text = "100%"
             busyDialog.close()
             text.visible = true
             if(ret === "OK"){
@@ -168,35 +169,37 @@ Page {
         //width: Math.min(window.width, window.height) / 3 * 2
         height: contentHeight * 1.5
         width: contentWidth * 1.5
-        contentHeight: busyIndicator.height
-        contentWidth: busyIndicator.width
-        BusyIndicator {
-            id: busyIndicator
-            visible: true
+        contentHeight: progressCircle.height
+        contentWidth: progressCircle.width
+
+        ProgressCircle {
+            id: progressCircle
+            size: 50
+            lineWidth: 5
             anchors.centerIn: parent
-            Label {
-                id: progress
-                anchors.centerIn: parent
-                text: _cppServerConn.getProgress()
-            }
-            Timer {
-                id: refreshTimer
-                interval: 1;
-                running: busyDialog.visible
-                repeat: true
-                onTriggered: {
-                    var ret = _cppServerConn.getProgress()
-                    progress.text = Math.round( ret * 100 ) + "%"
-                    progressBar.value = ret
-                }
-            }
-        }
-        ProgressBar {
-            id: progressBar
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.topMargin: busyDialog.height / 1.5
+            colorCircle: "#FF3333"
+            colorBackground: "#E6E6E6"
+             showBackground: true
+             arcBegin: 0
+             arcEnd: 0
+             Label {
+                 id: progress
+                 anchors.centerIn: parent
+                 text: "0%"
+             }
+             Timer {
+                 id: refreshTimer
+                 interval: 1;
+                 running: busyDialog.visible
+                 repeat: true
+                 onTriggered: {
+                     var ret = _cppServerConn.getProgress()
+
+                     progressCircle.arcEnd = 360 * ret * 1.2
+                     progress.text = Math.round( ret * 100 ) + "%"
+                     console.log(ret)
+                 }
+             }
         }
     }
 }

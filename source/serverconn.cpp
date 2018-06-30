@@ -82,7 +82,7 @@ int ServerConn::logout()
 
 QString ServerConn::getDay(QString day)
 {
-    qDebug("getting file of day");
+    this->progress = 0;
     // Create request
         QNetworkRequest request;
         request.setUrl( QUrl( "http://www.fanny-leicht.de/static15/http.intern/" + day + ".pdf" ) );
@@ -101,14 +101,13 @@ QString ServerConn::getDay(QString day)
 
         connect(reply, SIGNAL(downloadProgress(qint64, qint64)),
                     this, SLOT(updateProgress(qint64, qint64)));
-        this->progress = 0;
         QEventLoop loop;
         loop.connect(this->networkManager, SIGNAL(finished(QNetworkReply*)), SLOT(quit()));
         loop.exec();
 
+        this->progress = 1;
         int status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         if(status_code == 200){
-            qDebug("OK");
             QString path = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
 
             QDir dir;
@@ -119,12 +118,9 @@ QString ServerConn::getDay(QString day)
             file.open(QIODevice::ReadWrite);
             file.write(reply->readAll());
             file.close();
-
-            this->progress = 1;
-
+            qDebug("opening PDF...");
             QDesktopServices::openUrl(QUrl::fromLocalFile(path + "/.fannyapp-tmp/" + day + ".pdf"));
-            qDebug() << QString::fromUtf8(reply->readAll());
-            qDebug() << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+            qDebug("open");
             return("OK");
         }
         else if(status_code == 401){
