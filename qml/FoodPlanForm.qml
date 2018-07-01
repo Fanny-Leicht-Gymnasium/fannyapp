@@ -196,7 +196,7 @@ Page {
                 if(date.getDate() === today.getDate()){
                     return("Heute")
                 }
-                else if(date.getDate() === today.getDate() + 1 || (date.getDay() === 1 && today.getMonth() === date.getMonth() + 1)){
+                else if(date.getDate() === today.getDate() + 1 || (date.getDate() === 1 && date.getMonth() === today.getMonth() + 1)){
                     return("Morgen")
                 }
                 else {
@@ -206,7 +206,7 @@ Page {
             }
             function isDayVisible(index){
                 var date = _cppServerConn.getFoodPlanData(index).date
-                return( date.getDate() >= today.getDate() || date.getMonth() > today.getMonth())
+                return( date.getDate() >= today.getDate() && date.getMonth() >= today.getMonth())
             }
         }
     }
