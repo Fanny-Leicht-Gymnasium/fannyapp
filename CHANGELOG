@@ -3,12 +3,12 @@ Jegliche Veräderungen verden hier dokumentiert
 
 ## [Unveröffentlicht]
 
-## [0.03.3]
+## [0.03.3] - 2018-07-1
 ### Behoben
 - Fehler, durch den am Monatswechsel beim Speiseplan auch die vorherige Woche angezeigt wurde
 
 
-## [0.03.2]
+## [0.03.2] - 2018-06-29
 ### Hinzugefügt
 - Animation beim clicken der heute / morgen Tasten
 - Striche zwischen den einzelnen Reihen zur besseren Übersicht beim Speiseplan hinzugefügt
