@@ -23,4 +23,4 @@ schreibe bitte eine Mail an contact@itsblue.de, oder frag mich in der Schule.</p
 <p>- Windows kommt demnächst (Du kannst aber den sourcecode herunterladen und es selbst kompilieren)</p>
 <br>
 <br>
-Verantwortlicher Programmierer: Dorian Zedler
+Verantwortlicher Entwickler: Dorian Zedler
