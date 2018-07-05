@@ -39,11 +39,11 @@ Page {
     }
 
     ScrollView {
+        id:scroll
         anchors.fill: parent
-
         ListView {
             id: listView
-            width: parent.width
+            //width: 514
             model: 8
             spacing: 0
             property var today: new Date
@@ -59,10 +59,10 @@ Page {
 
             delegate: Button {
                 //text: getText(index, "cookteam")
-                width: parent.width
+                width: listView.width
                 id: delegate
                 height: visible ? cookteam.height + date.height + main_dish.height + main_dish_veg.height + garnish.height + dessert.height + spacer.height + cust_spacing*9 + 5:0
-                visible: listView.isDayVisible(index)
+                visible: index>6//listView.isDayVisible(index)
 
                 property int cust_spacing: 5
 

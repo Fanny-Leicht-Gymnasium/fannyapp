@@ -1,4 +1,4 @@
-QT += qml quick quickcontrols2 xml widgets
+QT += qml quick quickcontrols2 xml widgets webview
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use

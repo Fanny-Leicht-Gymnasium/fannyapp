@@ -1,3 +1,4 @@
+#include <QtWebView/QtWebView>
 #include <QMessageBox>
 
 #include <QGuiApplication>
@@ -12,6 +13,16 @@
 #include <QFile>
 #include <QDesktopServices>
 
+#include <QtCore/QUrl>
+#include <QtCore/QCommandLineOption>
+#include <QtCore/QCommandLineParser>
+#include <QGuiApplication>
+#include <QStyleHints>
+#include <QScreen>
+#include <QQmlApplicationEngine>
+#include <QtQml/QQmlContext>
+#include <QtWebView/QtWebView>
+
 #include "headers/serverconn.h"
 #include "headers/appsettings.h"
 
@@ -24,7 +35,9 @@ int main(int argc, char *argv[])
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
+
     QGuiApplication app(argc, argv);
+    QtWebView::initialize();
 
     QQuickStyle::setStyle("Material");
     QQmlApplicationEngine engine;
