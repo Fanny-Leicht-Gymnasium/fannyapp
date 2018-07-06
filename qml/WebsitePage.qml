@@ -8,7 +8,7 @@ import QtQuick.Controls.Styles 1.2
 
 Page {
     id:root
-    anchors.fill: parent
+    //anchors.fill: parent
 
     objectName: "WebsitePage";
 
@@ -22,13 +22,11 @@ Page {
         }
         //z: Qt.platform.os === "android" ? -1 : 1
         visible: webView.loadProgress < 100
-
-        value: webView.loadProgress == 100 ? 0 : webView.loadProgress / 100
+        value: webView.loadProgress === 100 ? 0 : webView.loadProgress / 100
     }
 
     WebView {
         id: webView
-        onLoadProgressChanged: console.log(loadProgress)
         anchors {
             top: webView.loadProgress < 100 ? progress.bottom:parent.top
             bottom: parent.bottom

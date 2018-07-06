@@ -4,7 +4,7 @@ import QtQuick.Controls 2.2
 
 Page {
     id: root
-    anchors.fill: parent
+    //anchors.fill: parent
     objectName: "LoginPage";
 
     header: AppToolBar {

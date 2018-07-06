@@ -4,7 +4,7 @@ import QtGraphicalEffects 1.0
 
 Page {
     id:root
-    anchors.fill: parent
+    //anchors.fill: parent
     property bool cookplanChanged
     title: qsTr("Speiseplanplan")
 
@@ -62,7 +62,7 @@ Page {
                 width: listView.width
                 id: delegate
                 height: visible ? cookteam.height + date.height + main_dish.height + main_dish_veg.height + garnish.height + dessert.height + spacer.height + cust_spacing*9 + 5:0
-                visible: index>6//listView.isDayVisible(index)
+                visible: listView.isDayVisible(index)
 
                 property int cust_spacing: 5
 

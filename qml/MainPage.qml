@@ -4,7 +4,7 @@ import QtQuick.Controls 2.2
 Page {
     id: root
     objectName: "MainPage"
-    anchors.fill: parent
+    //anchors.fill: parent
 
     Shortcut {
         sequences: ["Esc", "Back"]

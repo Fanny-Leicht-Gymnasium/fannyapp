@@ -16,23 +16,23 @@ ApplicationWindow {
     property string background_color: "white"
     property string toolbar_color: "#312f38"
 
-    onBeforeRendering: {
-        if(!firstinitdone){
-            var isinit = _cppAppSettings.loadSetting("init")
-            console.log("getinit");
-            console.log(isinit);
-            if(isinit === "0"){
-                stackView.push("qrc:/LoginPage.qml", {});
-            }
-        }
-        firstinitdone = true
-    }
+//    onBeforeRendering: {
+//        if(!firstinitdone){
+//            var isinit = _cppAppSettings.loadSetting("init")
+//            console.log("getinit");
+//            console.log(isinit);
+//            if(isinit === "0"){
+//                stackView.push("qrc:/LoginPage.qml", {});
+//            }
+//        }
+//        firstinitdone = true
+//    }
 
     Timer {
         //runs only one time at applictaion lauch
         property bool finished: true
         id: initTimer
-        interval: 10;
+        interval: 1;
         running: initdone === false
         repeat: finished
         onTriggered: {
@@ -45,6 +45,7 @@ ApplicationWindow {
                 console.log("Perm")
                 var ret = _cppServerConn.login(_cppAppSettings.loadSetting("username"), _cppAppSettings.loadSetting("password"), true);
                 if(ret === "OK"){
+                    initdone = true
                     _cppAppSettings.writeSetting("init", 1);
                     if(stackView.currentItem.objectName !== "MainPage"){
                         stackView.push("qrc:/MainPage.qml", {});
@@ -64,7 +65,10 @@ ApplicationWindow {
                 }
             }
             else {
-                stackView.push("qrc:/LoginPage.qml")
+                initdone = false
+                if(stackView.currentItem.objectName !== "LoginPage"){
+                    stackView.push("qrc:/LoginPage.qml")
+                }
             }
             finished = true
             initdone = true
@@ -77,6 +81,7 @@ ApplicationWindow {
         running: initdone
         repeat: true
         onTriggered: {
+            console.log("refresh")
             var ret = _cppServerConn.checkConn()
             handleError(ret)
         }
