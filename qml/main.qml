@@ -16,17 +16,17 @@ ApplicationWindow {
     property string background_color: "white"
     property string toolbar_color: "#312f38"
 
-//    onBeforeRendering: {
-//        if(!firstinitdone){
-//            var isinit = _cppAppSettings.loadSetting("init")
-//            console.log("getinit");
-//            console.log(isinit);
-//            if(isinit === "0"){
-//                stackView.push("qrc:/LoginPage.qml", {});
-//            }
-//        }
-//        firstinitdone = true
-//    }
+    onBeforeRendering: {
+        if(!firstinitdone){
+            var isinit = _cppAppSettings.loadSetting("permanent")
+            console.log("getinit");
+            console.log(isinit);
+            if(isinit === "0"){
+                stackView.push("qrc:/LoginPage.qml", {});
+            }
+        }
+        firstinitdone = true
+    }
 
     Timer {
         //runs only one time at applictaion lauch

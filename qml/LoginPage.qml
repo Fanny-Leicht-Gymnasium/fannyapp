@@ -8,7 +8,11 @@ Page {
     objectName: "LoginPage";
 
     header: AppToolBar {
-
+        Label {
+            text: "Anmeldung"
+            anchors.centerIn: parent
+            color: "white"
+        }
     }
 
     Image {
@@ -22,12 +26,30 @@ Page {
         fillMode: Image.PreserveAspectFit
     }
 
+    Label {
+        id: infoText
+        text: "<html>Bitte melde dich mit den Anmeldedaten an, die du für den Vertretungsplan  erhalten hast.
+                <a href='http://www.fanny-leicht.de/j34/index.php/aktuelles/vertretungsplan'>Weitere Informationen</a></html>"
+        wrapMode: Text.Wrap
+        onLinkActivated: {
+            Qt.openUrlExternally(link)
+        }
+
+        anchors {
+            top: bigLogo.bottom
+            left: parent.left
+            right: parent.right
+            leftMargin: window.width * 0.05
+            rightMargin: window.width * 0.05
+        }
+    }
+
     ColumnLayout {
 
         spacing: 40
         width: parent.width
         anchors.fill: parent
-        anchors.topMargin: bigLogo.height + window.height * 0.01
+        anchors.topMargin: bigLogo.height + infoText.height + window.height * 0.02
         anchors.bottomMargin: window.height * 0.2
 
         TextField {
