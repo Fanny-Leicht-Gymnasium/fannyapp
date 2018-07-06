@@ -2,7 +2,7 @@
 <p>Die App bietet die Möglichkeit, komfortabel auf den Vertretungsplan des Fanny-Leicht-Gymnasiums in Stuttgart zuzugreifen.</p>
 
 <h4>Funktionen</h4>
-<p>- Zugriff auf den Vertretungsplan</p
+<p>- Zugriff auf den Vertretungsplan</p>
 <p>- Anzeige des Speiseplanes des Treffpunkt Fanny</p>
 <p>- Zugriff auf die Fanny-Webseite (www.fanny-leicht.de)
 
