@@ -83,4 +83,5 @@
          Remove the comment if you do not require these default features. -->
         <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
 
+<!-- %%INSERT_FEATURES -->
 </manifest>
