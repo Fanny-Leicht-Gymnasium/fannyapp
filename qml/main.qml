@@ -78,10 +78,9 @@ ApplicationWindow {
     Timer {
         id: refreshTimer
         interval: 1000;
-        running: initdone
+        running: initdone && stackView.currentItem.objectName !== "LoginPage"
         repeat: true
         onTriggered: {
-            console.log("refresh")
             var ret = _cppServerConn.checkConn()
             handleError(ret)
         }
