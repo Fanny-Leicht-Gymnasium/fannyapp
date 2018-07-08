@@ -2,6 +2,11 @@
 Jegliche Veräderungen verden hier dokumentiert
 
 ## [Unveröffentlicht]
+### Behoben
+- Fehler beim Speiseplan, der dafür sorgte, dass der letzte Tag fehlerhaft (zu dünn) angezeigt wurde, wenn nurnoch ein Tag angezeigt wurde
+
+### Hinzugefügt
+- Hinweis zu den Anmeldedaten beim Login
 
 ## [0.03.3] - 2018-07-1
 ### Behoben
