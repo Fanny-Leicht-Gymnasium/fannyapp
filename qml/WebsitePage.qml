@@ -8,12 +8,13 @@ import QtQuick.Controls.Styles 1.2
 
 Page {
     id:root
-    //anchors.fill: parent
 
     objectName: "WebsitePage";
 
     title: qsTr("Fanny Webseite")
-    property string icon: "qrc:/graphics/FannyLogo.png"
+    property string icon: "qrc:/graphics/FannyLogo_small.png"
+
+    property string link: "http://www.fanny-leicht.de/j34"
 
     ProgressBar {
         id: progress
@@ -28,6 +29,8 @@ Page {
 
     WebView {
         id: webView
+        Keys.onBackPressed: webView.goBack()
+        z: 0
         anchors {
             top: webView.loadProgress < 100 ? progress.bottom:parent.top
             bottom: parent.bottom
@@ -35,23 +38,11 @@ Page {
             right: parent.right
         }
 
-        url: "http://www.fanny-leicht.de/j34"
+        url: link
         onLoadingChanged: {
+            console.log(url)
             if (loadRequest.errorString)
                 console.error(loadRequest.errorString);
         }
-
-//        RoundButton {
-//            //z: -1
-//            anchors {
-//                bottom: parent.bottom
-//                bottomMargin: 10
-//                right: parent.right
-//                rightMargin: 10
-//            }
-
-//            text:"\u21BA"
-//            onClicked: webView.reload()
-//        }
     }
 }

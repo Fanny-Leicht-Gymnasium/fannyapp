@@ -1,10 +1,12 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 
+import QtQuick.Layouts 1.1
+import QtQuick.Controls.Styles 1.2
+
 Page {
     id: root
     objectName: "MainPage"
-    //anchors.fill: parent
 
     Shortcut {
         sequences: ["Esc", "Back"]
@@ -15,27 +17,38 @@ Page {
     }
 
     header: AppToolBar {
-        contentHeight: toolButton.implicitHeight
 
-        ToolButton {
-            id: toolButton
+
+        Button {
+            id:toolButton
+            enabled: window.is_error === false
             anchors {
                 left: parent.left
                 verticalCenter: parent.verticalCenter
-                leftMargin: 5
+                leftMargin: parent.width *0.02
             }
-
-            background: Label {
-                text: stackView.depth > 1 ? "\u2BC7" : "\u4E09"
-                font.pixelSize: Qt.application.font.pixelSize * 2
-                color: "white"
-            }
+            height: parent.height - parent.height * 0.5
+            width: height
 
             onClicked: {
                 if (stackView.depth > 1) {
                     stackView.pop()
                 } else {
                     drawer.open()
+                }
+            }
+
+            onPressed: toolButton.scale = 0.9
+            onReleased: toolButton.scale = 1.0
+
+            background: Image {
+                source: stackView.depth > 1 ? "qrc:/graphics/icons/back.png" : "qrc:/graphics/icons/drawer.png"
+                height: parent.height
+                width: parent.width
+                Behavior on scale {
+                    PropertyAnimation {
+                        duration: 100
+                    }
                 }
             }
         }
@@ -45,21 +58,35 @@ Page {
             anchors {
                 verticalCenter: parent.verticalCenter
                 left: toolButton.right
-                leftMargin: parent.width *0.01
+                leftMargin: parent.width * 0.02
             }
-
+            font.bold: true
             color: "white"
         }
 
         Image {
+            id: logo
             source: stackView.currentItem.icon
             anchors.right: parent.right
-            anchors.rightMargin: parent.width *0.1
+            anchors.rightMargin: parent.width * 0.02
             anchors.top: parent.top
             height: parent.height
             fillMode: Image.PreserveAspectFit
             mipmap: true
-            asynchronous: true
+            Behavior on scale {
+                PropertyAnimation {
+                    duration: 100
+                }
+            }
+            MouseArea {
+                enabled: stackView.currentItem.link !== undefined && stackView.currentItem.objectName !== "WebsitePage"
+                anchors.fill: parent
+                onPressed: logo.scale = 0.9
+                onReleased: logo.scale = 1.0
+                onClicked: {
+                    stackView.push("qrc:/WebsitePage.qml",{title: "Web", link: stackView.currentItem.link, icon: stackView.currentItem.icon})
+                }
+            }
         }
     }
 
@@ -100,7 +127,7 @@ Page {
                 text: qsTr("Fanny Webseite")
                 width: parent.width
                 onClicked: {
-                    stackView.push("WebsitePage.qml")
+                    stackView.push("qrc:/WebsitePage.qml",{title: "Fanny Webseite", link: "http://www.fanny-leicht.de/j34", icon: stackView.currentItem.icon})
                     drawer.close()
                 }
             }
@@ -114,7 +141,7 @@ Page {
                     drawer.close()
                     busyDialog.close()
                     if(ret === 200 || _cppServerConn.getFoodPlanData(1).cookteam !== ""){
-                        stackView.push("FoodPlanForm.qml")
+                        stackView.push("qrc:/FoodPlanForm.qml")
                     }
                 }
             }
@@ -132,6 +159,10 @@ Page {
                     font.bold: true
                 }
                 width: parent.width
+
+                onClicked: {
+                    confirmationDialog.open()
+                }
 
                 Dialog {
                     id: confirmationDialog
@@ -153,7 +184,7 @@ Page {
                     onAccepted: {
                         _cppServerConn.logout()
                         drawer.close()
-                        root.StackView.view.push("LoginPage.qml")
+                        root.StackView.view.push("qrc:/LoginPage.qml")
                     }
                 }
             }
@@ -162,7 +193,7 @@ Page {
 
     StackView {
         id: stackView
-        initialItem: "HomeForm.qml"
+        initialItem: "qrc:/HomeForm.qml"
         anchors.fill: parent
     }
 

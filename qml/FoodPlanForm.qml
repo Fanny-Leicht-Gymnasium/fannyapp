@@ -8,6 +8,7 @@ Page {
     property bool cookplanChanged
     title: qsTr("Speiseplanplan")
     property string icon: "qrc:/graphics/TreffpunktFannyLogo.png"
+    property string link: "http://www.treffpunkt-fanny.de"
 
 //    Image{
 //        source: "qrc:/graphics/chat_background.jpg";

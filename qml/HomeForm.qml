@@ -6,7 +6,8 @@ Page {
     //anchors.fill: parent
 
     title: qsTr("Vertretungsplan")
-    property string icon: "qrc:/graphics/FannyLogo.png"
+    property string icon: "qrc:/graphics/FannyLogo_small.png"
+    property string link: "http://www.fanny-leicht.de/j34"
 
 //    Image{
 //        source: "qrc:/graphics/chat_background.jpg";
