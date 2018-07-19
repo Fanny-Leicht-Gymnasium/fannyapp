@@ -3,7 +3,7 @@ Jegliche Veräderungen verden hier dokumentiert
 
 ## [Unveröffentlicht]
 
-## [0.04]
+## [0.04] - 2018-07-19
 ### Behoben
 - Fehler beim Speiseplan, der dafür sorgte, dass der letzte Tag fehlerhaft (zu dünn) angezeigt wurde, wenn nurnoch ein Tag angezeigt wurde
 
