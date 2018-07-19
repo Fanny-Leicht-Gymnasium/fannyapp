@@ -13,6 +13,7 @@ Page {
     objectName: "WebsitePage";
 
     title: qsTr("Fanny Webseite")
+    property string icon: "qrc:/graphics/FannyLogo.png"
 
     ProgressBar {
         id: progress

@@ -7,6 +7,7 @@ Page {
     //anchors.fill: parent
     property bool cookplanChanged
     title: qsTr("Speiseplanplan")
+    property string icon: "qrc:/graphics/TreffpunktFannyLogo.png"
 
 //    Image{
 //        source: "qrc:/graphics/chat_background.jpg";

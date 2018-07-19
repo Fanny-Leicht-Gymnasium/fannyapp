@@ -11,7 +11,6 @@ Page {
         enabled: stackView.depth > 1
         onActivated: {
             stackView.pop()
-            listView.currentIndex = -1
         }
     }
 
@@ -27,7 +26,7 @@ Page {
             }
 
             background: Label {
-                text: stackView.depth > 1 ? "\u25C0" : "\u4E09"
+                text: stackView.depth > 1 ? "\u2BC7" : "\u4E09"
                 font.pixelSize: Qt.application.font.pixelSize * 2
                 color: "white"
             }
@@ -43,8 +42,24 @@ Page {
 
         Label {
             text: stackView.currentItem.title
-            anchors.centerIn: parent
+            anchors {
+                verticalCenter: parent.verticalCenter
+                left: toolButton.right
+                leftMargin: parent.width *0.01
+            }
+
             color: "white"
+        }
+
+        Image {
+            source: stackView.currentItem.icon
+            anchors.right: parent.right
+            anchors.rightMargin: parent.width *0.1
+            anchors.top: parent.top
+            height: parent.height
+            fillMode: Image.PreserveAspectFit
+            mipmap: true
+            asynchronous: true
         }
     }
 
@@ -52,9 +67,35 @@ Page {
         id: drawer
         width: window.width * 0.66
         height: window.height
+        AppToolBar {
+            id: header
+            showErrorBar: false
+            anchors {
+                top: parent.top
+                left: parent.left
+                right: parent.right
+            }
 
+            Label {
+                text: "Menü"
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    left: parent.left
+                    leftMargin: 17
+                }
+
+                font.bold: true
+            }
+        }
         Column {
-            anchors.fill: parent
+            anchors {
+                top: header.bottom
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
+
+
             ItemDelegate {
                 text: qsTr("Fanny Webseite")
                 width: parent.width
@@ -79,11 +120,19 @@ Page {
             }
 
             ItemDelegate {
-                text: qsTr("abmelden")
-                width: parent.width
-                onClicked: {
-                    confirmationDialog.open()
+                Label {
+                    text: "abmelden"
+                    color: "red"
+                    anchors {
+                        verticalCenter: parent.verticalCenter
+                        left: parent.left
+                        leftMargin: 17
+                    }
+
+                    font.bold: true
                 }
+                width: parent.width
+
                 Dialog {
                     id: confirmationDialog
 

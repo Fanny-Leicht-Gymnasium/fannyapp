@@ -32,16 +32,15 @@ ToolBar {
 
         Text {
             anchors {
-                top: parent.top
                 horizontalCenter: parent.horizontalCenter
-                topMargin: ( parent.height / 2 ) - ( height / 2 )
+                verticalCenter: parent.verticalCenter
             }
 
             id: errorText
             font.family: "Helvetica"
             color: "White"
             font.pointSize: 8
-
+            visible: parent.height !== 0
             text: window.error
         }
     }
@@ -50,12 +49,10 @@ ToolBar {
             State {
                 name: "moveOut"
                 PropertyChanges { target: errorField; height: 0 }
-                PropertyChanges { target: errorText; height: 0 }
             },
             State {
                 name: "moveIn"
                 PropertyChanges { target: errorField; height: 30 }
-                PropertyChanges { target: errorText; height: 0 }
             }
         ]
 
