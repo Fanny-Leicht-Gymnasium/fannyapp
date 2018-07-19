@@ -7,6 +7,11 @@ Jegliche Veräderungen verden hier dokumentiert
 
 ### Hinzugefügt
 - Hinweis zu den Anmeldedaten beim Login
+- Logos in der rechten oberen Ecke, bei einem Click darauf öffnet sich die zugehörige Webseite
+- "Menü" Balken über dem Menü
+
+### Geändert
+- Im Menü ist die "abmelden" Schaltfläche jetzt rot
 
 ## [0.03.3] - 2018-07-1
 ### Behoben
