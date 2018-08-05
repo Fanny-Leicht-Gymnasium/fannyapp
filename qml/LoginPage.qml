@@ -83,7 +83,7 @@ Page {
         Button {
             id: loginButton
             objectName: "loginButton"
-            text: qsTr("Login")
+            text: qsTr("Anmelden")
             enabled: tiuname.length > 0 & tipasswd.length > 0
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.left: parent.left
