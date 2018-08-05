@@ -54,7 +54,7 @@ Page {
 
         TextField {
             id: tiuname
-            placeholderText: "Username"
+            placeholderText: "Benutzername"
             anchors.horizontalCenter: parent.horizontalCenter
             Keys.onReturnPressed: login(tiuname.text, tipasswd.text, cBperm.checked)
             anchors.left: parent.left
@@ -66,7 +66,7 @@ Page {
         TextField {
             id: tipasswd
             echoMode: TextInput.Password
-            placeholderText: "Password"
+            placeholderText: "Passwort"
             anchors.horizontalCenter: parent.horizontalCenter
             Keys.onReturnPressed: login(tiuname.text, tipasswd.text, cBperm.checked)
             anchors.left: parent.left
@@ -75,7 +75,7 @@ Page {
 
         CheckDelegate {
             id: cBperm
-            text: qsTr("Stay logged in")
+            text: qsTr("Angemeldet bleiben")
             checked: true
             anchors.horizontalCenter: parent.horizontalCenter
         }
