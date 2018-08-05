@@ -6,7 +6,7 @@ Page {
     id:root
     //anchors.fill: parent
     property bool cookplanChanged
-    title: qsTr("Speiseplanplan")
+    title: qsTr("Speiseplan")
     property string icon: "qrc:/graphics/TreffpunktFannyLogo.png"
     property string link: "http://www.treffpunkt-fanny.de"
 
