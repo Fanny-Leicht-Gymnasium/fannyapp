@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>favicon.png</file>
+        <file>graphics/sheute.png</file>
+        <file>graphics/smorgen.png</file>
+        <file>graphics/chat_background.jpg</file>
+        <file>graphics/FannyLogo.png</file>
+        <file>graphics/TreffpunktFannyLogo.png</file>
+        <file>graphics/icons/back.png</file>
+        <file>graphics/icons/drawer.png</file>
+        <file>graphics/icons/menu.png</file>
+        <file>graphics/FannyLogo_small.png</file>
+    </qresource>
+</RCC>

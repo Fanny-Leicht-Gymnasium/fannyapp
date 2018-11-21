@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>HomeForm.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>LoginPage.qml</file>
+        <file>MainPage.qml</file>
+        <file>AppToolBar.qml</file>
+        <file>WebsitePage.qml</file>
+        <file>FoodPlanForm.qml</file>
+        <file>ProgressCircle.qml</file>
+    </qresource>
+</RCC>
