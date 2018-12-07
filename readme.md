@@ -24,3 +24,7 @@ schreibe bitte eine Mail an contact@itsblue.de, oder frag mich in der Schule.</p
 <br>
 <br>
 Verantwortlicher Entwickler: Dorian Zedler
+
+Credits:
+
+<div>eye icon by: <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" 		    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 		    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
