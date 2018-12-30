@@ -114,61 +114,6 @@ int ServerConn::logout()
     return(200);
 }
 
-QString ServerConn::getDay(QString day)
-{
-    this->progress = 0;
-    // Create request
-    QNetworkRequest request;
-    request.setUrl( QUrl( "http://www.fanny-leicht.de/static15/http.intern/" + day + ".pdf" ) );
-
-    // Pack in credentials
-    QString concatenatedCredentials = this->username + ":" + this->password;
-    QByteArray data = concatenatedCredentials.toLocal8Bit().toBase64();
-    QString headerData = "Basic " + data;
-    request.setRawHeader( "Authorization", headerData.toLocal8Bit() );
-
-    QUrlQuery pdata;
-    // Send request and connect all possible signals
-    QNetworkReply*reply = this->networkManager->post(request, pdata.toString(QUrl::FullyEncoded).toUtf8());
-    //QNetworkReply*reply = networkManager->get( request );
-
-    connect(reply, SIGNAL(downloadProgress(qint64, qint64)),
-            this, SLOT(updateProgress(qint64, qint64)));
-    QEventLoop loop;
-    loop.connect(this->networkManager, SIGNAL(finished(QNetworkReply*)), SLOT(quit()));
-    loop.exec();
-
-    this->progress = 1;
-    int status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if(status_code == 200){
-        QString path = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
-
-        QDir dir;
-        dir.mkdir(path + "/.fannyapp-tmp");
-        QFile file(path + "/.fannyapp-tmp/" + day + ".pdf");
-        file.remove();
-
-        file.open(QIODevice::ReadWrite);
-        file.write(reply->readAll());
-        file.close();
-        QUrl url = QUrl::fromLocalFile(path + "/.fannyapp-tmp/" + day + ".pdf");
-
-        // QDesktopServices::openUrl(url);
-        return("OK_" + url.toString());
-    }
-    else if(status_code == 401){
-        return("Ungültige Benutzerdaten.");
-    }
-    else if(status_code == 0){
-        return("Keine Verbindung zum Server.");
-    }
-    else {
-        QString ret = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toChar();
-        ret = ret +  " (" + reply->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toChar() + ")";
-        return(ret);
-    }
-}
-
 int ServerConn::checkConn()
 {
     // Create request
