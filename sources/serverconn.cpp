@@ -172,33 +172,6 @@ float ServerConn::getProgress()
 
 int ServerConn::getEvents(QString day){
 
-/*
-    this->progress = 0;
-    ReturnData_t ret; //this is a custom type to store the returned data
-    // Call the webservice
-
-    QNetworkRequest request(QUrl("http://api.itsblue.de/fanny/vertretung.php?uname=" + this->username + "&passwd=" + this->password + "&day=" + day + "&agree=true"));
-    request.setHeader(QNetworkRequest::ContentTypeHeader,
-                      "application/x-www-form-urlencoded");
-
-    //send a POST request with the given url and data to the server
-    QNetworkReply* reply;
-
-    QUrlQuery pdata;
-    reply = this->networkManager->post(request, pdata.toString(QUrl::FullyEncoded).toUtf8());
-
-    connect(reply, SIGNAL(downloadProgress(qint64, qint64)),
-            this, SLOT(updateProgress(qint64, qint64)));
-    //wait until the request has finished
-    QEventLoop loop;
-    loop.connect(this->networkManager, SIGNAL(finished(QNetworkReply*)), SLOT(quit()));
-    loop.exec();
-
-    //get the status code
-    QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-    this->progress = 1;
-    */
-
     this->progress = 0;
     // Create request
     QNetworkRequest request;
@@ -211,14 +184,22 @@ int ServerConn::getEvents(QString day){
     request.setRawHeader( "Authorization", headerData.toLocal8Bit() );
 
     QUrlQuery pdata;
-    // Send request and connect all possible signals
-    QNetworkReply*reply = this->networkManager->post(request, pdata.toString(QUrl::FullyEncoded).toUtf8());
-    //QNetworkReply*reply = networkManager->get( request );
+    //QNetworkReply*reply = this->networkManager->post(request, pdata.toString(QUrl::FullyEncoded).toUtf8());
+    QNetworkReply*reply = networkManager->get( request );
 
-    connect(reply, SIGNAL(downloadProgress(qint64, qint64)),
-            this, SLOT(updateProgress(qint64, qint64)));
+    // loop to wait until the request has finished before processing the data
     QEventLoop loop;
+    // timer to cancel the request after 3 seconds
+    QTimer timer;
+    timer.setSingleShot(true);
+
+    // quit the loop when the request finised
     loop.connect(this->networkManager, SIGNAL(finished(QNetworkReply*)), SLOT(quit()));
+    // or the timer timed out
+    loop.connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+    // start the timer
+    timer.start(2000);
+    // start the loop
     loop.exec();
 
     this->progress = 1;

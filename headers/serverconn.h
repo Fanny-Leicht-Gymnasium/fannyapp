@@ -54,7 +54,6 @@ public:
 public slots:
     Q_INVOKABLE int login(QString username, QString password, bool permanent);
     Q_INVOKABLE int logout();
-    Q_INVOKABLE QString getDay(QString day);
     Q_INVOKABLE int checkConn();
     Q_INVOKABLE float getProgress();
     Q_INVOKABLE int getFoodPlan();
