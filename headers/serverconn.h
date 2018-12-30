@@ -4,12 +4,19 @@
 #include <QObject>
 #include <QDir>
 #include <QUrl>
+#include <QtXml>
+#include <QTimer>
+
 #include <QtNetwork>
 #include <QAuthenticator>
 #include <QDesktopServices>
 #include <QXmlNamespaceSupport>
 
 #include "headers/appsettings.h"
+
+#ifdef Q_OS_ANDROID
+#include <QtAndroidExtras>
+#endif
 
 
 typedef struct strReturnData{
@@ -20,44 +27,51 @@ typedef struct strReturnData{
 class ServerConn : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString state READ getState NOTIFY stateChanged)
 
-public:
+private:
+    QString state;
+        // can be: loggedIn ; notLoggedIn
     QString username;
     QString password;
     QNetworkAccessManager *networkManager;
     QNetworkAccessManager *refreshNetworkManager;
+    QTimer *checkConnTimer;
     float progress;
+    int authErrorCount;
+
+    ReturnData_t senddata(QUrl serviceUrl, QUrlQuery postData);
+
+private slots:
+    void updateProgress(qint64 read, qint64 total);
+
+    void setState(QString state);
+
 public:
     explicit ServerConn(QObject *parent = nullptr);
     ~ServerConn();
-    Q_INVOKABLE QString login(QString username, QString password, bool permanent);
+
+public slots:
+    Q_INVOKABLE int login(QString username, QString password, bool permanent);
     Q_INVOKABLE int logout();
     Q_INVOKABLE QString getDay(QString day);
     Q_INVOKABLE int checkConn();
     Q_INVOKABLE float getProgress();
     Q_INVOKABLE int getFoodPlan();
-    Q_INVOKABLE QVariantMap getFoodPlanData(int index);
-    ReturnData_t senddata(QUrl serviceUrl, QUrlQuery postData);
+    Q_INVOKABLE int getEvents(QString day);
+
+    Q_INVOKABLE QString getState();
 
 signals:
+    void stateChanged(QString newState);
 
-public slots:
-    Q_INVOKABLE void updateProgress(qint64 read, qint64 total);
+public:
+    QList<QList<QString>> m_weekplan;
+    QList<QStringList> m_events;
+    QStringList m_eventHeader;
 
-private:
-
-struct Day
-{
-    QString Cookteam;
-    QString Date;
-    QString Main;
-    QString Main_veg;
-    QString Salad;
-    QString Dessert;
-};
-
-QList<QList<QString>> m_weekplan;
 
 };
+extern ServerConn * pGlobalServConn;
 
 #endif // SERVERCONN_H

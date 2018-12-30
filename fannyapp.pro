@@ -1,4 +1,4 @@
-QT += qml quick quickcontrols2 xml widgets webview
+QT += qml quick quickcontrols2 xml
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -16,20 +16,26 @@ TEMPLATE = app
 TARGET = fannyapp
 
 ICON = favicon.icns
-RC_ICONS = favicon.ico
+RC_ICONS = shared/favicon.ico
 
 SOURCES += \
-    source/serverconn.cpp \
-    source/main.cpp \
-    source/appsettings.cpp
+    sources/serverconn.cpp \
+    sources/main.cpp \
+    sources/appsettings.cpp \
+    sources/foodplanmodel.cpp \
+    sources/eventmodel.cpp \
+    sources/filtermodel.cpp
 
 HEADERS += \
     headers/serverconn.h \
-    headers/appsettings.h
+    headers/appsettings.h \
+    headers/foodplanmodel.h \
+    headers/eventmodel.h \
+    headers/filtermodel.h
 
 RESOURCES += \
-    qml/qml.qrc \
-    shared.qrc
+    shared/shared.qrc \
+    qml/qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -43,10 +49,17 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 android {
+    QT += androidextras
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android-sources
 }
 
 DISTFILES += \
     favicon.png \
-    android-sources/AndroidManifest.xml
+    android-sources/AndroidManifest.xml \
+    android-sources/src/com/itsblue/flgvertretung/MainActivity.java \
+    android-sources/res/drawable-hdpi/icon.png \
+    android-sources/res/drawable-ldpi/icon.png \
+    android-sources/res/drawable-mdpi/icon.png \
+    android-sources/res/xml/provider_paths.xml \
+    CHANGELOG.md
 
