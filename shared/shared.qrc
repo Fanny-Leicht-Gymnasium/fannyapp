@@ -1,0 +1,29 @@
+<RCC>
+    <qresource prefix="/">
+        <file>favicon.png</file>
+        <file>graphics/sheute.png</file>
+        <file>graphics/smorgen.png</file>
+        <file>graphics/chat_background.jpg</file>
+        <file>graphics/icons/back.png</file>
+        <file>graphics/icons/drawer.png</file>
+        <file>graphics/icons/menu.png</file>
+        <file>graphics/icons/hide.png</file>
+        <file>graphics/icons/view.png</file>
+        <file>samplehtml/Download File-html.html</file>
+        <file>samplehtml/Download File.html</file>
+        <file>samplehtml/Download File.pdf</file>
+        <file>samplehtml/Download File.xml</file>
+        <file>circle.png</file>
+        <file>graphics/images/FannyLogoDark.jpg</file>
+        <file>graphics/images/FannyLogoLight.png</file>
+        <file>graphics/images/FannyLogoLightSmall.png</file>
+        <file>graphics/images/TreffpunktFannyLogoDark.png</file>
+        <file>graphics/images/TreffpunktFannyLogoLight.png</file>
+        <file>graphics/icons/logoutBlack.png</file>
+        <file>graphics/icons/logoutRed.png</file>
+        <file>graphics/icons/settingsBlack.png</file>
+        <file>graphics/icons/backDark.png</file>
+        <file>samplehtml/Download File.txt</file>
+        <file>graphics/icons/delete.png</file>
+    </qresource>
+</RCC>

@@ -1,133 +1,134 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 
+import Backend 1.0
+
+import "./Components"
+import "./Forms"
+import "./Pages"
+
 ApplicationWindow {
     id: window
     visible: true
     width: 540
     height: 960
 
-    property bool is_error
-    property string error
-    property bool initdone: false
-    property bool firstinitdone: false
+    Item {
+        id: app
 
-    property string text_color: "black" //"#424753"
-    property string background_color: "white"
-    property string toolbar_color: "#312f38"
-
-    onBeforeRendering: {
-        if(!firstinitdone){
-            var isinit = _cppAppSettings.loadSetting("permanent")
-            console.log("getinit");
-            console.log(isinit);
-            if(isinit === "0"){
-                stackView.push("qrc:/LoginPage.qml", {});
-            }
-        }
-        firstinitdone = true
-    }
-
-    Timer {
-        //runs only one time at applictaion lauch
-        property bool finished: true
-        id: initTimer
-        interval: 1;
-        running: initdone === false
-        repeat: finished
-        onTriggered: {
-            finished = false
-            var init = _cppAppSettings.loadSetting("init")
-
-            var perm = _cppAppSettings.loadSetting("permanent")
-            console.log("checkoldlogin:", perm);
-            if(perm === "1"){
-                console.log("Perm")
-                var ret = _cppServerConn.login(_cppAppSettings.loadSetting("username"), _cppAppSettings.loadSetting("password"), true);
-                if(ret === "OK"){
-                    initdone = true
-                    _cppAppSettings.writeSetting("init", 1);
-                    if(stackView.currentItem.objectName !== "MainPage"){
-                        stackView.push("qrc:/MainPage.qml", {});
-                    }
-                    window.is_error = false;
-                }
-                else if(ret === "Keine Verbindung zum Server."){
-                    handleError(0)
-                    //initTimer.interval = 1000
-                    finished = true
-                    return
-                }
-
-                else {
-                    ret = _cppServerConn.checkConn()
-                    handleError(ret)
-                }
-            }
-            else {
-                initdone = false
-                if(stackView.currentItem.objectName !== "LoginPage"){
-                    stackView.push("qrc:/LoginPage.qml")
-                }
-            }
-            finished = true
-            initdone = true
-        }
-    }
-
-    Timer {
-        id: refreshTimer
-        interval: 1000;
-        running: initdone && stackView.currentItem.objectName !== "LoginPage"
-        repeat: true
-        onTriggered: {
-            var ret = _cppServerConn.checkConn()
-            handleError(ret)
-        }
-    }
-
-    StackView {
-        id: stackView
-        initialItem: "MainPage.qml"
         anchors.fill: parent
-    }
 
-    function handleError(error_code){
-        if(error_code === 200){
-            window.is_error = false;
-            window.error = "";
-        }
-        else if(error_code === 401){
-            console.warn("401")
-            _cppAppSettings.writeSetting("permanent", 0)
-            _cppAppSettings.writeSetting("username", "")
-            _cppAppSettings.writeSetting("password", "")
-            if(["LoginPage"].indexOf(stackView.currentItem.objectName) < 0){
-                console.log("switching to login page")
-                stackView.push("qrc:/LoginPage.qml");
+        property bool is_error
+        property string error
+
+        property string textColor: "black" // "#424753"
+        property string backgroundColor: "white"
+        property string toolbarColor: "#312f38"
+
+        state: "loggedIn"
+
+        states: [
+            State {
+                name: "notLoggedIn"
+                PropertyChanges {
+                    target: mainStack
+                    currPage: loginPage
+                }
+            },
+
+            State {
+                name: "loggedIn"
+                PropertyChanges {
+                    target: mainStack
+                    currPage: mainPage
+                }
             }
-            window.is_error = true;
-            window.error = "Nicht angemeldet!!";
+        ]
+
+        ServerConn {
+            id: serverConn
+
+            onStateChanged: {
+                app.state = newState
+            }
         }
-        else if(error_code === 500){
-            window.is_error = true;
-            window.error = "Interner Server Fehler!";
+
+        StackView {
+            id: mainStack
+
+            property var currPage
+
+            anchors.fill: parent
+
+            onCurrPageChanged: {
+                mainStack.replace(currPage)
+            }
+
+            //initialItem: mainPage
+
+            Component {
+                id: loginPage
+                LoginPage {}
+            }
+
+            Component {
+                id: mainPage
+                MainPage {}
+            }
         }
-        else if(error_code === 0){
-            window.is_error = true;
-            window.error = "Keine Verbindung zum Server!";
+
+        function getErrorInfo(errorCode) {
+
+            var infoLevel
+            // 0 - ok
+            // 1 - info
+            // 2 - error
+
+            var errorString
+            var errorDescription
+
+            switch(errorCode) {
+            case 0:
+                infoLevel = 2
+                errorString = "Keine Verbindung zum Server"
+                errorDescription = "Bitte überprüfe deine Internetverbindung und versuche es erneut."
+                break
+            case 401:
+                infoLevel = 2
+                errorString = "Ungültige Zugangsdaten"
+                errorDescription = "Der Server hat den Zugang verweigert, bitte überprüfe deine Zugangsdaten und versuche es erneut"
+                break
+            case 500:
+                infoLevel = 2
+                errorString = "Interner Server Fehler"
+                errorDescription = "Scheinbar kann der Server die Anfrage im Moment nicht verarbeiten, bitte versuche es später erneut."
+                break
+            case 900:
+                infoLevel = 2
+                errorString = "Interner Verarbeitungsfehler"
+                errorDescription = "Die Daten, die vom Server übertragen wurden, konnten nicht richtig verarbeitet werden, bitte versuche es später erneut."
+                break
+            case 901:
+                infoLevel = 1
+                errorString = "Keine Daten"
+                errorDescription = "Es liegen keine aktuellen Daten vor."
+                break
+            case 902:
+                infoLevel = 1
+                errorString = "Alte Daten"
+                errorDescription = "Es konnte keine Verbindung zum Server hergestellt werden, aber es sind noch alte Daten gespeichert."
+                break
+            default:
+                infoLevel = 2
+                errorString = "Unerwarteter Fehler ("+errorCode+")"
+                errorDescription = "Unbekannter Fehler bei der Verbindung mit dem Server."
+            }
+
+            return([infoLevel, errorString, errorDescription])
         }
-        else if(error_code === 404){
-            //the testcon function calls a non existent file to be fast, so no error here
-            window.is_error = false;
-        }
-        else if(error_code === 111){
-            window.is_error = true;
-            window.error = "Unbekannter interner Fehler!";
-        }
-        else {
-            window.is_error = true;
-            window.error = "Unbekannter Fehler! ("+error_code+")";
+
+        function landscape(){
+            return(app.width > app.height)
         }
     }
 }

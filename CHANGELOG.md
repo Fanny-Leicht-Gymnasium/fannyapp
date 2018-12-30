@@ -1,9 +1,21 @@
 # Changelog
-Jegliche Veräderungen werden hier dokumentiert
+All notable changes to this project will be documented in this file.
 
-## [Unveröffentlicht]
+The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
+and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+
+## [0.9.0 - 0.9.1] - ALPHA - 2018-12
 ### Geändert
-- Auf der Anmelde Seite ist jetzt der gesamte Text auf deutsch
+- Komplett neues Design
+- der Vertretungsplan wird jetzt innerhalb der App angezeigt
+- Auf der Anmelde-Seite ist jetzt der gesamte Text auf deutsch
+- Die fanny-Webseite wird jetzt nicht mehr innerhalb der App angezeigt
+
+### Behoben
+- Viele interne Verbesserungen, die zu besserer performance führen
+
+### Hinzugefügt
+- Jetzt kompatibel mit der neusten android API und IOS Geräten
 
 ## [0.04] - 2018-07-19
 ### Behoben
@@ -30,6 +42,7 @@ Jegliche Veräderungen werden hier dokumentiert
 
 ### Geändert
 - Die bisherige Fortschrittsanzeige durch eine kreisförmige erstezt
+
 ### Behoben
 - Der Text beim Spieseplan wird nicht mehr abgeschnitten
 - Beim Laden des Speiseplanes werden keine sehr großen oder kleinen Zahlen mehr angezeigt
@@ -52,8 +65,9 @@ ohne Internetverbindung gestertet und diese dann während die app lief wieder he
 ## [0.02] - 2018-06-22
 ### Hinzugefügt
 - Fortschrittsanzeigr beim Herunterladen der pdfs
+
 ### Behoben
--Rechtschreibfehler auf der Startseite
+- Rechtschreibfehler auf der Startseite
 
 ## [0.01] - 2018-06-21
 ### Hinzugefügt
