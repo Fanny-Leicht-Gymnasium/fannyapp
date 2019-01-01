@@ -172,7 +172,6 @@ float ServerConn::getProgress()
 
 int ServerConn::getEvents(QString day){
 
-    this->progress = 0;
     // Create request
     QNetworkRequest request;
     request.setUrl( QUrl( "http://www.fanny-leicht.de/static15/http.intern/" + day + ".txt" ) );
@@ -181,11 +180,10 @@ int ServerConn::getEvents(QString day){
     QString concatenatedCredentials = this->username + ":" + this->password;
     QByteArray data = concatenatedCredentials.toLocal8Bit().toBase64();
     QString headerData = "Basic " + data;
-    request.setRawHeader( "Authorization", headerData.toLocal8Bit() );
+    request.setRawHeader("Authorization", headerData.toLocal8Bit());
 
-    QUrlQuery pdata;
-    //QNetworkReply*reply = this->networkManager->post(request, pdata.toString(QUrl::FullyEncoded).toUtf8());
-    QNetworkReply*reply = networkManager->get( request );
+    // send the request
+    QNetworkReply*reply = networkManager->get(request);
 
     // loop to wait until the request has finished before processing the data
     QEventLoop loop;
@@ -202,7 +200,7 @@ int ServerConn::getEvents(QString day){
     // start the loop
     loop.exec();
 
-    this->progress = 1;
+    // get the status code
     int status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
     if(status_code != 200){
@@ -428,125 +426,6 @@ int ServerConn::getEvents(QString day){
 
     // return success
     return(200);
-
-    /*
-        qDebug() << "reading xml file";
-        QFile * xmlFile = new QFile(":/samplehtml/Download File.xml");
-        if (!xmlFile->open(QIODevice::ReadOnly | QIODevice::Text)) {
-            qDebug() << "Load XML File Problem Couldn't open xmlfile.xml to load settings for download";
-            return 900;
-        }
-
-        //QXmlStreamReader * xmlReader = new QXmlStreamReader(eventString);
-        QXmlStreamReader * xmlReader = new QXmlStreamReader(xmlFile);
-        //qDebug() << xmlFile->readAll();
-        QList<QStringList> tmpEvents;
-        QStringList dayList;
-        while (dayList.length() < 7) {
-            dayList.append("");
-        }
-
-        int currTop = 0;
-
-
-        <text top="530" left="3" width="20" height="17" font="1">8a</text>
-        <text top="530" left="55" width="36" height="17" font="1">1 - 2</text>
-        <text top="530" left="123" width="16" height="17" font="4"><i>Ei</i></text>
-        <text top="530" left="178" width="23" height="17" font="4"><i>Ch</i></text>
-        <text top="530" left="233" width="18" height="17" font="1">---</text>
-        <text top="530" left="275" width="50" height="17" font="1">Entfall</text>
-        <text top="530" left="391" width="83" height="17" font="1">KEINE KA</text>
-
-        <text top="194" left="3" width="62" height="17" font="1">5abc 1</text>
-        <text top="194" left="102" width="27" height="17" font="4"><i>We</i></text>
-        <text top="194" left="157" width="25" height="17" font="4"><i>KR</i></text>
-        <text top="194" left="209" width="18" height="17" font="1">---</text>
-        <text top="194" left="251" width="50" height="17" font="1">Entfall</text>
-
-
-        #define eventXmlPosGrade 3
-        #define eventXmlPosHour 55
-        #define eventXmlPosReplace 123
-        #define eventXmlPosSubject 178
-        #define eventXmlPosRoom 233
-        #define eventXmlPosTo 275
-        #define eventXmlPosText 391
-
-        QList<int> eventXmlPositions = {eventXmlPosGrade,eventXmlPosHour,eventXmlPosReplace,eventXmlPosSubject,eventXmlPosRoom,eventXmlPosTo,eventXmlPosText};
-        qDebug() << "start xml parsing";
-        //Parse the XML until we reach end of it
-        while(!xmlReader->atEnd()) {
-            if (xmlReader->readNextStartElement()) {
-                // read next element
-
-                if (xmlReader->name().toString() == "text"){
-                    // text element found
-                    QXmlStreamAttributes attributes = xmlReader->attributes();
-                    QString attribute_value;
-                    int top;
-
-                    if(attributes.hasAttribute("font")){
-                        attribute_value = attributes.value("font").toString();
-                    }
-
-                    if(attributes.hasAttribute("top")){
-                        // get the y-Position of the text
-
-                        top = attributes.value("top").toInt();
-
-                        if(abs(top - currTop) > 3){
-                            // new line started
-
-                            if(currTop > 175){
-                                // if not header -> append
-                                qDebug() << dayList;
-                                tmpEvents.append(dayList);
-                            }
-
-                            dayList.clear();
-                            while (dayList.length() < 7) {
-                                dayList.append("");
-                            }
-                            currTop = top;
-                        }
-
-                        if(attributes.hasAttribute("left")){
-                            int left = attributes.value("left").toInt();
-                            QString text = xmlReader->readElementText(QXmlStreamReader::IncludeChildElements);
-                            qDebug() << text;
-                            for(int i = 0;i<7;i++){
-                                //qDebug() << i << left << abs(left - eventXmlPositions[i]);
-                                if(abs(left - eventXmlPositions[i]) < 30){
-                                    dayList[i] = text;
-                                    //qDebug() << i << left << text << dayList << left << abs(left - eventXmlPositions[i]);
-                                }
-                            }
-                        }
-
-                        else {
-                            qDebug() << "  no left";
-                        }
-
-                    }
-                    else {
-                        qDebug() << "  no top";
-                    }
-                }
-            }
-        }
-
-        this->m_events = tmpEvents;
-
-        if(xmlReader->hasError()) {
-            qDebug() << "xmlFile.xml Parse Error" << xmlReader->errorString();
-            //return(900);
-        }
-
-        //close reader and flush file
-        xmlReader->clear();
-        xmlFile->close();
-        */
-
 }
 
 int ServerConn::getFoodPlan()
