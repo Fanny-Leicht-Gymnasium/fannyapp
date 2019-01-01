@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<manifest package="com.itsblue.flgvertretungtest" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="0.9.3" android:versionCode="12" android:installLocation="auto">
+<manifest package="com.itsblue.flgvertretung" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="0.9.4" android:versionCode="13" android:installLocation="auto">
 
 <application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="fannyapp" android:icon="@drawable/icon">
-        <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation" android:name="com.itsblue.flgvertretung.MainActivity" android:label="fannyapp_alpha" android:screenOrientation="unspecified" android:launchMode="singleTop">
+        <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation" android:name="com.itsblue.flgvertretung.MainActivity" android:label="fannyapp" android:screenOrientation="unspecified" android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
