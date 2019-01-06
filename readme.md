@@ -18,10 +18,10 @@ Anpassung an neues Anmelddesystem steht bevor.
 
 ### Downloads:
 <p><a href="https://play.google.com/store/apps/details?id=com.itsblue.flgvertretung&amp;pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1" target="_blank"><img src="https://play.google.com/intl/en_us/badges/images/generic/de_badge_web_generic.png" alt="Jetzt bei Google Play" width="25%"/></a><p>
-<p>- <a href="https://git.itsblue.de/dorian/fanny-app/raw/master/release/mac%20OS/fannyapp.dmg">Mac OS</a></p>
-<p>- <a href="https://git.itsblue.de/dorian/fanny-app/raw/master/release/windows/fannyapp-setup.exe">Windows</a></p>
+- [Mac OS](https://git.itsblue.de/dorian/fanny-app/raw/master/release/mac%20OS/fannyapp.dmg")  <br>
+- [Windows](https://git.itsblue.de/dorian/fanny-app/raw/master/release/windows/fannyapp-setup.exe)  
 <br>
-<br>
+
 Verantwortlicher Entwickler: Dorian Zedler
 
 Credits:
