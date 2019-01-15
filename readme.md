@@ -6,6 +6,7 @@ Die App bietet die Möglichkeit, komfortabel auf den Vertretungsplan des Fanny-L
 - Anzeige des Speiseplanes des Treffpunkt Fanny
 
 ### Geplante Funktionen
+- Anpassung an das neue Anmeldesystem
 - Benachrichtigungen bei relevanten Ereignissen
 
 ### Weitere Informationen:
