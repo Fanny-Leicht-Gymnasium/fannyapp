@@ -15,7 +15,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 TEMPLATE = app
 TARGET = fannyapp
 
-ICON = favicon.icns
+ICON = shared/favicon.icns
 RC_ICONS = shared/favicon.ico
 
 SOURCES += \
