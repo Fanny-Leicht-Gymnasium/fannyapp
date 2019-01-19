@@ -10,11 +10,7 @@ Page {
 
     signal opened()
 
-    onOpened: {
-        console.log("Settings Form opened")
-
-        var filters = _cppAppSettings.readFiltersQml()
-    }
+    onOpened: {}
 
     Column {
         id: settingsCol

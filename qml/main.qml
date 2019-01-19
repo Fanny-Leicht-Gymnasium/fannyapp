@@ -25,7 +25,7 @@ ApplicationWindow {
         property string backgroundColor: "white"
         property string toolbarColor: "#312f38"
 
-        state: "loggedIn"
+        state: serverConn.state
 
         states: [
             State {
@@ -117,6 +117,11 @@ ApplicationWindow {
                 infoLevel = 1
                 errorString = "Alte Daten"
                 errorDescription = "Es konnte keine Verbindung zum Server hergestellt werden, aber es sind noch alte Daten gespeichert."
+                break
+            case 903:
+                infoLevel = 1
+                errorString = "Ungültiger Aufruf"
+                errorDescription = "Die aufgerufene Funktion ist momentan nicht verfügbar, bitte versuche es später erneut."
                 break
             default:
                 infoLevel = 2

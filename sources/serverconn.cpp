@@ -4,18 +4,17 @@ ServerConn * pGlobalServConn = nullptr;
 
 ServerConn::ServerConn(QObject *parent) : QObject(parent)
 {
-    qDebug("+----- serverconn konstruktor -----+");
+    qDebug("+----- ServerConn konstruktor -----+");
     pGlobalServConn = this;
     this->networkManager = new QNetworkAccessManager();
     this->refreshNetworkManager = new QNetworkAccessManager();
 
     // check login state
     int perm = pGlobalAppSettings->loadSetting("permanent").toInt();
-    qDebug() << "+-- login state: " << perm;
+    qDebug() << "+----- login state: " << perm << " -----+";
 
     if(perm == 1){
-        // permanent login
-        // restore login
+        // permanent login -> restore login
         this->username = pGlobalAppSettings->loadSetting("username");
         this->password = pGlobalAppSettings->loadSetting("password");
 
@@ -30,52 +29,21 @@ ServerConn::ServerConn(QObject *parent) : QObject(parent)
     this->checkConnTimer->setSingleShot(true);
     connect(checkConnTimer, SIGNAL(timeout()), this, SLOT(checkConn()));
     this->checkConnTimer->start();
-
 }
 
 int ServerConn::login(QString username, QString password, bool permanent)
 {
-    //    QUrlQuery pdata;
-    //    ReturnData_t ret = this->senddata(QUrl("http://www.fanny-leicht.de/static15/http.intern/sheute.pdf"), pdata);
-    //    qDebug() << ret.text;
 
-    // Create network request
-    QNetworkRequest request;
-    // call a non-existent file to be fast
-    request.setUrl( QUrl( "http://www.fanny-leicht.de/static15/http.intern/logintest" ) );
+    // add the data to the request
+    QUrlQuery pdata;
+    pdata.addQueryItem("username", username);
+    pdata.addQueryItem("password", password);
 
-    // pack the credentials into a string
-    QString credentialsString = username + ":" + password;
-    // convert it to a byte array
-    QByteArray data = credentialsString.toLocal8Bit().toBase64();
-    // put it into a string
-    QString headerData = "Basic " + data;
-    // and finally write it into the request header
-    request.setRawHeader( "Authorization", headerData.toLocal8Bit() );
+    // send the request
+    ReturnData_t ret = this->senddata(QUrl("http://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata);
 
-    // Send GET request to fanny server
-    QNetworkReply*reply = networkManager->get( request );
-
-    // loop to wait until the request has finished before processing the data
-    QEventLoop loop;
-    // timer to cancel the request after 3 seconds
-    QTimer timer;
-    timer.setSingleShot(true);
-
-    // quit the loop when the request finised
-    loop.connect(this->networkManager, SIGNAL(finished(QNetworkReply*)), SLOT(quit()));
-    // or the timer timed out
-    loop.connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
-    // start the timer
-    timer.start(2000);
-    // start the loop
-    loop.exec();
-
-    // get the status code from the request
-    int status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-    // 404 is a success because a non existent file was called and not 401 was returned -> user data was correct
-    if(status_code == 404){
+    if(ret.status_code == 200){
+        // if not 200 was returned -> user data was correct
         // store username and password in the class variables
         this->username = username;
         this->password = password;
@@ -87,15 +55,18 @@ int ServerConn::login(QString username, QString password, bool permanent)
             pGlobalAppSettings->writeSetting("password", password);
         }
 
+        // set state to loggedIn
         this->setState("loggedIn");
+
+        qDebug() << "+----- logged in -----+";
 
         // return success
         return(200);
     }
     else {
-        // if not 404 was returned -> error -> return the return code
+        // if not 200 was returned -> error -> return the return code
         this->setState("notLoggedIn");
-        return(status_code);
+        return(ret.status_code);
     }
 }
 
@@ -104,147 +75,69 @@ int ServerConn::logout()
     // reset the data stored in the class
     this->username = "";
     this->password = "";
+
     // reset the data stored in the settings
     pGlobalAppSettings->writeSetting("permanent", "0");
     pGlobalAppSettings->writeSetting("username", "");
     pGlobalAppSettings->writeSetting("password", "");
 
     this->setState("notLoggedIn");
+
+    qDebug() << "+----- logout -----+";
+
     // return success
     return(200);
 }
 
 int ServerConn::checkConn()
 {
-    // Create request
-    QNetworkRequest request;
-    request.setUrl( QUrl( "http://www.fanny-leicht.de/static15/http.intern/" ) );
+    if(this->state == "notLoggedIn"){
+        return(903);
+    }
 
-    // Pack in credentials
-    // e.g. ZedlerDo:LxyJQB (yes, these do actually work ;)
-    QString concatenatedCredentials = this->username + ":" + this->password;
-    QByteArray data = concatenatedCredentials.toLocal8Bit().toBase64();
-    QString headerData = "Basic " + data;
-    request.setRawHeader( "Authorization", headerData.toLocal8Bit() );
-
+    // add the data to the request
     QUrlQuery pdata;
-    // Send request and connect all possible signals
-    QNetworkReply*reply = this->refreshNetworkManager->post(request, pdata.toString(QUrl::FullyEncoded).toUtf8());
-    //QNetworkReply*reply = networkManager->get( request );
+    pdata.addQueryItem("username", this->username);
+    pdata.addQueryItem("password", this->password);
 
-    QTimer timer;
-    timer.start(3000);
+    // send the request
+    ReturnData_t ret = this->senddata(QUrl("http://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata);
 
-    QEventLoop loop;
-    loop.connect(this->refreshNetworkManager, SIGNAL(finished(QNetworkReply*)), SLOT(quit()));
-    loop.connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
-    loop.exec();
-
-    int status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-    if(status_code == 401){
+    if(ret.status_code == 401){
+        // if the stats code is 401 -> userdata is incorrect
         authErrorCount ++;
 
         if(authErrorCount > 3){
+            qDebug() << "+----- checkconn: user data is incorrect -----+";
             logout();
         }
     }
 
     this->checkConnTimer->start();
-    return(status_code);
+    return(ret.status_code);
 }
 
-void ServerConn::updateProgress(qint64 read, qint64 total)
+int ServerConn::getEvents(QString day)
 {
-    int read_int = int(read);
-    int total_int = int(total);
-    float percent = (float(read_int) / float(total_int));
-    this->progress = percent;
-    percent = int(percent);
+    if(this->state != "loggedIn"){
+        return(401);
+    }
 
-    //    qDebug() << read << total << percent << "%";
-}
-
-float ServerConn::getProgress()
-{
-    return(this->progress);
-}
-
-int ServerConn::getEvents(QString day){
-
-    // Create request
-    QNetworkRequest request;
-    request.setUrl( QUrl( "http://www.fanny-leicht.de/static15/http.intern/" + day + ".txt" ) );
-
-    // Pack in credentials
-    QString concatenatedCredentials = this->username + ":" + this->password;
-    QByteArray data = concatenatedCredentials.toLocal8Bit().toBase64();
-    QString headerData = "Basic " + data;
-    request.setRawHeader("Authorization", headerData.toLocal8Bit());
+    // add the data to the request
+    QUrlQuery pdata;
+    pdata.addQueryItem("username", this->username);
+    pdata.addQueryItem("password", this->password);
+    pdata.addQueryItem("day", day);
 
     // send the request
-    QNetworkReply*reply = networkManager->get(request);
+    ReturnData_t ret = this->senddata(QUrl("http://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata);
 
-    // loop to wait until the request has finished before processing the data
-    QEventLoop loop;
-    // timer to cancel the request after 3 seconds
-    QTimer timer;
-    timer.setSingleShot(true);
-
-    // quit the loop when the request finised
-    loop.connect(this->networkManager, SIGNAL(finished(QNetworkReply*)), SLOT(quit()));
-    // or the timer timed out
-    loop.connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
-    // start the timer
-    timer.start(2000);
-    // start the loop
-    loop.exec();
-
-    // get the status code
-    int status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-    if(status_code != 200){
+    if(ret.status_code != 200){
         // if the request didn't result in a success, clear the old events, as they are probaply incorrect and return the error code
         this->m_events.clear();
-        return(status_code);
+        return(ret.status_code);
     }
 
-    QString eventString = reply->readAll();
-
-//    qDebug() << "reading text file";
-//    QFile * textFile = new QFile(":/samplehtml/Download File.txt");
-//    if (!textFile->open(QIODevice::ReadOnly | QIODevice::Text)) {
-//        qDebug() << "Load XML File Problem Couldn't open xmlfile.xml to load settings for download";
-//        return 900;
-//    }
-
-//    eventString = textFile->readAll();
-
-
-    // separate all lines into a list
-    QStringList events = eventString.split("\n");
-
-    // a line (one element of the list) looks like this:
-    // class  hour   replace  subject  room  to        text
-    // 8a     1-2    Ei       Ch       ---   Entfall   KEINE KA
-    //  [     ] <-- at least two spaces between two blocks
-    // 'to' and 'text' can be blank
-
-    for(int i = 0; i < events.length(); i++){
-        if(events[i] == ""){
-            events.removeAt(i);
-        }
-    }
-
-    // all pages of the original Event document have a similar header that gets removed by this command
-    // (only the first one remains)
-    events.removeDuplicates();
-
-    // temporary list to store the events for the given day
-    QList<QStringList> tmpEvents;
-
-    // temporary list to store the header information
-    QStringList tmpEventHeader;
 
     // get the filers list for later usage
     QList<QStringList> filtersList = pGlobalAppSettings->readFilters();
@@ -253,158 +146,69 @@ int ServerConn::getEvents(QString day){
     for(int i = 0; i < filtersList.length(); i++){
         QStringList filterList = filtersList[i];
         if( !(pGlobalAppSettings->loadSetting("teacherMode") == "true" ? filterList[2] == "t":filterList[2] == "s") ){
-           filtersList.removeAt(i);
-           i = i-1;
+            filtersList.removeAt(i);
+            i = i-1;
         }
     }
 
-    // go through the list and process every single row
-    for(int x = 0; x < events.length(); x++){
-        // store the event string
-        QString event = events[x];
+    // list to be returned
+    QList<QStringList> tmpEvents;
+    QStringList tmpEventHeader;
 
-        // value to count spaces between text
-        int spaceCount = 0;
+    //qDebug() << jsonString;
+    QJsonDocument jsonFilters = QJsonDocument::fromJson(ret.text.toUtf8());
+    // array with all filters in it
+    QJsonObject dataArray = jsonFilters.object();
 
-        // temporary list to store the data of one day
-        QStringList eventList;
+    // get the version of the json format
+    QString version = dataArray.value("version").toString();
 
-        // temporary dtring to store the data of one block
-        QString tmpString;
+    // get the header data
+    tmpEventHeader.append(dataArray.value("targetDate").toString());
+    tmpEventHeader.append(dataArray.value("stewardingClass").toString());
 
-        // processing works like:
-        //  go through the line char by char
-        for(int i = 0;i < event.length(); i++){
-            // store the char temporarly
-            QCharRef tmpChar = event[i];
+    // expand the length of the header list to seven to prevent list out of range errors
+    while (tmpEventHeader.length() < 7) {
+        tmpEventHeader.append("");
+    }
 
-            // check if the char is a space
-            if(tmpChar == " "){
-                // if so, increase the spaceCount by one
-                spaceCount ++;
-            }
-            else {
-                // if not -> new block or part of a block started
-                // could be : 8a     1 - 2 OR 8a     1 - 2
-                //             here->|     OR    here->|
-                // in the first case, the space counter is higer than one
-                // in the second case, the space counter is exactly one
-                if(spaceCount == 1){
-                    // -> append a space to the temp string
-                    tmpString.append(" ");
-                }
+    // append the header to the temporyry event list
+    tmpEvents.append(tmpEventHeader);
 
-                // reset the space counter
-                spaceCount = 0;
+    // get the event data
+    QJsonArray eventsArray = dataArray.value("events").toArray();
 
-                // append the current character
-                tmpString.append(tmpChar);
-            }
+    for(int i=0; i<eventsArray.count(); i++){
+        // get the current event-list out of the array
+        QJsonArray eventArray = eventsArray[i].toArray();
 
-            // check if the space count is 2
-            if(spaceCount == 2){
-                // if so -> break between two blocks
-                // could be: 8a     1 - 2
-                //       here ->|
+        // lst to store the current event
+        QStringList tmpEventList;
 
-                // -> append the current tmpString to the eventList
-                eventList.append(tmpString);
-
-                // and clear the tmpString
-                tmpString = "";
-            }
-
-            //qDebug() << "char= " << tmpChar << " string= " << tmpString << " list= " << eventList;
+        // extract values from array
+        foreach(const QJsonValue & key, eventArray){
+            // and append them to the temporyry list
+            tmpEventList.append(key.toString());
         }
 
-        // append the remaining tmpString to the eventList
-        eventList.append(tmpString);
-
-        // fill up the eventList with blanks until it reaches the defined length
-        while (eventList.length() < 7) {
-            eventList.append("");
+        while (tmpEventList.length() < 7) {
+            // enshure that the list contains at least seven items (to prevent getting list out of range errors)
+            tmpEventList.append("");
         }
 
-        if(x < 6){
-            // if the event is in the header
-            // the header could look like this:
-            //
-            // D-70563 FANNY-LEICHT-GYMN.                       Schuljahr 2018/19 - 1. Halbjahr           Untis 2017
-            // STUTTGART, F.-LEICHT-STR. 13                     gültig ab 10. September 2018         (13.12.2018 9:04)
-            //
-            //[Klasse 13.12. / Donnerstag Woche-A]
-            //{Ordnungsdienst: Klasse 10a}
-            //
-            // important data:
-            // () = date and time the document has been created
-            // [] = date the document is made for
-            // {} = class that has to clean up the scool :D
-            // (brackets are not present in the document)
-
-            // line 0 and 4 don't contain imporant information -> skip
-
-            if (x == 1) {
-                // the second line contains the creation date
-                // the creation date is the third block of the line
-                tmpEventHeader.append(eventList[2]);
-            }
-            else if (x == 2) {
-                // the third line contains the target date of the document
-                // the target date is the first block of the line
-                tmpEventHeader.append(eventList[0]);
-            }
-            else if (x == 3) {
-                // the third line contains the cleaning class
-                // the cleaning class is the first block of the line
-                tmpEventHeader.append(eventList[0]);
-            }
-            else if (x == 4) {
-                // if the fourth line is reached
-                // fill the event header
-                while (tmpEventHeader.length() < 7) {
-                    tmpEventHeader.append("");
-                }
-
-                // check if the header is valid
-                // variable to count filled blocks
-                int blocksOK = 0;
-                foreach(QString block, tmpEventHeader){
-                    if(block != ""){
-                        blocksOK ++;
-                    }
-                }
-
-                if(blocksOK != 3) {
-                    // if there are more or less than 3 filled blocks, the data is invalid
-                    this->m_events.clear();
-                    return(900);
-                }
-
-                // swap creation and target date
-                tmpEventHeader.swap(0,1);
-
-                // and append it to the events list
-                tmpEvents.append(tmpEventHeader);
-            }
-            else if (x == 5) {
-                // the fifth row contains the labels for the different filds
-                // -> append it to the events list
-                tmpEvents.append(eventList);
-            }
-
-        }
-        else if(filtersList.isEmpty()){
+        if(filtersList.isEmpty()){
             // if there are no filters append the event immideatly
-            tmpEvents.append(eventList);
+            tmpEvents.append(tmpEventList);
         }
         else {
             // if there is at least one filter, check if the event matches it
             foreach(QStringList filter, filtersList){
                 // go through all filters and check if one of them matches the event
+                // always append the first row, as it is the legend
 
-                if((eventList[0].contains(filter[0]) && eventList[0].contains(filter[1]))){
+                if((tmpEventList[0].contains(filter[0]) && tmpEventList[0].contains(filter[1])) || i == 0){
                     // append the eventList to the temporary event list
-                    tmpEvents.append(eventList);
+                    tmpEvents.append(tmpEventList);
                     // terminate the loop
                     break;
                 }
@@ -412,69 +216,33 @@ int ServerConn::getEvents(QString day){
         }
     }
 
-    // store the new events into the class variable
-    this->m_events = tmpEvents;
-    qDebug() << tmpEvents;
-
     // check if there is any valid data
-    if(this->m_events.length() < 3){
-        // remove the last (in this case the second) element, as it is unnecessary
-        m_events.takeLast();
-        // return no data
-        return(901);
+    if(tmpEvents.length() < 3){
+        // remove the last (in this case the second) element, as it is unnecessary (it is the legend -> not needed when there is no data)
+        tmpEvents.takeLast();
+        // set return code to 'no data' (901)
+        ret.status_code = 901;
     }
 
-    // return success
-    return(200);
+    this->m_events = tmpEvents;
+    return(ret.status_code);
 }
 
 int ServerConn::getFoodPlan()
 {
-    // set the progress to 0
-    this->progress = 0;
+    QUrlQuery pdata;
+    ReturnData_t ret = this->senddata(QUrl("http://www.treffpunkt-fanny.de/fuer-schueler-und-lehrer/speiseplan.html"), pdata);
 
-    // Call the webservice
-    QNetworkRequest request(QUrl("http://www.treffpunkt-fanny.de/fuer-schueler-und-lehrer/speiseplan.html"));
-    request.setHeader(QNetworkRequest::ContentTypeHeader,
-                      "application/x-www-form-urlencoded");
-
-    // send a GET request to the treffpunkt fanny server
-    QNetworkReply* reply;
-    reply = this->networkManager->get(request);
-
-    // update the progress during the request
-    connect(reply, SIGNAL(downloadProgress(qint64, qint64)),
-            this, SLOT(updateProgress(qint64, qint64)));
-
-    // loop to wait until the request has finished before processing the data
-    QEventLoop loop;
-    // timer to cancel the request after 3 seconds
-    QTimer timer;
-    timer.setSingleShot(true);
-
-    // quit the loop when the request finised
-    loop.connect(this->networkManager, SIGNAL(finished(QNetworkReply*)), SLOT(quit()));
-    // or the timer timed out
-    loop.connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
-    // start the timer
-    timer.start(2000);
-    // start the loop
-    loop.exec();
-
-    // get the status code
-    QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-    // set the progress to 1
-    this->progress = 1;
-    if(status_code != 200){
+    if(ret.status_code != 200){
         // if the request didn't result in a success, return the error code
 
         // if the request failed but there is still old data available
         if(!this->m_weekplan.isEmpty()){
             // set the status code to 902 (old data)
-            status_code = 902;
+            ret.status_code = 902;
         }
 
-        return(status_code.toInt());
+        return(ret.status_code);
     }
 
     // initialize the weekplan to store information to it
@@ -483,7 +251,7 @@ int ServerConn::getFoodPlan()
     // m_weekplan is a list, that contains a list for each day, which contains: cookteam, date, main dish, vagi main dish, garnish(Beilage) and Dessert.
 
     // read the whole website
-    QString returnedData = QString::fromUtf8(reply->readAll());
+    QString returnedData = ret.text;
 
     // remove unnecessary stuff
     returnedData.replace("\n","");
@@ -660,13 +428,10 @@ int ServerConn::getFoodPlan()
 ReturnData_t ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata)
 {
 
-    ReturnData_t ret; //this is a custom type to store the returned data
-    // Call the webservice
+    ReturnData_t ret; //this is a custom type to store the return-data
 
+    // Create network request
     QNetworkRequest request(serviceUrl);
-    QAuthenticator authenticator;
-    authenticator.setUser("ZedlerDo");
-    authenticator.setPassword("LxyJQB");
     request.setHeader(QNetworkRequest::ContentTypeHeader,
                       "application/x-www-form-urlencoded");
 
@@ -676,42 +441,53 @@ ReturnData_t ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata)
 
     reply = this->networkManager->post(request, pdata.toString(QUrl::FullyEncoded).toUtf8());
 
-    //wait until the request has finished
+    // loop to wait until the request has finished before processing the data
     QEventLoop loop;
+    // timer to cancel the request after 3 seconds
+    QTimer timer;
+    timer.setSingleShot(true);
+
+    // quit the loop when the request finised
     loop.connect(this->networkManager, SIGNAL(finished(QNetworkReply*)), SLOT(quit()));
+    // or the timer timed out
+    loop.connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+    // start the timer
+    timer.start(4000);
+    // start the loop
     loop.exec();
 
     //get the status code
     QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
 
     ret.status_code = status_code.toInt();
-    if(ret.status_code == 0){ //if tehstatus code is zero, the connecion to the server was not possible
-        ret.status_code = 444;
-    }
+
     //get the full text response
     ret.text = QString::fromUtf8(reply->readAll());
+
+    if(reply->isOpen()){
+        delete reply;
+    }
 
     //return the data
     return(ret);
 }
-
 
 QString ServerConn::getState() {
     return(this->state);
 }
 
 void ServerConn::setState(QString state) {
-    this->state = state;
-    this->stateChanged(this->state);
+
+    if(state != this->state){
+        qDebug() << "+----- serverconn has new state: " + state + " -----+";
+        this->state = state;
+        this->stateChanged(this->state);
+    }
 }
 
 ServerConn::~ServerConn()
 {
-    qDebug("serverconn destruktor");
+    qDebug("+----- ServerConn destruktor -----+");
     delete this->networkManager;
     delete this->refreshNetworkManager;
-
-    QString path = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
-    QDir dir(path + "/.fannyapp-tmp");
-    dir.removeRecursively();
 }

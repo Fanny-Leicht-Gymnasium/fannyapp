@@ -5,36 +5,14 @@ import "../Components"
 
 Page {
     id:root
-    //anchors.fill: parent
-    property bool cookplanChanged
+
     title: qsTr("Speiseplan")
-    property string icon: "qrc:/graphics/images/TreffpunktFannyLogo.png"
-    property string link: "http://www.treffpunkt-fanny.de"
+
     property int status: -1
 
     signal opened()
 
-    onOpened: {
-        console.warn("foodplan opened")
-    }
-
-//    Image{
-//        source: "qrc:/graphics/chat_background.jpg";
-//        height: parent.height
-//        width: parent.width
-//        fillMode: Image.Tile
-//        horizontalAlignment: Image.AlignLeft
-//        verticalAlignment: Image.AlignTop
-//    }
-//    LinearGradient {
-//        anchors.fill: parent
-//        start: Qt.point(0, 0)
-//        end: Qt.point(0, parent.height)
-//        gradient: Gradient {
-//            GradientStop { position: 0.0; color: "#4db2b3" }
-//            GradientStop { position: 1.0; color: "#8f4dae" }
-//        }
-//    }
+    onOpened: {}
 
     Loader {
         id: pageLoader

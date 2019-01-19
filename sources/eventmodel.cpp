@@ -55,11 +55,6 @@ QVariantMap EventModel::get(int row) const
     return { {"grade", foodPlan.grade}, {"hour", foodPlan.hour}, {"replace", foodPlan.replace}, {"subject", foodPlan.subject}, {"room", foodPlan.room}, {"to", foodPlan.to}, {"text", foodPlan.text} };
 }
 
-QStringList EventModel::getHeader()
-{
-    return(pGlobalServConn->m_eventHeader);
-}
-
 EventModel::~EventModel()
 {
 

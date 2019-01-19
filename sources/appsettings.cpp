@@ -5,12 +5,12 @@ AppSettings * pGlobalAppSettings = nullptr;
 AppSettings::AppSettings(QObject* parent)
     :QObject(parent)
 {
-    qDebug("+----- AppSettings konstruktor -----");
+    qDebug() << "+----- AppSettings konstruktor -----+";
 
     pGlobalAppSettings = this;
 
     QString path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    qDebug() << "+----- Settings Path:" << path;
+    qDebug() << "+----- Settings Path:" << path << " -----+";
 
     this->settingsManager = new QSettings(path+"/fannyapp/settings.ini", QSettings::IniFormat);
 
@@ -22,11 +22,6 @@ AppSettings::AppSettings(QObject* parent)
     }
 
     this->filtersFile = new QFile(path + "/fannyapp/filters.json");
-
-    //QList<QStringList> filters = {{"5", "d"}, {"6", "c"}, {"11", ""}};
-
-    //writeFilters(filters);
-    //qDebug() << readFilters();
 }
 
 QString AppSettings::loadSetting(const QString &key)
@@ -128,23 +123,9 @@ void AppSettings::writeFilters(QList<QStringList> list) {
     this->filtersFile->close();
 }
 
-QStringList AppSettings::readFiltersQml() {
-
-    QStringList filtersList;
-
-    foreach(QStringList filterList, this->readFilters()){
-        filtersList.append(filterList[0]+"|"+filterList[1]);
-    }
-
-    return(filtersList);
-}
-
-void AppSettings::writeFiltersQml(QStringList) {
-
-}
-
 AppSettings::~AppSettings()
 {
+    qDebug("+----- AppSettings destruktor -----+");
     delete settingsManager;
 }
 
