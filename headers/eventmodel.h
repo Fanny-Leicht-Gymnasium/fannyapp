@@ -27,8 +27,6 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     QHash<int, QByteArray> roleNames() const;
 
-    Q_INVOKABLE QStringList getHeader();
-
     Q_INVOKABLE QVariantMap get(int row) const;
 
 private:

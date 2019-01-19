@@ -22,9 +22,6 @@ public:
     QList<QStringList> readFilters();
     void writeFilters(QList<QStringList> list);
 
-    Q_INVOKABLE QStringList readFiltersQml();
-    Q_INVOKABLE void writeFiltersQml(QStringList);
-
     QSettings *settingsManager;
     QFile * filtersFile;
 

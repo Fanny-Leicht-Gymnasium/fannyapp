@@ -8,9 +8,7 @@ Page {
 
     signal opened()
 
-    onOpened: {
-        console.log("Home Form opened")
-    }
+    onOpened: {}
 
     Column {
         id: mainMenu
@@ -32,7 +30,7 @@ Page {
             FancyButton {
                 id: todayButton
 
-                image: "qrc:/graphics/sheute.png"
+                image: "qrc:/graphics/icons/sheute.png"
 
                 width: mainMenu.buttonWidth
                 height: mainMenu.buttonHeight
@@ -45,7 +43,7 @@ Page {
             FancyButton {
                 id: tomorrowButton
 
-                image: "qrc:/graphics/smorgen.png"
+                image: "qrc:/graphics/icons/smorgen.png"
 
                 width: mainMenu.buttonWidth
                 height: mainMenu.buttonHeight
@@ -178,7 +176,6 @@ Page {
                     }
                     onAccepted: {
                         serverConn.logout()
-                        app.state = "notLoggedIn"
                     }
                 }
             }

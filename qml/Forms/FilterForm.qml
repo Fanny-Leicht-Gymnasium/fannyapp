@@ -14,9 +14,7 @@ Page {
 
     signal opened()
 
-    onOpened: {
-        console.log("Filter Form opened")
-    }
+    onOpened: {}
 
     Dialog {
         id: filterDialog

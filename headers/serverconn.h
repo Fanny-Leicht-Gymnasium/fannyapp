@@ -37,13 +37,11 @@ private:
     QNetworkAccessManager *networkManager;
     QNetworkAccessManager *refreshNetworkManager;
     QTimer *checkConnTimer;
-    float progress;
     int authErrorCount;
 
     ReturnData_t senddata(QUrl serviceUrl, QUrlQuery postData);
 
 private slots:
-    void updateProgress(qint64 read, qint64 total);
 
     void setState(QString state);
 
@@ -55,7 +53,6 @@ public slots:
     Q_INVOKABLE int login(QString username, QString password, bool permanent);
     Q_INVOKABLE int logout();
     Q_INVOKABLE int checkConn();
-    Q_INVOKABLE float getProgress();
     Q_INVOKABLE int getFoodPlan();
     Q_INVOKABLE int getEvents(QString day);
 
@@ -67,8 +64,6 @@ signals:
 public:
     QList<QList<QString>> m_weekplan;
     QList<QStringList> m_events;
-    QStringList m_eventHeader;
-
 
 };
 extern ServerConn * pGlobalServConn;
