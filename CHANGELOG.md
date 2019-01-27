@@ -4,7 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [0.9.0 - 0.9.4] - 2018-12-30
+## unreleased
+### Geändert
+- neue Vertretungsplan api implementiert
+- neues Anmeldesystem des Vertretungsplanes implementiert
+
+## [0.9.x] - 2018-12-30
 ### Geändert
 - Komplett neues Design
 - der Vertretungsplan wird jetzt innerhalb der App angezeigt
