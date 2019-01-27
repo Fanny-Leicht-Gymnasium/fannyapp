@@ -95,6 +95,12 @@ ApplicationWindow {
             }
         }
 
+        FontLoader {
+            id: fontAwesome
+            name: "fontawesome"
+            source: "qrc:/fonts/fontawesome-webfont.ttf"
+        }
+
         function getErrorInfo(errorCode) {
 
             var infoLevel
@@ -140,6 +146,11 @@ ApplicationWindow {
                 infoLevel = 1
                 errorString = "Ungültiger Aufruf"
                 errorDescription = "Die aufgerufene Funktion ist momentan nicht verfügbar, bitte versuche es später erneut."
+                break
+            case 904:
+                infoLevel = 2
+                errorString = "Inkompatible API"
+                errorDescription = "Die Version der API auf dem Server ist zu neu und kann daher nicht verarbeitet werden. Bitte aktualisiere die App auf die aktuellste Version."
                 break
             default:
                 infoLevel = 2

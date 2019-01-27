@@ -26,10 +26,19 @@ Button {
     property string image
     property real imageScale: 1
 
+
+    scale: control.pressed ? 0.8:1
+
+    Behavior on scale {
+        PropertyAnimation {
+            duration: 100
+        }
+    }
+
     background: Item {
         id: controlBackgroundContainer
 
-        scale: control.pressed ? 0.8:1
+
 
         Behavior on scale {
             PropertyAnimation {
@@ -68,12 +77,6 @@ Button {
                 fillMode: Image.PreserveAspectFit
 
                 scale: control.imageScale
-
-                Behavior on scale {
-                    PropertyAnimation {
-                        duration: 100
-                    }
-                }
             }
         }
     }

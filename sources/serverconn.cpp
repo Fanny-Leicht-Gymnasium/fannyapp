@@ -84,6 +84,10 @@ int ServerConn::login(QString username, QString password, bool permanent)
     else {
         // if not 200 was returned -> error -> return the return code
         this->setState("notLoggedIn");
+        // -> reset the stored credentinals
+        pGlobalAppSettings->writeSetting("permanent", "0");
+        pGlobalAppSettings->writeSetting("username", "");
+        pGlobalAppSettings->writeSetting("password", "");
         return(ret.status_code);
     }
 }
@@ -180,9 +184,23 @@ int ServerConn::getEvents(QString day)
 
     // get the version of the json format
     QString version = dataArray.value("version").toString();
+    QStringList versionList = version.split(".");
+    if(versionList.length() < 3){
+        return(900);
+    }
+
+    int versionMajor = version.split(".")[0].toInt();
+    int versionMinor = version.split(".")[1].toInt();
+    int versionRevision = version.split(".")[2].toInt();
+
+    if(versionMajor > this->apiVersion[0] || versionMinor > this->apiVersion[1]){
+        return(904);
+    }
+
 
     // get the header data
     tmpEventHeader.append(dataArray.value("targetDate").toString());
+    tmpEventHeader.append(dataArray.value("refreshDate").toString());
     tmpEventHeader.append(dataArray.value("stewardingClass").toString());
 
     // expand the length of the header list to seven to prevent list out of range errors

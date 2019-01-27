@@ -35,11 +35,15 @@ Page {
 
     Image {
         id: bigLogo
-        source: "qrc:/favicon.png"
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.margins: window.height * 0.01
+        source: "qrc:/graphics/images/FannyIcon.png"
+
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+            margins: window.height * 0.01
+        }
+
         height: window.height * 0.2
         fillMode: Image.PreserveAspectFit
         mipmap: true
@@ -48,7 +52,7 @@ Page {
 
     Label {
         id: infoText
-        text: "<html>Bitte melde dich mit den Anmeldedaten an, die du für den Vertretungsplan  erhalten hast.
+        text: "<html>Bitte melde dich mit den Anmeldedaten der Fanny-Webseite an.
                 <a href='http://www.fanny-leicht.de/j34/index.php/aktuelles/vertretungsplan'>Weitere Informationen</a></html>"
         wrapMode: Text.Wrap
         onLinkActivated: {
@@ -66,13 +70,14 @@ Page {
 
     Column {
         spacing: ( height - 100 ) * 0.1
+
         anchors {
             left: parent.left
             right: parent.right
             top: infoText.bottom
             bottom: parent.bottom
-            topMargin: window.height * 0.02
-            bottomMargin: window.height * 0.2
+            topMargin: root.height * 0.02
+            bottomMargin: root.height * 0.2
         }
 
         TextField {
@@ -91,7 +96,6 @@ Page {
 
         TextField {
             id: tipasswd
-            echoMode: passwordHideShow.state === "visible" ? TextInput.Normal:TextInput.Password
             placeholderText: "Passwort"
             Keys.onReturnPressed: login(tiuname.text, tipasswd.text, cBperm.checked)
 
@@ -101,8 +105,6 @@ Page {
                 right: parent.right
                 rightMargin: root.width * 0.05
             }
-
-
 
             MouseArea {
                 id: passwordHideShow
@@ -126,37 +128,33 @@ Page {
 
                 states: [
                     State {
-                        name: "visible"
-                        PropertyChanges {
-                            target: visibleIcon
-                            scale: 0
-                        }
-                        PropertyChanges {
-                            target: invisibleIcon
-                            scale: 1
-                        }
-                    },
-                    State {
                         name: "invisible"
                         PropertyChanges {
                             target: visibleIcon
+                            scale: 0
+                        }
+                        PropertyChanges {
+                            target: invisibleIcon
+                            scale: 1
+                        }
+                        PropertyChanges {
+                            target: tipasswd
+                            echoMode: TextInput.Password
+                        }
+                    },
+                    State {
+                        name: "visible"
+                        PropertyChanges {
+                            target: visibleIcon
                             scale: 1
                         }
                         PropertyChanges {
                             target: invisibleIcon
                             scale: 0
                         }
-                    }
-                ]
-
-                transitions: [
-                    Transition {
-                        from: "*"
-                        to: "*"
-                        NumberAnimation {
-                            properties: "scale,opacity"
-                            easing.type: Easing.InOutQuad
-                            duration: 200
+                        PropertyChanges {
+                            target: tipasswd
+                            echoMode: TextInput.Normal
                         }
                     }
                 ]
@@ -169,7 +167,7 @@ Page {
                         bottom: parent.bottom
                         right: parent.right
 
-                        bottomMargin: parent.height * 0.2
+                        bottomMargin: parent.height * 0.25
                         topMargin: anchors.bottomMargin
                     }
                     fillMode: Image.PreserveAspectFit
@@ -204,14 +202,17 @@ Page {
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
-        Button {
+        FancyButton {
             id: loginButton
-            objectName: "loginButton"
+
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                left: parent.left
+                margins: window.width * 0.05
+            }
+
             text: qsTr("Anmelden")
             enabled: tiuname.length > 0 & tipasswd.length > 0
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.left: parent.left
-            anchors.margins: window.width * 0.05
             onClicked: login(tiuname.text, tipasswd.text, cBperm.checked)
         }
         Label {
@@ -254,11 +255,7 @@ Page {
             app.state = "loggedIn"
         }
         else{
-            // if it wasn't -> reset the stored credentinals
-            _cppAppSettings.writeSetting("permanent", "0")
-            _cppAppSettings.writeSetting("username", "")
-            _cppAppSettings.writeSetting("password", "")
-            // and set the error label to the error short description of the retuned error code
+            // if it wasn't -> set the error label to the error short description of the retuned error code
             laStatus.text = app.getErrorInfo(ret)[1]
         }
     }

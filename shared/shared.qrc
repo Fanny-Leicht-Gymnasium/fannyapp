@@ -20,5 +20,7 @@
         <file>sampleEventData/sample.pdf</file>
         <file>sampleEventData/sample.txt</file>
         <file>sampleEventData/sample.json</file>
+        <file>fonts/fontawesome-webfont.ttf</file>
+        <file>graphics/images/FannyIcon.png</file>
     </qresource>
 </RCC>
