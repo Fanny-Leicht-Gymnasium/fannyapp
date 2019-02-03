@@ -59,7 +59,7 @@ private:
 
     ReturnData_t senddata(QUrl serviceUrl, QUrlQuery postData);
 
-    QList<int> apiVersion = {0,1,15};
+    QList<int> apiVersion = {0,2,1};
 
 private slots:
 

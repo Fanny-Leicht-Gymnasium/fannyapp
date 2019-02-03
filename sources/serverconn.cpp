@@ -141,6 +141,7 @@ int ServerConn::checkConn()
 
 int ServerConn::getEvents(QString day)
 {
+    // day: 0-today; 1-tomorrow
     if(this->state != "loggedIn"){
         return(401);
     }
@@ -149,6 +150,7 @@ int ServerConn::getEvents(QString day)
     QUrlQuery pdata;
     pdata.addQueryItem("username", this->username);
     pdata.addQueryItem("password", this->password);
+    pdata.addQueryItem("mode", pGlobalAppSettings->loadSetting("teacherMode") == "true" ? "1":"0");
     pdata.addQueryItem("day", day);
 
     // send the request
@@ -179,11 +181,12 @@ int ServerConn::getEvents(QString day)
 
     //qDebug() << jsonString;
     QJsonDocument jsonFilters = QJsonDocument::fromJson(ret.text.toUtf8());
-    // array with all filters in it
-    QJsonObject dataArray = jsonFilters.object();
+
+    // array with tghe whole response in it
+    QJsonObject JsonArray = jsonFilters.object();
 
     // get the version of the json format
-    QString version = dataArray.value("version").toString();
+    QString version = JsonArray.value("version").toString();
     QStringList versionList = version.split(".");
     if(versionList.length() < 3){
         return(900);
@@ -197,6 +200,8 @@ int ServerConn::getEvents(QString day)
         return(904);
     }
 
+    // get parse the document out of the return
+    QJsonObject dataArray = JsonArray.value("data").toObject();
 
     // get the header data
     tmpEventHeader.append(dataArray.value("targetDate").toString());
@@ -515,7 +520,7 @@ QString ServerConn::getState() {
 void ServerConn::setState(QString state) {
 
     if(state != this->state){
-        qDebug() << "+----- serverconn has new state: " + state + " -----+";
+        qDebug() << "+----- serverconn has new state: " << state << " -----+";
         this->state = state;
         this->stateChanged(this->state);
     }

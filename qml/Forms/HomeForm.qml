@@ -54,7 +54,7 @@ Page {
                 height: mainMenu.buttonHeight
 
                 onClicked: {
-                    eventConfirmationDialog.openDay( _cppAppSettings.loadSetting("teacherMode") === "true" ? "lheute":"sheute")
+                    eventConfirmationDialog.openDay( 0 )
                 }
             }
 
@@ -67,7 +67,7 @@ Page {
                 height: mainMenu.buttonHeight
 
                 onClicked: {
-                    eventConfirmationDialog.openDay( _cppAppSettings.loadSetting("teacherMode") === "true" ? "lmorgen":"smorgen")
+                    eventConfirmationDialog.openDay( 1 )
                 }
             }
 

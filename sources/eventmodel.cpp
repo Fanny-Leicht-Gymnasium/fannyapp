@@ -29,6 +29,10 @@ EventModel::EventModel(QObject *parent) : QAbstractListModel(parent)
     // convert the stringlist from the serverconn to a Day-list
     foreach(QList<QString>day, pGlobalServConn->m_events){
         m_events.append({day[0], day[1], day[2], day[3], day[4], day[5], day[6]});
+        if(day.length() > 7){
+            // in teachermode it can happen that an event has eight value in that case the 8th value is appended to the 7th one
+            m_events[m_events.length()-1].text = m_events[m_events.length()-1].text + " | " + day[7];
+        }
     }
 }
 
