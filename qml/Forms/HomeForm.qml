@@ -54,7 +54,8 @@ Page {
                 height: mainMenu.buttonHeight
 
                 onClicked: {
-                    eventConfirmationDialog.openDay( 0 )
+                    formStack.eventDay = 0
+                    formStack.push(eventForm)
                 }
             }
 
@@ -67,46 +68,8 @@ Page {
                 height: mainMenu.buttonHeight
 
                 onClicked: {
-                    eventConfirmationDialog.openDay( 1 )
-                }
-            }
-
-            Dialog {
-                property string day
-                id: eventConfirmationDialog
-
-                modal: true
-                focus: true
-
-                title: "Bedingung"
-
-                x: (app.width - eventConfirmationDialog.width) / 2
-                y: (app.height - eventConfirmationDialog.height) / 2
-                parent: Overlay.overlay
-                width: Math.min(root.width, root.height) / 3 * 2
-                contentHeight: aboutColumn.height
-                standardButtons: Dialog.Ok | Dialog.Cancel
-
-                onAccepted: {
-                    formStack.eventDay = day
+                    formStack.eventDay = 0
                     formStack.push(eventForm)
-                }
-
-                Column {
-                    id: aboutColumn
-                    spacing: 20
-                    Label {
-                        id: text
-                        visible: true
-                        width: eventConfirmationDialog.availableWidth
-                        wrapMode: Label.Wrap
-                        text: "Vertretungsplan, vertraulich, nur zum persönlichen Gebrauch, keine Speicherung!"
-                    }
-                }
-
-                function openDay(day){
-                    eventConfirmationDialog.day = day
-                    eventConfirmationDialog.open()
                 }
             }
 
