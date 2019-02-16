@@ -27,6 +27,7 @@ Page {
     title: "Einstellungen"
 
     signal opened()
+    property bool locked: false
 
     onOpened: {}
 

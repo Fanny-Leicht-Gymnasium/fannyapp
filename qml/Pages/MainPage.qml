@@ -31,7 +31,9 @@ Page {
         sequences: ["Esc", "Back"]
         enabled: formStack.depth > 1
         onActivated: {
-            formStack.pop()
+            if(!formStack.currentItem.locked){
+                formStack.pop()
+            }
         }
     }
 
@@ -145,10 +147,8 @@ Page {
             width: height
 
             onClicked: {
-                if (formStack.depth > 1) {
+                if(!formStack.currentItem.locked){
                     formStack.pop()
-                } else {
-                    drawer.open()
                 }
             }
 

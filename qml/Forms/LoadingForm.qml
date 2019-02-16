@@ -25,6 +25,7 @@ Page {
     signal refresh()
 
     property int status: -1
+    property bool locked: false
 
     BusyIndicator {
         anchors.centerIn: parent

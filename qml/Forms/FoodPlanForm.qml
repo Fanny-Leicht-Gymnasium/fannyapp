@@ -27,6 +27,7 @@ Page {
     title: qsTr("Speiseplan")
 
     property int status: -1
+    property bool locked: root.status === -1
 
     signal opened()
 

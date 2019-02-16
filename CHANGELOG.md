@@ -4,10 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## unreleased
+## [1.0.0]
+### Behoben
+- Absturz, der bei schnellem wechsel zwischen Seiten (Vertretungsplan, Essensplan) auftrat
+
 ### Geändert
 - neue Vertretungsplan api implementiert
 - neues Anmeldesystem des Vertretungsplanes implementiert
+- neue Essensplan api implementiert
+- Anmeldebidschirm neu gestaltet (vorallem im Querformat)
+
+### Hinzugefügt
+- "Registriern" Taste auf dem Anmeldebidschirm
 
 ## [0.9.x] - 2018-12-30
 ### Geändert

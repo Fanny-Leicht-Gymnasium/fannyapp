@@ -24,6 +24,8 @@ import "../Components"
 Page {
     id: root
 
+    property bool locked: false
+
     signal opened()
 
     onOpened: {}

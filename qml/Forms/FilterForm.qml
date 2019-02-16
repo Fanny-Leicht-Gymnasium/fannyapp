@@ -27,6 +27,7 @@ Page {
     id: root
 
     property bool teacherMode: _cppAppSettings.loadSetting("teacherMode") === "true"
+    property bool locked: false
 
     title: "Vertretungsplan Filter"
 
