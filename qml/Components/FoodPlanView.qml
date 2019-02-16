@@ -86,7 +86,7 @@ FannyDataListView {
                 width: parent.width
                 wrapMode: Label.Wrap
 
-                text: mainDish
+                text: mainDish === "" ? "Aktuell keine Daten":mainDish
             }
 
             Rectangle {

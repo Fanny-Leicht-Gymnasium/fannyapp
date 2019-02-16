@@ -82,7 +82,7 @@ signals:
     void stateChanged(QString newState);
 
 public:
-    QList<QList<QString>> m_weekplan;
+    QList<QStringList> m_weekplan;
     QList<QStringList> m_events;
 
 };

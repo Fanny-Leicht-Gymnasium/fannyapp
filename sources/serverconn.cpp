@@ -17,6 +17,7 @@
  */
 
 #include "headers/serverconn.h"
+#define http https
 
 ServerConn * pGlobalServConn = nullptr;
 
@@ -271,8 +272,20 @@ int ServerConn::getEvents(QString day)
 
 int ServerConn::getFoodPlan()
 {
+
+    // list with all data keys which need to be read from the API
+    QStringList foodplanDataKeys = { "cookteam", "date", "mainDish", "mainDishVeg", "garnish", "dessert" };
+    QString foodplanDateKey = "date";
+
+    QString url = "http://www.treffpunkt-fanny.de/images/stories/dokumente/Essensplaene/api/TFfoodplanAPI.php?dataCount=10&dataMode=days&dateFormat=U&dataFromTime=now";
+    // construct the URL with all requested fields
+    foreach(QString foodplanDataKey, foodplanDataKeys){
+        url.append("&fields[]="+foodplanDataKey);
+    }
+
     QUrlQuery pdata;
-    ReturnData_t ret = this->senddata(QUrl("http://www.treffpunkt-fanny.de/fuer-schueler-und-lehrer/speiseplan.html"), pdata);
+    // send the request to the server
+    ReturnData_t ret = this->senddata(QUrl(url), pdata);
 
     if(ret.status_code != 200){
         // if the request didn't result in a success, return the error code
@@ -286,175 +299,55 @@ int ServerConn::getFoodPlan()
         return(ret.status_code);
     }
 
-    // initialize the weekplan to store information to it
-    QList<QList<QString>> temp_weekplan;
-
+    // list to be returned
     // m_weekplan is a list, that contains a list for each day, which contains: cookteam, date, main dish, vagi main dish, garnish(Beilage) and Dessert.
+    QList<QStringList> tmpWeekplan;
 
-    // read the whole website
-    QString returnedData = ret.text;
+    //qDebug() << jsonString;
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(ret.text.toUtf8());
+    //qDebug() << ret.text;
+    // array with the whole response in it
+    QJsonArray foodplanDays = jsonDoc.array();
 
-    // remove unnecessary stuff
-    returnedData.replace("\n","");
-    returnedData.replace("\r","");
-    returnedData.replace("\t","");
+    foreach(QJsonValue foodplanDay, foodplanDays){
+        QStringList tmpFoodplanDayList;
 
-    // workaround for changing html syntax
-    returnedData.replace("style=\"width: 25%;\"", "width=\"25%\"");
+        foreach(QString foodplanDataKey, foodplanDataKeys){
+            QString dataValue = foodplanDay.toObject().value(foodplanDataKey).toString();
+            if(foodplanDataKey == foodplanDateKey){
+                QDateTime date;
+                date.setTime_t(uint(dataValue.toInt()));
 
-    // split the string at the beginning of the tables
-    QStringList documentList = returnedData.split( "<table class=\"speiseplan\">" );
+                // get the current date and time
+                QDateTime currentDateTime = QDateTime::currentDateTimeUtc();
 
-    // enshure that the data is valid
-    if(documentList.length() < 2){
-        return(900);
-    }
+                //---------- convert the date to a readable string ----------
+                QString readableDateString;
 
-    //---------- prepare the table of the first week ----------
-    QString table1 = documentList[1];
+                if(date.date() == currentDateTime.date()){
+                    // the given day is today
+                    readableDateString = "Heute";
+                }
+                else if (date.toTime_t() < ( currentDateTime.toTime_t() + ( 24 * 60 * 60 ))) {
+                    // the given day is tomorrow
+                    readableDateString = "Morgen";
+                }
+                else {
+                    readableDateString = date.toString("dddd, d.M.yy");
+                }
 
-    // enshure that the data is valid
-    if(table1.split( "</table>" ).length() < 1){
-        return(900);
-    }
+                dataValue = readableDateString;
+            }
 
-    // remove everything after "</table>"
-    table1 = table1.split( "</table>" )[0];
-    // remove "<tbody><tr style=\"border: 1px solid #999;\" align=\"center\" valign=\"top\">" at the beginning
-    table1.remove(0,71);
-    //remove "</tr></tbody>" at the end
-    table1 = table1.left(table1.length() - 13);
-
-    //split at the days to get a list of all days
-    QStringList table1list = table1.split("<td width=\"25%\">");
-
-    // enshure that the data is valid
-    if(table1list.length() < 5){
-        return(900);
-    }
-
-    //remove the first item, as it is empty
-    table1list.takeFirst();
-
-    //---------- prepare the table of the second week ----------
-    QString table2 = documentList[2];
-
-    // enshure that the data is valid
-    if(table2.split( "</table>" ).length() < 1){
-        return(900);
-    }
-
-    //remove everything after "</table>"
-    table2 = table2.split( "</table>" )[0];
-    //remove "<tbody><tr align=\"center\" valign=\"top\">" at the beginning
-    table2.remove(0,39);
-    //remove "</tr></tbody>" at the end
-    table2.remove(table2.length() - 13, table2.length());
-
-    //split at the days to get a list of all days
-    QStringList table2list = table2.split("<td width=\"25%\">");
-
-    // enshure that the data is valid
-    if(table2list.length() < 5){
-        return(900);
-    }
-
-    //remove the first item, as it is empty
-    table2list.takeFirst();
-
-    //---------- put both weeks into one big list ----------
-    QStringList weeklist = table1list + table2list;
-
-    //---------- go through all days and split the day-string into the different types of information ----------
-
-    for (int i = 0; i <=7; i ++){
-        if(i > weeklist.length()){
-            // if the loop exceeds the length of the wweklist some kind of eror occured
-            return 900;
+            tmpFoodplanDayList.append( dataValue );
         }
 
-        // store item temporarly to edit it
-        QString day = weeklist[i];
-        // remove "</td>" at the and of the Item
-        day = day.left(day.length()-5);
+        tmpWeekplan.append(tmpFoodplanDayList);
 
-        // table list[i] looks now like:    | clould be:
-        // <strong>cookteam</strong>        | <strong>Red Hot Chili Peppers</strong>
-        // <br />                           | <br />
-        // <strong>date</strong>            | <strong>26.06.2018</strong>
-        // <hr />mainDish                   | <hr />Gulasch mit Kartoffeln
-        // <hr />mainDishVeg                | <hr />Pellkartoffeln mit Quark
-        // <hr />garnish                    | <hr />Gemischter Salat
-        // <hr />dessert</td>               | <hr />Eaton Mess ( Erdbeer-Nachtisch )</td>
-
-        // split item at strong, to get the cookteam and the date
-        QStringList daylist = day.split("<strong>");
-        day = "";
-
-        // convert the list to a big string
-        for (int i = 0; i <= 2; i ++){
-            if(i <= daylist.length()){
-                day += daylist[i];
-            }
-        }
-
-        day.replace("<br />","");
-        daylist = day.split("</strong>");
-
-        // store cookteam and date in the temp_weekplan
-        //temp_weekplan.append({daylist[0], daylist[1]});
-
-        // store information in day
-        // (looks like: "<hr />MainDish<hr />MainDishVeg<hr />Garnish<hr />Dessert")
-        // (could be: "<hr />Gulasch mit Kartoffeln<hr />Pellkartoffeln mit Quark<hr />Gemischter Salat<hr />Eaton Mess ( Erdbeer-Nachtisch )")
-        day = daylist.takeLast();
-        // seperate the information
-        daylist.append(day.split("<hr />"));
-        // remove the item that is emplty from the list
-        daylist.removeAt(2);
-
-        //---------- check if the day is aleady over ----------
-
-        // get the datestring
-        QString dateString = daylist[1];
-        // convert it to a valid QDate
-        QDateTime date = QDateTime::fromString(dateString,"dd.MM.yyyy");
-
-        // get the current date and time
-        QDateTime currentDateTime = QDateTime::currentDateTimeUtc();
-
-        // check if the given day is still in the future or today (then it is valid)
-        if(date.toTime_t() > currentDateTime.toTime_t() || date.date() == currentDateTime.date()){
-            // add the rest of the information to the temp_weekplan
-            qDebug() << "day valid:" << daylist;
-
-            //---------- convert the date to a readable string ----------
-            QString readableDateString;
-
-            if(date.date() == currentDateTime.date()){
-                // the given day is today
-                readableDateString = "Heute";
-            }
-            else if (date.toTime_t() < ( currentDateTime.toTime_t() + ( 24 * 60 * 60 ))) {
-                // the given day is tomorrow
-                readableDateString = "Morgen";
-            }
-            else {
-                readableDateString = date.toString("dddd, d.M.yy");
-            }
-
-            qDebug() << readableDateString;
-
-            // insert the redable tring into the daylist
-            daylist[1] = readableDateString;
-
-            // append the day to the weeklist
-            temp_weekplan.append({daylist[0], daylist[1], daylist[2], daylist[3], daylist[4], daylist[5]});
-        }
     }
 
     // write data to global foodplan
-    this->m_weekplan = temp_weekplan;
+    this->m_weekplan = tmpWeekplan;
 
     // check if there is any valid data
     if(this->m_weekplan.isEmpty()){
@@ -476,7 +369,6 @@ ReturnData_t ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata)
     request.setHeader(QNetworkRequest::ContentTypeHeader,
                       "application/x-www-form-urlencoded");
 
-    //set ssl configuration
     //send a POST request with the given url and data to the server
     QNetworkReply* reply;
 
@@ -493,7 +385,7 @@ ReturnData_t ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata)
     // or the timer timed out
     loop.connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
     // start the timer
-    timer.start(4000);
+    timer.start(6000);
     // start the loop
     loop.exec();
 
