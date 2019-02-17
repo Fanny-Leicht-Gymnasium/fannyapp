@@ -70,7 +70,7 @@ Page {
                 height: mainMenu.buttonHeight
 
                 onClicked: {
-                    formStack.eventDay = 0
+                    formStack.eventDay = 1
                     formStack.push(eventForm)
                 }
             }

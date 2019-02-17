@@ -154,6 +154,8 @@ int ServerConn::getEvents(QString day)
     pdata.addQueryItem("mode", pGlobalAppSettings->loadSetting("teacherMode") == "true" ? "1":"0");
     pdata.addQueryItem("day", day);
 
+    qDebug() << day;
+
     // send the request
     ReturnData_t ret = this->senddata(QUrl("http://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata);
 
