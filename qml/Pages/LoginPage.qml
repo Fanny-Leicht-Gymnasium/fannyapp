@@ -69,16 +69,22 @@ Page {
 
             Label {
                 id: infoText
+
                 anchors.horizontalCenter: parent.horizontalCenter
+
                 width: parent.width * 0.8
                 height: parent.height * 0.2
+
+                horizontalAlignment: Text.AlignHCenter
+
                 fontSizeMode: Text.Fit;
                 minimumPixelSize: 10;
                 font.pixelSize: 72
+                wrapMode: Text.Wrap
+
                 text: "<html>Bitte melde dich mit den Anmeldedaten der <a href='http://www.fanny-leicht.de/'>Fanny-Webseite</a> an.
                     <a href='http://www.fanny-leicht.de/j34/index.php/aktuelles/vertretungsplan'>Weitere Informationen</a></html>"
-                wrapMode: Text.Wrap
-                horizontalAlignment: Text.AlignHCenter
+
                 onLinkActivated: {
                     Qt.openUrlExternally(link)
                 }
@@ -224,11 +230,14 @@ Page {
 
             CheckDelegate {
                 id: cBperm
-                text: qsTr("Angemeldet bleiben")
-                checked: true
+
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 height: formCol.rowHeight
+
+                checked: true
+
+                text: qsTr("Angemeldet bleiben")
             }
 
             FancyButton {
@@ -242,8 +251,10 @@ Page {
 
                 height: formCol.rowHeight
 
-                text: qsTr("Anmelden")
                 enabled: tiuname.length > 0 & tipasswd.length > 0
+
+                text: qsTr("Anmelden")
+
                 onClicked: root.login(tiuname.text, tipasswd.text, cBperm.checked)
             }
 
@@ -258,18 +269,25 @@ Page {
 
                 height: formCol.rowHeight
 
-                text: qsTr("Registrieren")
                 enabled: true
+
+                text: qsTr("Registrieren")
+
                 onClicked: Qt.openUrlExternally("http://www.fanny-leicht.de/j34/index.php/login?view=registration")
             }
 
             Label {
                 id: laStatus
-                text: qsTr("")
-                font.pixelSize: height * 0.3
-                color: "red"
+
                 anchors.horizontalCenter: parent.horizontalCenter
+
                 height: formCol.rowHeight
+
+                font.pixelSize: height * 0.3
+
+                color: "red"
+
+                text: qsTr("")
             }
         }
 
