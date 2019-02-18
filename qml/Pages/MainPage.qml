@@ -159,6 +159,7 @@ Page {
                 source: formStack.depth > 1 ? "qrc:/graphics/icons/backDark.png" : "qrc:/graphics/icons/drawer.png"
                 height: parent.height
                 width: parent.width
+                fillMode: Image.PreserveAspectFit
                 Behavior on scale {
                     PropertyAnimation {
                         duration: 100
