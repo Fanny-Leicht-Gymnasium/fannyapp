@@ -54,15 +54,16 @@ private:
     QString password;
     QNetworkAccessManager *networkManager;
     QNetworkAccessManager *refreshNetworkManager;
+    QNetworkReply *networkReply;
     QTimer *checkConnTimer;
     int authErrorCount;
 
     ReturnData_t senddata(QUrl serviceUrl, QUrlQuery postData);
 
+
     QList<int> apiVersion = {0,2,1};
 
 private slots:
-
     void setState(QString state);
 
 public:

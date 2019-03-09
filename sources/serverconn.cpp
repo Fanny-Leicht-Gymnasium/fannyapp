@@ -59,7 +59,7 @@ int ServerConn::login(QString username, QString password, bool permanent)
     pdata.addQueryItem("password", password);
 
     // send the request
-    ReturnData_t ret = this->senddata(QUrl("http://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata);
+    ReturnData_t ret = this->senddata(QUrl("https://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata);
 
     if(ret.status_code == 200){
         // if not 200 was returned -> user data was correct
@@ -124,7 +124,7 @@ int ServerConn::checkConn()
     pdata.addQueryItem("password", this->password);
 
     // send the request
-    ReturnData_t ret = this->senddata(QUrl("http://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata);
+    ReturnData_t ret = this->senddata(QUrl("https://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata);
 
     if(ret.status_code == 401){
         // if the stats code is 401 -> userdata is incorrect
@@ -155,7 +155,7 @@ int ServerConn::getEvents(QString day)
     pdata.addQueryItem("day", day);
 
     // send the request
-    ReturnData_t ret = this->senddata(QUrl("http://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata);
+    ReturnData_t ret = this->senddata(QUrl("https://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata);
 
     if(ret.status_code != 200){
         // if the request didn't result in a success, clear the old events, as they are probaply incorrect and return the error code
@@ -369,11 +369,16 @@ ReturnData_t ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata)
     request.setHeader(QNetworkRequest::ContentTypeHeader,
                       "application/x-www-form-urlencoded");
 
+    QSslConfiguration config = QSslConfiguration::defaultConfiguration();
+    config.setProtocol(QSsl::TlsV1_2);
+    request.setSslConfiguration(config);
+
     //send a POST request with the given url and data to the server
-    QNetworkReply* reply;
+
+    QNetworkReply *reply;
 
     reply = this->networkManager->post(request, pdata.toString(QUrl::FullyEncoded).toUtf8());
-
+    connect(reply, &QNetworkReply::sslErrors, this, [=](){ reply->ignoreSslErrors(); });
     // loop to wait until the request has finished before processing the data
     QEventLoop loop;
     // timer to cancel the request after 3 seconds
@@ -397,9 +402,8 @@ ReturnData_t ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata)
     //get the full text response
     ret.text = QString::fromUtf8(reply->readAll());
 
-    if(reply->isOpen()){
-        delete reply;
-    }
+    // delete the reply object
+    delete reply;
 
     //return the data
     return(ret);
