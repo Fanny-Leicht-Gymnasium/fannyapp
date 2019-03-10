@@ -19,6 +19,7 @@
 import QtQuick 2.11
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.2
+import QtQuick.Controls.Material 2.3
 import "../Components"
 
 Page {
@@ -29,7 +30,7 @@ Page {
         Label {
             text: "Anmeldung"
             anchors.centerIn: parent
-            color: "black"
+            color: app.style.style.textColor
         }
     }
 
@@ -302,6 +303,8 @@ Page {
             width: Math.min(window.width, window.height) / 3 * 2
             height: 150
             contentHeight: contentColumn.height
+            Material.theme: _cppAppSettings.loadSetting("theme") === "Dark" ? Material.Dark:Material.Light
+
             Column {
                 id: contentColumn
                 spacing: 20

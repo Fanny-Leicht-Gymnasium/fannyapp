@@ -70,6 +70,8 @@ Page {
 
                 text: "Lehrermodus"
 
+                color: app.style.style.textColor
+
             }
 
             Label {
@@ -87,6 +89,8 @@ Page {
                 wrapMode: Label.Wrap
 
                 text: "Lehrermodus aktivieren"
+
+                color: app.style.style.textColor
             }
 
             indicator: Rectangle {
@@ -123,5 +127,16 @@ Page {
                 }
             }
         }
+
+        SettingsDelegate {
+            showForwardIcon: false
+            title: "Design ändern"
+            description: "Ändere das Design der App"
+            width: parent.width
+            onClicked: {
+                app.style.changeTheme()
+            }
+        }
+
     }
 }

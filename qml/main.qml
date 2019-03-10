@@ -18,6 +18,7 @@
 
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+import QtQuick.Controls.Material 2.3
 
 import Backend 1.0
 
@@ -42,6 +43,8 @@ ApplicationWindow {
         property string textColor: "black" // "#424753"
         property string backgroundColor: "white"
         property string toolbarColor: "#312f38"
+
+        property QtObject style: style
 
         state: serverConn.state
 
@@ -70,6 +73,12 @@ ApplicationWindow {
                 app.state = newState
             }
         }
+
+        AppStyle {
+            id: style
+        }
+
+        Material.theme: app.style.style.nameMaterialStyle === "Dark" ? Material.Dark:Material.Light
 
         StackView {
             id: mainStack

@@ -9,7 +9,6 @@
         <file>graphics/icons/view.png</file>
         <file>graphics/images/FannyLogoDark.jpg</file>
         <file>graphics/images/FannyLogoLight.png</file>
-        <file>graphics/images/FannyLogoLightSmall.png</file>
         <file>graphics/images/TreffpunktFannyLogoDark.png</file>
         <file>graphics/images/TreffpunktFannyLogoLight.png</file>
         <file>graphics/icons/logoutBlack.png</file>
@@ -22,5 +21,7 @@
         <file>sampleEventData/sample.json</file>
         <file>fonts/fontawesome-webfont.ttf</file>
         <file>graphics/images/FannyIcon.png</file>
+        <file>graphics/icons/TreffpunktFannyLogo.png</file>
+        <file>graphics/icons/settings.png</file>
     </qresource>
 </RCC>

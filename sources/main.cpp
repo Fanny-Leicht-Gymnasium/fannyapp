@@ -36,6 +36,7 @@
 #include "headers/foodplanmodel.h"
 #include "headers/eventmodel.h"
 #include "headers/filtermodel.h"
+#include "headers/appstyle.h"
 
 int main(int argc, char *argv[])
 {
@@ -50,6 +51,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<EventModel>("Backend", 1, 0, "EventModel");
     qmlRegisterType<FilterModel>("Backend", 1, 0, "FilterModel");
     qmlRegisterType<ServerConn>("Backend", 1, 0, "ServerConn");
+    qmlRegisterType<AppStyle>("Backend", 1, 0, "AppStyle");
 
     QQuickStyle::setStyle("Material");
     QQmlApplicationEngine engine;

@@ -19,6 +19,7 @@
 import QtQuick 2.6
 import QtQuick.Controls 2.1
 import QtGraphicalEffects 1.0
+import QtQuick.Controls.Material 2.3
 
 Item {
     id: control
@@ -36,8 +37,9 @@ Item {
 
     Rectangle {
         id: toolBar
-        color: "white"
+        color: app.style.style.menuColor
         anchors.fill: parent
+
 
 //        anchors {
 //            top: parent.top

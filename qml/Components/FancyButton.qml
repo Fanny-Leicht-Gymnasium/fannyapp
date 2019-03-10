@@ -19,12 +19,14 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.4
 import QtGraphicalEffects 1.0
+import QtQuick.Controls.Material 2.3
 
 Button {
     id: control
 
     property string image
     property real imageScale: 1
+    property color color: app.style.style.buttonColor
 
 
     scale: control.pressed ? 0.8:1
@@ -37,14 +39,6 @@ Button {
 
     background: Item {
         id: controlBackgroundContainer
-
-
-
-        Behavior on scale {
-            PropertyAnimation {
-                duration: 100
-            }
-        }
 
         RectangularGlow {
             id: effect
@@ -64,6 +58,8 @@ Button {
 
             radius: height * 0.5
 
+            color: control.color
+
             Image {
                 id: buttonIcon
                 source: control.image
@@ -82,47 +78,3 @@ Button {
     }
 
 }
-/*
-    background: Image {
-        id: smorgenBackground
-        source: "qrc:/circle.png"
-        height: control.height
-        width: height
-
-        scale: control.pressed ? 0.8:1
-
-        Behavior on scale {
-            PropertyAnimation {
-                duration: 100
-            }
-        }
-
-        mipmap: true
-        smooth: true
-
-        fillMode: Image.PreserveAspectFit
-
-        Image {
-            id: smorgenImage
-            source: control.image
-
-            anchors.centerIn: parent
-            height: parent.height * 0.5
-            width: height
-
-            mipmap: true
-            smooth: true
-
-            fillMode: Image.PreserveAspectFit
-
-            scale: control.imageScale
-
-            Behavior on scale {
-                PropertyAnimation {
-                    duration: 100
-                }
-            }
-        }
-    }
-    */
-

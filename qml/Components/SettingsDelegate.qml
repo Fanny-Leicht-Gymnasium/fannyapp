@@ -41,6 +41,8 @@ ItemDelegate {
 
         text: control.title
 
+        color: app.style.style.textColor
+
     }
 
     Label {
@@ -58,6 +60,8 @@ ItemDelegate {
         wrapMode: Label.Wrap
 
         text: control.description
+
+        color: app.style.style.textColor
     }
 
     Image {
@@ -77,7 +81,7 @@ ItemDelegate {
 
         fillMode: Image.PreserveAspectFit
 
-        source: "/graphics/icons/backDark.png"
+        source: app.style.style.backIcon
     }
 
 }

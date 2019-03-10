@@ -19,6 +19,10 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
+import QtQuick.Controls.Material 2.3
+import QtGraphicalEffects 1.0
+import QtQuick.Controls.impl 2.0
+import QtQuick.Templates 2.0 as T
 import Backend 1.0
 
 import "../Components"
@@ -35,12 +39,17 @@ Page {
 
     onOpened: {}
 
+    Material.theme: app.style.style.nameMaterialStyle === "Dark" ? Material.Dark:Material.Light
+
+
     Dialog {
         id: filterDialog
 
         signal finished(string grade, string classletter, string teacherShortcut)
 
         property bool teacherMode: _cppAppSettings.loadSetting("teacherMode") === "true"
+
+        Material.theme: app.style.style.nameMaterialStyle === "Dark" ? Material.Dark:Material.Light
 
         onFinished: {
             if(_cppAppSettings.loadSetting("teacherMode") === "true"){
@@ -115,6 +124,52 @@ Page {
                     model: ["a", "b", "c", "d", "e", "alle"]
                     enabled: gradeSb.value < 11
                     visible: !filterDialog.teacherMode
+
+                    popup: T.Popup {
+                        y: classLetterCb.editable ? classLetterCb.height - 5 : 0
+                        width: classLetterCb.width
+                        height: Math.min(contentItem.implicitHeight, app.height - topMargin - bottomMargin)
+                        transformOrigin: Item.Top
+                        topMargin: 12
+                        bottomMargin: 12
+
+                        Material.theme: classLetterCb.Material.theme
+                        Material.accent: classLetterCb.Material.accent
+                        Material.primary: classLetterCb.Material.primary
+
+                        enter: Transition {
+                            // grow_fade_in
+                            NumberAnimation { property: "scale"; from: 0.9; to: 1.0; easing.type: Easing.OutQuint; duration: 220 }
+                            NumberAnimation { property: "opacity"; from: 0.0; to: 1.0; easing.type: Easing.OutCubic; duration: 150 }
+                        }
+
+                        exit: Transition {
+                            // shrink_fade_out
+                            NumberAnimation { property: "scale"; from: 1.0; to: 0.9; easing.type: Easing.OutQuint; duration: 220 }
+                            NumberAnimation { property: "opacity"; from: 1.0; to: 0.0; easing.type: Easing.OutCubic; duration: 150 }
+                        }
+
+                        contentItem: ListView {
+                            clip: true
+                            implicitHeight: contentHeight
+                            model: classLetterCb.delegateModel
+                            currentIndex: classLetterCb.highlightedIndex
+                            highlightMoveDuration: 0
+
+                            T.ScrollIndicator.vertical: ScrollIndicator { }
+                        }
+
+                        background: Rectangle {
+                            radius: 2
+                            color: app.style.style.backgroundColor
+
+                            layer.enabled: classLetterCb.enabled
+//                            layer.effect: ElevationEffect {
+//                                elevation: 8
+//                            }
+                        }
+                    }
+
                 }
 
                 Label {
@@ -159,7 +214,8 @@ Page {
             }
 
             text: grade + classLetter
-            font.pixelSize: height * 0.4
+            font.pixelSize: delegate.height * 0.4
+
 
             enabled: root.teacherMode ? role === "t":role === "s"
 
@@ -262,6 +318,7 @@ Page {
             anchors.centerIn: parent
             font.pixelSize: parent.height * 0.6
             text: "+"
+            color: app.style.style.textColor
         }
     }
 }

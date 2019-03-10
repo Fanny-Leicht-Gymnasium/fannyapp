@@ -24,14 +24,16 @@ SOURCES += \
     sources/appsettings.cpp \
     sources/foodplanmodel.cpp \
     sources/eventmodel.cpp \
-    sources/filtermodel.cpp
+    sources/filtermodel.cpp \
+    sources/appstyle.cpp
 
 HEADERS += \
     headers/serverconn.h \
     headers/appsettings.h \
     headers/foodplanmodel.h \
     headers/eventmodel.h \
-    headers/filtermodel.h
+    headers/filtermodel.h \
+    headers/appstyle.h
 
 RESOURCES += \
     shared/shared.qrc \

@@ -37,6 +37,11 @@ Page {
         }
     }
 
+    Rectangle {
+        anchors.fill: parent
+        color: app.style.style.backgroundColor
+    }
+
     StackView {
         id: formStack
         property var currPage
@@ -156,7 +161,7 @@ Page {
             onReleased: toolButton.scale = 1.0
 
             background: Image {
-                source: formStack.depth > 1 ? "qrc:/graphics/icons/backDark.png" : "qrc:/graphics/icons/drawer.png"
+                source: app.style.style.backIcon
                 height: parent.height
                 width: parent.width
                 fillMode: Image.PreserveAspectFit
@@ -176,7 +181,7 @@ Page {
                 leftMargin: parent.width * 0.02
             }
             font.bold: true
-            color: "black"
+            color: app.style.style.textColor
 
             function getText(){
                 var titleString = "";

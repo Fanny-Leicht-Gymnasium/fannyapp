@@ -18,6 +18,7 @@
 
 import QtQuick 2.9
 import QtQuick.Controls 2.4
+import QtQuick.Controls.Material 2.3
 
 import "../Components"
 
@@ -90,7 +91,7 @@ Page {
             FancyButton {
                 id: foodplanButton
 
-                image: "qrc:/graphics/images/TreffpunktFannyLogoDark.png"
+                image: app.style.style.treffpunktFannyIcon
 
                 width: smallMenu.buttonWidth
                 height: smallMenu.buttonHeight
@@ -103,7 +104,7 @@ Page {
             FancyButton {
                 id: fannyButton
 
-                image: "qrc:/graphics/images/FannyLogoDark.jpg"
+                image: app.style.style.fannyLogo
                 imageScale: 1.2
 
                 width: smallMenu.buttonWidth
@@ -117,7 +118,7 @@ Page {
             FancyButton {
                 id: settingsButton
 
-                image: "qrc:/graphics/icons/settingsBlack.png"
+                image: app.style.style.settingsIcon
                 imageScale: 0.8
 
                 width: smallMenu.buttonWidth
@@ -150,6 +151,9 @@ Page {
 
                     modal: true
                     standardButtons: Dialog.Cancel | Dialog.Ok
+
+                    Material.theme: app.style.style.nameMaterialStyle === "Dark" ? Material.Dark:Material.Light
+
                     Column {
                         spacing: 20
                         anchors.fill: parent
