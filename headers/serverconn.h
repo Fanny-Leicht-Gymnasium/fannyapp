@@ -52,9 +52,7 @@ private:
         // can be: loggedIn ; notLoggedIn
     QString username;
     QString password;
-    QNetworkAccessManager *networkManager;
-    QNetworkAccessManager *refreshNetworkManager;
-    QNetworkReply *networkReply;
+
     QTimer *checkConnTimer;
     int authErrorCount;
 

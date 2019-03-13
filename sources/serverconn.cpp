@@ -25,8 +25,6 @@ ServerConn::ServerConn(QObject *parent) : QObject(parent)
 {
     qDebug("+----- ServerConn konstruktor -----+");
     pGlobalServConn = this;
-    this->networkManager = new QNetworkAccessManager();
-    this->refreshNetworkManager = new QNetworkAccessManager();
 
     // check login state
     int perm = pGlobalAppSettings->loadSetting("permanent").toInt();
@@ -195,7 +193,7 @@ int ServerConn::getEvents(QString day)
 
     int versionMajor = version.split(".")[0].toInt();
     int versionMinor = version.split(".")[1].toInt();
-    int versionRevision = version.split(".")[2].toInt();
+    //int versionRevision = version.split(".")[2].toInt();
 
     if(versionMajor > this->apiVersion[0] || versionMinor > this->apiVersion[1]){
         return(904);
@@ -362,6 +360,8 @@ int ServerConn::getFoodPlan()
 ReturnData_t ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata)
 {
 
+    QNetworkAccessManager * networkManager = new QNetworkAccessManager();
+
     ReturnData_t ret; //this is a custom type to store the return-data
 
     // Create network request
@@ -377,7 +377,7 @@ ReturnData_t ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata)
 
     QNetworkReply *reply;
 
-    reply = this->networkManager->post(request, pdata.toString(QUrl::FullyEncoded).toUtf8());
+    reply = networkManager->post(request, pdata.toString(QUrl::FullyEncoded).toUtf8());
     connect(reply, &QNetworkReply::sslErrors, this, [=](){ reply->ignoreSslErrors(); });
     // loop to wait until the request has finished before processing the data
     QEventLoop loop;
@@ -386,11 +386,11 @@ ReturnData_t ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata)
     timer.setSingleShot(true);
 
     // quit the loop when the request finised
-    loop.connect(this->networkManager, SIGNAL(finished(QNetworkReply*)), SLOT(quit()));
+    loop.connect(networkManager, SIGNAL(finished(QNetworkReply*)), SLOT(quit()));
     // or the timer timed out
     loop.connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
     // start the timer
-    timer.start(6000);
+    timer.start(10000);
     // start the loop
     loop.exec();
 
@@ -404,6 +404,9 @@ ReturnData_t ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata)
 
     // delete the reply object
     delete reply;
+
+    // delete the newtwork access manager object
+    delete networkManager;
 
     //return the data
     return(ret);
@@ -425,6 +428,4 @@ void ServerConn::setState(QString state) {
 ServerConn::~ServerConn()
 {
     qDebug("+----- ServerConn destruktor -----+");
-    delete this->networkManager;
-    delete this->refreshNetworkManager;
 }

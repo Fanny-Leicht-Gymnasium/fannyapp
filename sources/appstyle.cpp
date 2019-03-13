@@ -108,3 +108,16 @@ void AppStyle::changeTheme() {
 
     emit this->styleChanged();
 }
+
+void AppStyle::refreshTheme() {
+    QString currentThemeString = pGlobalAppSettings->loadSetting("theme");
+
+    if(currentThemeString == "Light"){
+        this->currentTheme = &this->lightTheme;
+    }
+    else if (currentThemeString == "Dark") {
+        this->currentTheme = &this->darkTheme;
+    }
+
+    emit this->styleChanged();
+}

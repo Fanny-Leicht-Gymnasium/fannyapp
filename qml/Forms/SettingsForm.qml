@@ -128,13 +128,85 @@ Page {
             }
         }
 
-        SettingsDelegate {
-            showForwardIcon: false
-            title: "Design ändern"
-            description: "Ändere das Design der App"
+        SwitchDelegate {
             width: parent.width
-            onClicked: {
-                app.style.changeTheme()
+            height: 10 + shortDescription_.height + 2 + longDescription_.height + 10
+
+            checked: _cppAppSettings.loadSetting("theme") === "Dark"
+
+            onCheckedChanged: {
+                _cppAppSettings.writeSetting("theme", checked ? "Dark":"Light")
+                app.style.refreshTheme()
+            }
+
+            Label {
+                id: shortDescription_
+
+                anchors {
+                    top: parent.top
+                    left: parent.left
+                    margins: 10
+                }
+
+                font.pixelSize: longDescription_.font.pixelSize * 1.4
+
+                text: "Dunkler Modus"
+
+                color: app.style.style.textColor
+
+            }
+
+            Label {
+                id: longDescription_
+
+                anchors {
+                    top: shortDescription_.bottom
+                    topMargin: 2
+                    left: parent.left
+                    leftMargin: 10
+                }
+
+                width: parent.width * 0.9
+
+                wrapMode: Label.Wrap
+
+                text: "Dunklen Modus aktivieren"
+
+                color: app.style.style.textColor
+            }
+
+            indicator: Rectangle {
+                property bool checked: parent.checked
+                property bool down: parent.down
+                property int set_height: parent.font.pixelSize * 1.4
+                implicitWidth: set_height * 1.84
+                implicitHeight: set_height
+                x: parent.width - width - parent.rightPadding
+                y: parent.height / 2 - height / 2
+                radius: implicitHeight * 0.5
+                color: parent.checked ? "#17a81a" : "transparent"
+                border.color: parent.checked ? "#17a81a" : "#cccccc"
+                Behavior on color{
+                    ColorAnimation{
+                        duration: 200
+                    }
+                }
+
+                Rectangle {
+                    x: parent.checked ? parent.width - width : 0
+                    width: parent.height
+                    height: parent.height
+                    radius: height * 0.5
+                    color: parent.down ? "#cccccc" : "#ffffff"
+                    border.color: parent.checked ? (parent.down ? "#17a81a" : "#21be2b") : "#999999"
+                    Behavior on x{
+                        NumberAnimation {
+                            property: "x"
+                            duration: 200
+                            easing.type: Easing.InOutQuad
+                        }
+                    }
+                }
             }
         }
 

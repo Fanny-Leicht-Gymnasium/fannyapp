@@ -26,6 +26,7 @@ signals:
 public slots:
     QVariant getStyle();
     Q_INVOKABLE void changeTheme();
+    Q_INVOKABLE void refreshTheme();
 };
 
 #endif // APPSTYLE_H
