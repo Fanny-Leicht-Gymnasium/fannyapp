@@ -38,6 +38,9 @@ AppSettings::AppSettings(QObject* parent)
     if(loadSetting("grade") == "false"){
         this->writeSetting("grade", 5);
     }
+    if(loadSetting("theme") == "false"){
+        this->writeSetting("theme", "Light");
+    }
 
     this->filtersFile = new QFile(path + "/fannyapp/filters.json");
 }
