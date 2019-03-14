@@ -210,5 +210,30 @@ Page {
             }
         }
 
+        SettingsDelegate {
+            width: parent.width
+
+            title: "Folge uns"
+            description: "Sein immer der Erste, der über Neuerungen informiert ist - folge unserem Telegram-Channel"
+
+            showForwardIcon: false
+
+            onClicked: {
+                Qt.openUrlExternally("https://t.me/FlgQtAg")
+            }
+        }
+
+        SettingsDelegate {
+            width: parent.width
+
+            title: "Feedback / Support"
+            description: "Wende dich mit deinen Fragen oder Anregungen direkt an uns - über unseren Telegram-Support"
+
+            showForwardIcon: false
+
+            onClicked: {
+                Qt.openUrlExternally("https://t.me/FlgQtAgSupportbot")
+            }
+        }
     }
 }
