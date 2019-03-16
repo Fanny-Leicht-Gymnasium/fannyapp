@@ -134,8 +134,6 @@ Page {
                         bottomMargin: 12
 
                         Material.theme: classLetterCb.Material.theme
-                        Material.accent: classLetterCb.Material.accent
-                        Material.primary: classLetterCb.Material.primary
 
                         enter: Transition {
                             // grow_fade_in
@@ -161,7 +159,7 @@ Page {
 
                         background: Rectangle {
                             radius: 2
-                            color: app.style.style.backgroundColor
+                            color: classLetterCb.Material.dialogColor//app.style.style.backgroundColor
 
                             layer.enabled: classLetterCb.enabled
 //                            layer.effect: ElevationEffect {

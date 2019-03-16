@@ -359,7 +359,7 @@ int ServerConn::getFoodPlan()
 
 ReturnData_t ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata)
 {
-
+    // create network manager
     QNetworkAccessManager * networkManager = new QNetworkAccessManager();
 
     ReturnData_t ret; //this is a custom type to store the return-data
