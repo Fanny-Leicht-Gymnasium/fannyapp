@@ -33,19 +33,18 @@ Page {
 
     Column {
         id: mainMenu
-        spacing: buttonWidth * 0.1
+        spacing: buttonSize * 0.1
 
         anchors {
             horizontalCenter: parent.horizontalCenter
             verticalCenter: parent.verticalCenter
         }
 
-        property int buttonHeight: app.landscape() ? root.height * (0.5*0.8):buttonWidth
-        property int buttonWidth: app.landscape() ? buttonHeight:root.width * (0.5*0.8)
+        property int buttonSize: app.landscape() ? root.height * (0.5*0.8):root.width * (0.5*0.8)
 
         Row {
             id: bigMenu
-            spacing: mainMenu.buttonWidth * 0.1
+            spacing: mainMenu.buttonSize * 0.1
             anchors.horizontalCenter: parent.horizontalCenter
 
             FancyButton {
@@ -53,8 +52,7 @@ Page {
 
                 image: "qrc:/graphics/icons/sheute.png"
 
-                width: mainMenu.buttonWidth
-                height: mainMenu.buttonHeight
+                size: mainMenu.buttonSize
 
                 onClicked: {
                     formStack.eventDay = 0
@@ -67,8 +65,7 @@ Page {
 
                 image: "qrc:/graphics/icons/smorgen.png"
 
-                width: mainMenu.buttonWidth
-                height: mainMenu.buttonHeight
+                size: mainMenu.buttonSize
 
                 onClicked: {
                     formStack.eventDay = 1
@@ -81,20 +78,18 @@ Page {
         Grid {
             id: smallMenu
             columns: app.landscape() ? 4:2
-            spacing: mainMenu.buttonWidth * 0.1
+            spacing: mainMenu.buttonSize * 0.1
 
             anchors.horizontalCenter: parent.horizontalCenter
 
-            property int buttonHeight: mainMenu.buttonHeight * 0.7
-            property int buttonWidth: mainMenu.buttonWidth * 0.7
+            property int buttonSize: mainMenu.buttonSize * 0.7
 
             FancyButton {
                 id: foodplanButton
 
                 image: app.style.style.treffpunktFannyIcon
 
-                width: smallMenu.buttonWidth
-                height: smallMenu.buttonHeight
+                size: smallMenu.buttonSize
 
                 onClicked: {
                     formStack.push(foodPlanForm)
@@ -107,8 +102,7 @@ Page {
                 image: app.style.style.fannyLogo
                 imageScale: 1.2
 
-                width: smallMenu.buttonWidth
-                height: smallMenu.buttonHeight
+                size: smallMenu.buttonSize
 
                 onClicked: {
                     Qt.openUrlExternally("http://www.fanny-leicht.de")
@@ -121,8 +115,7 @@ Page {
                 image: app.style.style.settingsIcon
                 imageScale: 0.8
 
-                width: smallMenu.buttonWidth
-                height: smallMenu.buttonHeight
+                size: smallMenu.buttonSize
 
                 onClicked: {
                     formStack.push(settingsForm)
@@ -135,8 +128,7 @@ Page {
                 image: "qrc:/graphics/icons/logoutRed.png"
                 imageScale: 0.8
 
-                width: smallMenu.buttonWidth
-                height: smallMenu.buttonHeight
+                size: smallMenu.buttonSize
 
                 onClicked: {
                     logoutConfirmationDialog.open()
