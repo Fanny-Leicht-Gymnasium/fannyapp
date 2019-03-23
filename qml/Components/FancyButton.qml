@@ -28,6 +28,10 @@ Button {
     property real imageScale: 1
     property color color: app.style.style.buttonColor
 
+    property int size: 100
+
+    height: control.size
+    width: control.size
 
     scale: control.pressed ? 0.8:1
 
@@ -37,7 +41,14 @@ Button {
         }
     }
 
-    background: Item {
+    onSizeChanged: {
+
+        control.width = control.size
+        control.height = control.size
+        console.log("Button: size: " + control.size + " height: " + control.height + " width: " + control.width)
+    }
+
+   background: Item {
         id: controlBackgroundContainer
 
         RectangularGlow {
@@ -54,27 +65,30 @@ Button {
         Rectangle {
             id: controlBackground
 
-            anchors.fill: parent
+            anchors.centerIn: parent
 
-            radius: height * 0.5
+            height: control.height
+            width: control.width
+
+            radius: control.size * 0.5
 
             color: control.color
-
-            Image {
-                id: buttonIcon
-                source: control.image
-
-                anchors.centerIn: parent
-                height: parent.height * 0.5
-                width: height
-
-                mipmap: true
-
-                fillMode: Image.PreserveAspectFit
-
-                scale: control.imageScale
-            }
         }
     }
+
+   Image {
+       id: buttonIcon
+       source: control.image
+
+       anchors.centerIn: parent
+       height: parent.height * 0.5
+       width: height
+
+       mipmap: true
+
+       fillMode: Image.PreserveAspectFit
+
+       scale: control.imageScale
+   }
 
 }

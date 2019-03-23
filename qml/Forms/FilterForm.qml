@@ -159,7 +159,11 @@ Page {
 
                         background: Rectangle {
                             radius: 2
+<<<<<<< HEAD
                             color: classLetterCb.Material.dialogColor//app.style.style.backgroundColor
+=======
+                            color: classLetterCb.Material.dialogColor
+>>>>>>> origin/master
 
                             layer.enabled: classLetterCb.enabled
 //                            layer.effect: ElevationEffect {
@@ -305,8 +309,7 @@ Page {
 
         imageScale: 0
 
-        height: 50
-        width: height
+        size: 50
 
         onClicked: {
             filterDialog.createContact()
