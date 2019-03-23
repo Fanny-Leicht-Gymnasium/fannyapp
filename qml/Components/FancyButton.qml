@@ -45,7 +45,7 @@ Button {
 
         control.width = control.size
         control.height = control.size
-        console.log("Button: size: " + control.size + " height: " + control.height + " width: " + control.width)
+        //console.log("Button: size: " + control.size + " height: " + control.height + " width: " + control.width)
     }
 
    background: Item {
