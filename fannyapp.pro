@@ -55,6 +55,11 @@ android {
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android-sources
 }
 
+win {
+    LIBS += "$$PWD/windows-libs/libeay32.dll"
+    LIBS += "$$PWD/windows-libs/ssleay32.dll"
+}
+
 DISTFILES += \
     favicon.png \
     android-sources/AndroidManifest.xml \
