@@ -214,7 +214,7 @@ Page {
             width: parent.width
 
             title: "Folge uns"
-            description: "Sein immer der Erste, der über Neuerungen informiert ist - folge unserem Telegram-Channel"
+            description: "Sei immer der Erste, der über Neuerungen informiert ist - folge unserem Telegram-Channel"
 
             showForwardIcon: false
 
