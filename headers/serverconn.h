@@ -53,11 +53,7 @@ private:
     QString username;
     QString password;
 
-    QTimer *checkConnTimer;
-    int authErrorCount;
-
     ReturnData_t senddata(QUrl serviceUrl, QUrlQuery postData);
-
 
     QList<int> apiVersion = {0,2,1};
 
@@ -71,7 +67,6 @@ public:
 public slots:
     Q_INVOKABLE int login(QString username, QString password, bool permanent);
     Q_INVOKABLE int logout();
-    Q_INVOKABLE int checkConn();
     Q_INVOKABLE int getFoodPlan();
     Q_INVOKABLE int getEvents(QString day);
 

@@ -4,7 +4,6 @@
         <file>Pages/LoginPage.qml</file>
         <file>Components/AppToolBar.qml</file>
         <file>Forms/FoodPlanForm.qml</file>
-        <file>Components/ProgressCircle.qml</file>
         <file>Forms/EventForm.qml</file>
         <file>Pages/MainPage.qml</file>
         <file>Components/FancyButton.qml</file>

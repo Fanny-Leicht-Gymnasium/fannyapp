@@ -23,7 +23,7 @@ AppSettings * pGlobalAppSettings = nullptr;
 AppSettings::AppSettings(QObject* parent)
     :QObject(parent)
 {
-    qDebug() << "+----- AppSettings konstruktor -----+";
+    qDebug() << "+----- AppSettings cunstructor -----+";
 
     pGlobalAppSettings = this;
 

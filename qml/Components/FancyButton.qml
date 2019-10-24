@@ -16,10 +16,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.9
-import QtQuick.Controls 2.4
+import QtQuick 2.1
+import QtQuick.Controls 2.2
 import QtGraphicalEffects 1.0
-import QtQuick.Controls.Material 2.3
+import QtQuick.Controls.Material 2.1
 
 Button {
     id: control
@@ -83,8 +83,6 @@ Button {
        anchors.centerIn: parent
        height: parent.height * 0.5
        width: height
-
-       mipmap: true
 
        fillMode: Image.PreserveAspectFit
 
