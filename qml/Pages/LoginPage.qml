@@ -16,10 +16,11 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.11
+import QtQuick 2.2
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.2
-import QtQuick.Controls.Material 2.3
+import QtQuick.Controls.Material 2.1
+
 import "../Components"
 
 Page {
@@ -64,7 +65,6 @@ Page {
 
 
                 fillMode: Image.PreserveAspectFit
-                mipmap: true
                 smooth: true
             }
 
@@ -206,7 +206,6 @@ Page {
                         }
                         fillMode: Image.PreserveAspectFit
                         smooth: true
-                        mipmap: true
                         source: "qrc:/graphics/icons/view.png"
                     }
 
@@ -223,7 +222,6 @@ Page {
                         }
                         fillMode: Image.PreserveAspectFit
                         smooth: true
-                        mipmap: true
                         source: "qrc:/graphics/icons/hide.png"
                     }
                 }

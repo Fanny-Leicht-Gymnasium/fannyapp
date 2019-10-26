@@ -16,8 +16,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.9
-import QtQuick.Controls 2.4
+import QtQuick 2.2
+import QtQuick.Controls 2.1
 import QtGraphicalEffects 1.0
 
 import "../Components"
@@ -27,7 +27,7 @@ Page {
     id: root
     objectName: "MainPage"
 
-    Shortcut {
+    /*Shortcut {
         sequences: ["Esc", "Back"]
         enabled: formStack.depth > 1
         onActivated: {
@@ -35,7 +35,7 @@ Page {
                 formStack.pop()
             }
         }
-    }
+    }*/
 
     Rectangle {
         anchors.fill: parent

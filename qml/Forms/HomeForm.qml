@@ -16,9 +16,9 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.9
-import QtQuick.Controls 2.4
-import QtQuick.Controls.Material 2.3
+import QtQuick 2.1
+import QtQuick.Controls 2.2
+import QtQuick.Controls.Material 2.1
 
 import "../Components"
 
@@ -133,31 +133,34 @@ Page {
                 onClicked: {
                     logoutConfirmationDialog.open()
                 }
-
-                Dialog {
-                    id: logoutConfirmationDialog
-
-                    x: (app.width - width) / 2
-                    y: (app.height - height) / 2
-                    parent: Overlay.overlay
-
-                    modal: true
-                    standardButtons: Dialog.Cancel | Dialog.Ok
-
-                    Material.theme: app.style.style.nameMaterialStyle === "Dark" ? Material.Dark:Material.Light
-
-                    Column {
-                        spacing: 20
-                        anchors.fill: parent
-                        Label {
-                            text: "Möchtest du dich wirklich abmelden?"
-                        }
-                    }
-                    onAccepted: {
-                        serverConn.logout()
-                    }
-                }
             }
         }
     }
+
+    Dialog {
+        id: logoutConfirmationDialog
+
+        x: (parent.width - width) / 2
+        y: (parent.height - height) / 2
+
+        modal: true
+        focus: true
+
+        standardButtons: Dialog.Cancel | Dialog.Ok
+
+        Material.theme: app.style.style.nameMaterialStyle === "Dark" ? Material.Dark:Material.Light
+
+        Column {
+            spacing: 20
+            anchors.fill: parent
+            Label {
+                text: "Möchtest du dich wirklich abmelden?"
+            }
+        }
+
+        onAccepted: {
+            serverConn.logout()
+        }
+    }
+
 }

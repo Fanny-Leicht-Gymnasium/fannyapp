@@ -23,7 +23,7 @@ ServerConn * pGlobalServConn = nullptr;
 
 ServerConn::ServerConn(QObject *parent) : QObject(parent)
 {
-    qDebug("+----- ServerConn konstruktor -----+");
+    qDebug("+----- ServerConn constructor -----+");
     pGlobalServConn = this;
 
     // check login state
@@ -40,12 +40,6 @@ ServerConn::ServerConn(QObject *parent) : QObject(parent)
     else {
         this->setState("notLoggedIn");
     }
-
-    this->checkConnTimer = new QTimer();
-    this->checkConnTimer->setInterval(1000);
-    this->checkConnTimer->setSingleShot(true);
-    connect(checkConnTimer, SIGNAL(timeout()), this, SLOT(checkConn()));
-    this->checkConnTimer->start();
 }
 
 int ServerConn::login(QString username, QString password, bool permanent)
@@ -57,7 +51,7 @@ int ServerConn::login(QString username, QString password, bool permanent)
     pdata.addQueryItem("password", password);
 
     // send the request
-    ReturnData_t ret = this->senddata(QUrl("https://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata);
+    ReturnData_t ret = this->senddata(QUrl("http://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata);
 
     if(ret.status_code == 200){
         // if not 200 was returned -> user data was correct
@@ -110,34 +104,6 @@ int ServerConn::logout()
     return(200);
 }
 
-int ServerConn::checkConn()
-{
-    if(this->state == "notLoggedIn"){
-        return(903);
-    }
-
-    // add the data to the request
-    QUrlQuery pdata;
-    pdata.addQueryItem("username", this->username);
-    pdata.addQueryItem("password", this->password);
-
-    // send the request
-    ReturnData_t ret = this->senddata(QUrl("https://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata);
-
-    if(ret.status_code == 401){
-        // if the stats code is 401 -> userdata is incorrect
-        authErrorCount ++;
-
-        if(authErrorCount > 3){
-            qDebug() << "+----- checkconn: user data is incorrect -----+";
-            logout();
-        }
-    }
-
-    this->checkConnTimer->start();
-    return(ret.status_code);
-}
-
 int ServerConn::getEvents(QString day)
 {
     // day: 0-today; 1-tomorrow
@@ -158,7 +124,14 @@ int ServerConn::getEvents(QString day)
     if(ret.status_code != 200){
         // if the request didn't result in a success, clear the old events, as they are probaply incorrect and return the error code
         this->m_events.clear();
-        return(ret.status_code);
+
+        if(ret.status_code == 401){
+            // if the stats code is 401 -> userdata is incorrect
+            qDebug() << "+----- checkconn: user data is incorrect -----+";
+            logout();
+        }
+
+        return ret.status_code;
     }
 
 
@@ -270,7 +243,6 @@ int ServerConn::getEvents(QString day)
 
 int ServerConn::getFoodPlan()
 {
-
     // list with all data keys which need to be read from the API
     QStringList foodplanDataKeys = { "cookteam", "date", "mainDish", "mainDishVeg", "garnish", "dessert" };
     QString foodplanDateKey = "date";
@@ -377,8 +349,6 @@ ReturnData_t ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata)
 
     QNetworkReply *reply;
 
-    reply = networkManager->post(request, pdata.toString(QUrl::FullyEncoded).toUtf8());
-    connect(reply, &QNetworkReply::sslErrors, this, [=](){ reply->ignoreSslErrors(); });
     // loop to wait until the request has finished before processing the data
     QEventLoop loop;
     // timer to cancel the request after 3 seconds
@@ -391,8 +361,15 @@ ReturnData_t ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata)
     loop.connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
     // start the timer
     timer.start(10000);
+
+    qDebug() << "+--- starting request now...";
+    reply = networkManager->post(request, pdata.toString(QUrl::FullyEncoded).toUtf8());
+    connect(reply, &QNetworkReply::sslErrors, this, [=](){ reply->ignoreSslErrors(); });
+
     // start the loop
     loop.exec();
+
+    qDebug() << "+--- request finished";
 
     //get the status code
     QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
@@ -403,10 +380,10 @@ ReturnData_t ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata)
     ret.text = QString::fromUtf8(reply->readAll());
 
     // delete the reply object
-    delete reply;
+    reply->deleteLater();
 
     // delete the newtwork access manager object
-    delete networkManager;
+    networkManager->deleteLater();
 
     //return the data
     return(ret);
