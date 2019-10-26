@@ -62,6 +62,10 @@ win {
     LIBS += "$$PWD/windows-libs/ssleay32.dll"
 }
 
+ios {
+    QMAKE_ASSET_CATALOGS += shared/Assets.xcassets
+}
+
 DISTFILES += \
     favicon.png \
     android-sources/AndroidManifest.xml \
