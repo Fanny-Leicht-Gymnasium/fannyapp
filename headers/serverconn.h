@@ -22,13 +22,11 @@
 #include <QObject>
 #include <QDir>
 #include <QUrl>
-#include <QtXml>
 #include <QTimer>
 
 #include <QtNetwork>
 #include <QAuthenticator>
 #include <QDesktopServices>
-#include <QXmlNamespaceSupport>
 
 #include "headers/appsettings.h"
 

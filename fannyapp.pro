@@ -1,4 +1,4 @@
-QT += qml quick quickcontrols2 xml
+QT += qml quick quickcontrols2
 CONFIG += c++11
 
 VERSION = 1.0.1
@@ -55,8 +55,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 android {
     QT += androidextras
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android-sources
+    LIBS += "$$PWD/android-sources/libs/armeabi-v7a/libssl.a"
+    LIBS += "$$PWD/android-sources/libs/armeabi-v7a/libcrypto.a"
 }
-
 win {
     LIBS += "$$PWD/windows-libs/libeay32.dll"
     LIBS += "$$PWD/windows-libs/ssleay32.dll"
@@ -67,12 +68,6 @@ ios {
 }
 
 DISTFILES += \
-    favicon.png \
     android-sources/AndroidManifest.xml \
-    android-sources/src/com/itsblue/flgvertretung/MainActivity.java \
-    android-sources/res/drawable-hdpi/icon.png \
-    android-sources/res/drawable-ldpi/icon.png \
-    android-sources/res/drawable-mdpi/icon.png \
-    android-sources/res/xml/provider_paths.xml \
     CHANGELOG.md
 
