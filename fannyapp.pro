@@ -1,4 +1,4 @@
-QT += qml quick quickcontrols2
+QT += qml quick quickcontrols2 widgets
 CONFIG += c++11
 
 VERSION = 1.0.1
@@ -69,5 +69,7 @@ ios {
 
 DISTFILES += \
     android-sources/AndroidManifest.xml \
-    CHANGELOG.md
+    CHANGELOG.md \
+    $$files(shared/icons/*.png, true) \
+    shared/icons/ibmaterial/index.theme
 

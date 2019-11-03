@@ -23,6 +23,9 @@
 #include <QFile>
 #include <QDesktopServices>
 
+#include <QIcon>
+#include <QStyleFactory>
+
 #include <QtCore/QUrl>
 #include <QtCore/QCommandLineOption>
 #include <QtCore/QCommandLineParser>
@@ -44,6 +47,7 @@ int main(int argc, char *argv[])
     // ServerConn * pServerConn = new ServerConn();
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
     QGuiApplication app(argc, argv);
 
@@ -54,6 +58,9 @@ int main(int argc, char *argv[])
     qmlRegisterType<AppStyle>("Backend", 1, 0, "AppStyle");
 
     QQuickStyle::setStyle("Material");
+    QIcon::setFallbackSearchPaths(QIcon::fallbackSearchPaths() << ":/shared/icons");
+    QIcon::setThemeName("ibmaterial");
+
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     QQmlContext *context = engine.rootContext();

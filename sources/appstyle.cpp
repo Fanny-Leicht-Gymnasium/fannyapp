@@ -27,8 +27,8 @@ AppStyle::AppStyle(QObject *parent) : QObject(parent)
 
         {"lineColor", "grey"},
 
-        {"backIcon", "qrc:/graphics/icons/back.png"},
-        {"settingsIcon", "qrc:/graphics/icons/settings.png"},
+        {"backIcon", "qrc:/icons/back.png"},
+        {"settingsIcon", "qrc:/icons/settings.png"},
         {"treffpunktFannyIcon", "qrc:/graphics/images/TreffpunktFannyLogoLight.png"},
         {"fannyLogo", "qrc:/graphics/images/FannyLogoLight.png"},
 
@@ -62,8 +62,8 @@ AppStyle::AppStyle(QObject *parent) : QObject(parent)
 
         {"lineColor", "grey"},
 
-        {"backIcon", "qrc:/graphics/icons/backDark.png"},
-        {"settingsIcon", "qrc:/graphics/icons/settingsBlack.png"},
+        {"backIcon", "qrc:/icons/backDark.png"},
+        {"settingsIcon", "qrc:/icons/settingsBlack.png"},
         {"treffpunktFannyIcon", "qrc:/graphics/images/TreffpunktFannyLogoDark.png"},
         {"fannyLogo", "qrc:/graphics/images/FannyLogoDark.jpg"}
 

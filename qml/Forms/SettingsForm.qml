@@ -126,6 +126,7 @@ Page {
                     }
                 }
             }
+
         }
 
         SwitchDelegate {

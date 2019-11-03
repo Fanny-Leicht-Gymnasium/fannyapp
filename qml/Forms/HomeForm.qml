@@ -50,7 +50,7 @@ Page {
             FancyButton {
                 id: todayButton
 
-                image: "qrc:/graphics/icons/sheute.png"
+                image: "qrc:/icons/sheute.png"
 
                 size: mainMenu.buttonSize
 
@@ -63,7 +63,7 @@ Page {
             FancyButton {
                 id: tomorrowButton
 
-                image: "qrc:/graphics/icons/smorgen.png"
+                image: "qrc:/icons/smorgen.png"
 
                 size: mainMenu.buttonSize
 
@@ -125,7 +125,7 @@ Page {
             FancyButton {
                 id: logoutButton
 
-                image: "qrc:/graphics/icons/logoutRed.png"
+                image: "qrc:/icons/logoutRed.png"
                 imageScale: 0.8
 
                 size: smallMenu.buttonSize

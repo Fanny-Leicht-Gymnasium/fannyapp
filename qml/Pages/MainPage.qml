@@ -19,6 +19,7 @@
 import QtQuick 2.2
 import QtQuick.Controls 2.1
 import QtGraphicalEffects 1.0
+import QtQuick.Layouts 1.3
 
 import "../Components"
 import "../Forms"
@@ -133,67 +134,54 @@ Page {
 
         anchors {
             top: parent.top
-            left: parent.left
-            right: parent.right
             topMargin: -60
         }
 
         height: 50
+        width: parent.width
 
-        Button {
-            id:toolButton
-            enabled: true
-            anchors {
-                left: parent.left
-                verticalCenter: parent.verticalCenter
-                leftMargin: parent.width *0.02
-            }
-            height: parent.height - parent.height * 0.5
-            width: height
+        RowLayout {
 
-            onClicked: {
-                if(!formStack.currentItem.locked){
-                    formStack.pop()
-                }
-            }
+            anchors.fill: parent
 
-            onPressed: toolButton.scale = 0.9
-            onReleased: toolButton.scale = 1.0
+            spacing: width * 0.02
 
-            background: Image {
-                source: app.style.style.backIcon
-                height: parent.height
-                width: parent.width
-                fillMode: Image.PreserveAspectFit
-                Behavior on scale {
-                    PropertyAnimation {
-                        duration: 100
+            ToolButton {
+                id: toolButton
+
+                icon.name: "back"
+                icon.color: app.style.style.textColor
+
+                onClicked: {
+                    if(!formStack.currentItem.locked){
+                        formStack.pop()
                     }
                 }
-            }
-        }
 
-        Label {
-            text: getText()
-            anchors {
-                verticalCenter: parent.verticalCenter
-                left: toolButton.right
-                leftMargin: parent.width * 0.02
             }
-            font.bold: true
-            color: app.style.style.textColor
 
-            function getText(){
-                var titleString = "";
-                for(var i=1; i<formStack.depth; i++){
-                    if(i > 1){
-                        titleString += " > "
+            Label {
+
+                Layout.fillWidth: true
+
+                text: getText()
+
+                font.bold: true
+                color: app.style.style.textColor
+
+                function getText(){
+                    var titleString = "";
+                    for(var i=1; i<formStack.depth; i++){
+                        if(i > 1){
+                            titleString += " > "
+                        }
+
+                        titleString += formStack.get(i).title
                     }
-
-                    titleString += formStack.get(i).title
+                    return(titleString)
                 }
-                return(titleString)
             }
+
         }
 
         Behavior on anchors.topMargin {

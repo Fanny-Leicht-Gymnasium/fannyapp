@@ -33,14 +33,6 @@ Button {
     height: control.size
     width: control.size
 
-    scale: control.pressed ? 0.8:1
-
-    Behavior on scale {
-        PropertyAnimation {
-            duration: 100
-        }
-    }
-
     onSizeChanged: {
 
         control.width = control.size
@@ -72,7 +64,13 @@ Button {
 
             radius: control.size * 0.5
 
-            color: control.color
+            color: control.down ? Qt.darker(control.color, 1.2) : control.color
+
+            Behavior on color {
+                ColorAnimation {
+                    duration: 200
+                }
+            }
         }
     }
 

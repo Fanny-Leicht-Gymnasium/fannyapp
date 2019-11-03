@@ -201,21 +201,44 @@ Page {
 
         focus: true
 
+        add: Transition {
+            NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 300 }
+            NumberAnimation { property: "scale"; from: 0.9; to: 1.0; duration: 300 }
+        }
+
+        displaced: Transition {
+            NumberAnimation { properties: "x,y"; duration: 300; easing.type: Easing.InOutQuad }
+        }
+
         delegate: ItemDelegate {
             id: delegate
 
             width: contactView.width
-            height: 0
-
-            Component.onCompleted: {
-                delegate.height = 50
-            }
+            height: 50
 
             text: grade + classLetter
             font.pixelSize: delegate.height * 0.4
 
 
             enabled: root.teacherMode ? role === "t":role === "s"
+
+            Rectangle {
+
+                anchors {
+                    top: parent.top
+                    left: parent.left
+                    right: parent.right
+                }
+
+                visible: index === 0
+
+                height: 1
+                width: parent.width
+
+                color: "lightgrey"
+
+                opacity: 0.5
+            }
 
             Rectangle {
 
@@ -229,24 +252,28 @@ Page {
                 width: parent.width
 
                 color: "lightgrey"
+
+                opacity: 0.5
             }
 
-            Behavior on height {
+            ParallelAnimation {
+                id: deleteAnimation
                 NumberAnimation {
-                    duration: 500
+                    target: delegate
+                    property: "scale"
+                    duration: 300
+                    from: 1
+                    to: 0.9
                     easing.type: Easing.InOutQuad
                 }
-            }
-
-
-            NumberAnimation {
-                id: deleteAnimation
-                target: delegate
-                property: "height"
-                duration: 500
-                from: delegate.height
-                to: 0
-                easing.type: Easing.InOutQuad
+                NumberAnimation {
+                    target: delegate
+                    property: "opacity"
+                    duration: 300
+                    from: 1
+                    to: 0
+                    easing.type: Easing.InOutQuad
+                }
                 onRunningChanged: {
                     if(!running){
                         contactView.model.remove(index)
@@ -254,7 +281,7 @@ Page {
                 }
             }
 
-            Button {
+            ToolButton {
                 id: deleteButton
 
                 anchors {
@@ -263,18 +290,12 @@ Page {
                     verticalCenter: parent.verticalCenter
                 }
 
-                height: parent.height * 0.6
-                width: height
+                height: parent.height
 
-                scale: pressed ? 0.8:1
+                icon.name: "delete"
 
                 onClicked: {
                     deleteAnimation.start()
-                }
-
-                background: Image {
-                    source: "/graphics/icons/delete.png"
-                    fillMode: Image.PreserveAspectFit
                 }
 
                 Behavior on scale {
@@ -310,10 +331,12 @@ Page {
             filterDialog.createContact()
         }
 
-        Label {
-            anchors.centerIn: parent
+        Text {
+            anchors.fill: parent
             font.pixelSize: parent.height * 0.6
             text: "+"
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
             color: app.style.style.textColor
         }
     }
