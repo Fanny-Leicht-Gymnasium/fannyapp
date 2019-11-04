@@ -18,7 +18,6 @@ TEMPLATE = app
 TARGET = fannyapp
 
 ICON = shared/graphics/favicon.icns
-RC_ICONS = shared/graphics/favicon.ico
 
 SOURCES += \
     sources/serverconn.cpp \
@@ -55,10 +54,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 android {
     QT += androidextras
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android-sources
-    LIBS += "$$PWD/android-sources/libs/armeabi-v7a/libssl.a"
-    LIBS += "$$PWD/android-sources/libs/armeabi-v7a/libcrypto.a"
 }
+
 win {
+    RC_ICONS = shared/graphics/favicon.ico
     LIBS += "$$PWD/windows-libs/libeay32.dll"
     LIBS += "$$PWD/windows-libs/ssleay32.dll"
 }
@@ -69,7 +68,5 @@ ios {
 
 DISTFILES += \
     android-sources/AndroidManifest.xml \
-    CHANGELOG.md \
-    $$files(shared/icons/*.png, true) \
-    shared/icons/ibmaterial/index.theme
+    CHANGELOG.md
 
