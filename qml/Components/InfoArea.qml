@@ -29,44 +29,48 @@ Item {
     property int errorCode: -1
     property var excludedCodes: []
 
+    property var optionButtonFunction: undefined
+
     visible: !(excludedCodes.indexOf(errorCode) >= 0)
 
-    height: childrenRect.height
+    Column {
+        anchors.centerIn: parent
 
-    Rectangle {
-
-        radius: height * 0.5
-        width: parent.width
-        height: width
-
-        color: "transparent"
-        border.width: 5
-        border.color: infoArea.alertLevel > 0 ? infoArea.alertLevel > 1 ? "red":"grey" : "green"
+        width: parent.width * 0.8
 
         opacity: infoArea.errorCode !== 200 && infoArea.errorCode !== (-1) ? 1:0
 
-        Behavior on opacity {
-            NumberAnimation {
-                duration: 500
-            }
-        }
+        spacing: 20
 
-        Label {
-            anchors.centerIn: parent
-            font.pixelSize: parent.height * 0.8
-            text: infoArea.alertLevel > 1 ? "!":"i"
-            color: infoArea.alertLevel > 0 ? infoArea.alertLevel > 1 ? "red":"grey" : "green"
+        Rectangle {
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+            }
+
+            radius: height * 0.5
+            width: app.landscape() ? infoArea.height * 0.4 : parent.width * 0.5
+            height: width
+
+            color: "transparent"
+            border.width: 5
+            border.color: ["green", "grey", "orange", "red"][infoArea.alertLevel]
+
+            Label {
+                anchors.centerIn: parent
+                font.pixelSize: parent.height * 0.8
+                text: infoArea.alertLevel > 1 ? "!":"i"
+                color: parent.border.color
+            }
+
         }
 
         Label {
             id: errorShortDescription
             anchors {
                 horizontalCenter: parent.horizontalCenter
-                top: parent.bottom
-                margins: parent.height * 0.1
             }
 
-            width: app.width * 0.8
+            width: parent.width
 
             wrapMode: Label.Wrap
 
@@ -80,17 +84,37 @@ Item {
             id: errorLongDescription
             anchors {
                 horizontalCenter: parent.horizontalCenter
-                top: errorShortDescription.bottom
-                margins: parent.height * 0.1
             }
 
-            width: app.width * 0.8
+            width: parent.width
 
             wrapMode: Label.Wrap
 
             horizontalAlignment: Label.AlignHCenter
 
             text: app.getErrorInfo(infoArea.errorCode)[2]
+        }
+
+        Button  {
+            id: optionButton
+
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+            }
+
+            visible: text !== "" && infoArea.optionButtonFunction !== undefined
+
+            text: app.getErrorInfo(infoArea.errorCode)[3]
+
+            onClicked: {
+                infoArea.optionButtonFunction()
+            }
+        }
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: 500
+            }
         }
     }
 

@@ -24,6 +24,7 @@ ListView {
     id: control
 
     property int status: -1
+    property var optionButtonFunction: undefined
 
     signal refresh()
 
@@ -56,15 +57,23 @@ ListView {
     InfoArea {
         id: infoArea
 
-        anchors {
-            left: parent.left
-            right: parent.right
-            top: parent.top
-            margins: app.landscape() ? parent.width * 0.4:parent.width * 0.3
-            topMargin: parent.height*( status === 901 ? 0.6:0.5) - height * 0.8
-        }
+        z: 0
+
+        anchors.fill: parent
 
         excludedCodes: [200, 902]
         errorCode: control.status
+        optionButtonFunction: control.optionButtonFunction
+    }
+
+    PullRefresher{
+        target: control
+
+        backgroundColor: app.style.style.buttonColor
+        pullIndicatorColor: app.style.style.textColor
+
+        preRefreshDelay: 300
+
+        refreshPosition: height * 1.3
     }
 }

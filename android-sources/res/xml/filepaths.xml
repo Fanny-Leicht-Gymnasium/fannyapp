@@ -1,0 +1,3 @@
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <files-path name="tmp_pdf_files" path="tmp_pdf_files/" />
+</paths>

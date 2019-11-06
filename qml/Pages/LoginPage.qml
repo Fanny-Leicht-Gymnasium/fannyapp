@@ -140,14 +140,17 @@ Page {
                     rightMargin: root.width * 0.05
                 }
 
-                MouseArea {
+                ToolButton{
                     id: passwordHideShow
                     anchors {
                         top: parent.top
                         bottom: parent.bottom
                         right: parent.right
                     }
-                    width: visibleIcon.width
+
+                    icon.height: parent.height * 0.5
+                    icon.width: parent.height * 0.5
+                    icon.color: app.style.style.textColor
 
                     onClicked: {
                         if(state === "visible"){
@@ -164,13 +167,10 @@ Page {
                         State {
                             name: "invisible"
                             PropertyChanges {
-                                target: visibleIcon
-                                scale: 0
+                                target: passwordHideShow
+                                icon.name: "hide"
                             }
-                            PropertyChanges {
-                                target: invisibleIcon
-                                scale: 1
-                            }
+
                             PropertyChanges {
                                 target: tipasswd
                                 echoMode: TextInput.Password
@@ -179,12 +179,8 @@ Page {
                         State {
                             name: "visible"
                             PropertyChanges {
-                                target: visibleIcon
-                                scale: 1
-                            }
-                            PropertyChanges {
-                                target: invisibleIcon
-                                scale: 0
+                                target: passwordHideShow
+                                icon.name: "view"
                             }
                             PropertyChanges {
                                 target: tipasswd
@@ -192,39 +188,8 @@ Page {
                             }
                         }
                     ]
-
-                    Image {
-                        id: visibleIcon
-
-                        anchors {
-                            top: parent.top
-                            bottom: parent.bottom
-                            right: parent.right
-
-                            bottomMargin: parent.height * 0.25
-                            topMargin: anchors.bottomMargin
-                        }
-                        fillMode: Image.PreserveAspectFit
-                        smooth: true
-                        source: "qrc:/graphics/icons/view.png"
-                    }
-
-                    Image {
-                        id: invisibleIcon
-
-                        anchors {
-                            top: parent.top
-                            bottom: parent.bottom
-                            right: parent.right
-
-                            bottomMargin: parent.height * 0.25
-                            topMargin: anchors.bottomMargin
-                        }
-                        fillMode: Image.PreserveAspectFit
-                        smooth: true
-                        source: "qrc:/graphics/icons/hide.png"
-                    }
                 }
+
             }
 
             CheckDelegate {

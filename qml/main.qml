@@ -115,31 +115,34 @@ ApplicationWindow {
             var infoLevel
             // 0 - ok
             // 1 - info
-            // 2 - error
+            // 2 - warn
+            // 3 - error
 
             var errorString
             var errorDescription
+            var errorButtonOption = ""
 
             switch(errorCode) {
             case 0:
-                infoLevel = 2
+                infoLevel = 3
                 errorString = "Keine Verbindung zum Server"
                 errorDescription = "Bitte überprüfe deine Internetverbindung und versuche es erneut."
                 break
             case 401:
-                infoLevel = 2
+                infoLevel = 3
                 errorString = "Ungültige Zugangsdaten"
                 errorDescription = "Der Server hat den Zugang verweigert, bitte überprüfe deine Zugangsdaten und versuche es erneut"
                 break
             case 500:
-                infoLevel = 2
+                infoLevel = 3
                 errorString = "Interner Server Fehler"
                 errorDescription = "Scheinbar kann der Server die Anfrage im Moment nicht verarbeiten, bitte versuche es später erneut."
                 break
             case 900:
                 infoLevel = 2
-                errorString = "Interner Verarbeitungsfehler"
+                errorString = "Verarbeitungsfehler"
                 errorDescription = "Die Daten, die vom Server übertragen wurden, konnten nicht richtig verarbeitet werden, bitte versuche es später erneut."
+                errorButtonOption = "Als Pdf ansehen"
                 break
             case 901:
                 infoLevel = 1
@@ -157,17 +160,23 @@ ApplicationWindow {
                 errorDescription = "Die aufgerufene Funktion ist momentan nicht verfügbar, bitte versuche es später erneut."
                 break
             case 904:
-                infoLevel = 2
+                infoLevel = 3
                 errorString = "Inkompatible API"
                 errorDescription = "Die Version der API auf dem Server ist zu neu und kann daher nicht verarbeitet werden. Bitte aktualisiere die App auf die aktuellste Version."
+                errorButtonOption = "Als Pdf ansehen"
+                break
+            case 905:
+                infoLevel = 3
+                errorString = "Interner Speicherfehler"
+                errorDescription = "Die Pdf-Datei konnte nicht gespeichert werden."
                 break
             default:
-                infoLevel = 2
+                infoLevel = 3
                 errorString = "Unerwarteter Fehler ("+errorCode+")"
                 errorDescription = "Unbekannter Fehler bei der Verbindung mit dem Server."
             }
 
-            return([infoLevel, errorString, errorDescription])
+            return([infoLevel, errorString, errorDescription, errorButtonOption])
         }
 
         function landscape(){

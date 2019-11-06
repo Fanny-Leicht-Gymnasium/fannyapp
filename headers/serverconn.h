@@ -29,21 +29,17 @@
 #include <QDesktopServices>
 
 #include "headers/appsettings.h"
+#include "headers/filehelper.h"
 
 #ifdef Q_OS_ANDROID
 #include <QtAndroidExtras>
 #endif
 
-
-typedef struct strReturnData{
-    int status_code;
-    QString text;
-}ReturnData_t;
-
 class ServerConn : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString state READ getState NOTIFY stateChanged)
+    Q_PROPERTY(double downloadProgress READ getDownloadProgress NOTIFY downloadProgressChanged)
 
 private:
     QString state;
@@ -51,12 +47,18 @@ private:
     QString username;
     QString password;
 
-    ReturnData_t senddata(QUrl serviceUrl, QUrlQuery postData);
+    QVariantMap senddata(QUrl serviceUrl, QUrlQuery postData, bool raw = false);
 
     QList<int> apiVersion = {0,2,1};
 
+    FileHelper * fileHelper;
+    QString mDocumentsWorkPath;
+
+    double downloadProgress;
+
 private slots:
     void setState(QString state);
+    void updateDownloadProgress(qint64 read, qint64 total);
 
 public:
     explicit ServerConn(QObject *parent = nullptr);
@@ -66,12 +68,15 @@ public slots:
     Q_INVOKABLE int login(QString username, QString password, bool permanent);
     Q_INVOKABLE int logout();
     Q_INVOKABLE int getFoodPlan();
+    Q_INVOKABLE int openEventPdf(QString day);
     Q_INVOKABLE int getEvents(QString day);
 
+    Q_INVOKABLE double getDownloadProgress();
     Q_INVOKABLE QString getState();
 
 signals:
     void stateChanged(QString newState);
+    void downloadProgressChanged();
 
 public:
     QList<QStringList> m_weekplan;

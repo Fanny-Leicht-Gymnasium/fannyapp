@@ -16,5 +16,7 @@
         <file>Forms/FilterForm.qml</file>
         <file>Components/SettingsDelegate.qml</file>
         <file>Components/FannyDataListView.qml</file>
+        <file>Components/ProgressCircle.qml</file>
+        <file>Components/PullRefresher.qml</file>
     </qresource>
 </RCC>

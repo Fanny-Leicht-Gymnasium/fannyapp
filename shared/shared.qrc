@@ -72,7 +72,6 @@
         <file>icons/ibmaterial/index.theme</file>
         <file>icons/back.png</file>
         <file>icons/backDark.png</file>
-        <file>icons/delete.png</file>
         <file>icons/hide.png</file>
         <file>icons/logoutBlack.png</file>
         <file>icons/logoutRed.png</file>
@@ -86,5 +85,18 @@
         <file>icons/ibmaterial/20x20@2/delete.png</file>
         <file>icons/ibmaterial/20x20@3/delete.png</file>
         <file>icons/ibmaterial/20x20@4/delete.png</file>
+        <file>icons/ibmaterial/20x20/pdf.png</file>
+        <file>icons/ibmaterial/20x20@2/pdf.png</file>
+        <file>icons/ibmaterial/20x20@3/pdf.png</file>
+        <file>icons/ibmaterial/20x20@4/pdf.png</file>
+        <file>graphics/Splashscreen.png</file>
+        <file>icons/ibmaterial/20x20/hide.png</file>
+        <file>icons/ibmaterial/20x20/view.png</file>
+        <file>icons/ibmaterial/20x20@2/hide.png</file>
+        <file>icons/ibmaterial/20x20@2/view.png</file>
+        <file>icons/ibmaterial/20x20@3/hide.png</file>
+        <file>icons/ibmaterial/20x20@3/view.png</file>
+        <file>icons/ibmaterial/20x20@4/hide.png</file>
+        <file>icons/ibmaterial/20x20@4/view.png</file>
     </qresource>
 </RCC>

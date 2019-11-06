@@ -16,8 +16,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.2
-import QtQuick.Controls 2.1
+import QtQuick 2.9
+import QtQuick.Controls 2.2
 import QtGraphicalEffects 1.0
 import QtQuick.Layouts 1.3
 
@@ -28,7 +28,7 @@ Page {
     id: root
     objectName: "MainPage"
 
-    /*Shortcut {
+    Shortcut {
         sequences: ["Esc", "Back"]
         enabled: formStack.depth > 1
         onActivated: {
@@ -36,7 +36,7 @@ Page {
                 formStack.pop()
             }
         }
-    }*/
+    }
 
     Rectangle {
         anchors.fill: parent
@@ -149,6 +149,10 @@ Page {
             ToolButton {
                 id: toolButton
 
+                enabled: !formStack.currentItem.locked
+
+                opacity: enabled ? 1:0.5
+
                 icon.name: "back"
                 icon.color: app.style.style.textColor
 
@@ -182,6 +186,24 @@ Page {
                 }
             }
 
+            ToolButton {
+                id: pdfToolButton
+
+                enabled: !formStack.currentItem.locked
+
+                opacity: enabled ? 1:0.5
+
+                visible: formStack.currentItem.title === "Vertretungsplan"
+
+                icon.name: "pdf"
+                icon.color: app.style.style.textColor
+
+                onClicked: {
+                    if(formStack.currentItem.pdfAction !== undefined) {
+                        formStack.currentItem.pdfAction()
+                    }
+                }
+            }
         }
 
         Behavior on anchors.topMargin {
@@ -211,3 +233,5 @@ Page {
         ]
     }
 }
+
+

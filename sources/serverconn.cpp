@@ -26,6 +26,27 @@ ServerConn::ServerConn(QObject *parent) : QObject(parent)
     qDebug("+----- ServerConn constructor -----+");
     pGlobalServConn = this;
 
+    this->fileHelper = new FileHelper();
+    connect(this->fileHelper, &FileHelper::shareError, [=](){qWarning() << "share error";});
+    connect(this->fileHelper, &FileHelper::shareFinished, [=](){qWarning() << "share finished";});
+    connect(this->fileHelper, &FileHelper::shareNoAppAvailable, [=](){qWarning() << "share no app available";});
+
+    // get local work path
+#if defined (Q_OS_IOS)
+    QString docLocationRoot = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).value(0);
+    qDebug() << "iOS: QStandardPaths::DocumentsLocation: " << docLocationRoot;
+#elif defined(Q_OS_ANDROID)
+    QString docLocationRoot = QStandardPaths::standardLocations(QStandardPaths::AppDataLocation).value(0);
+#else
+    QString docLocationRoot = QStandardPaths::standardLocations(QStandardPaths::AppDataLocation).value(0);
+#endif
+    mDocumentsWorkPath = docLocationRoot.append("/tmp_pdf_files");
+    if (!QDir(mDocumentsWorkPath).exists()) {
+        if (!QDir("").mkpath(mDocumentsWorkPath)) {
+            pGlobalAppSettings->writeSetting("localDocPathError", "true");
+        }
+    }
+
     // check login state
     int perm = pGlobalAppSettings->loadSetting("permanent").toInt();
     qDebug() << "+----- login state: " << perm << " -----+";
@@ -51,9 +72,9 @@ int ServerConn::login(QString username, QString password, bool permanent)
     pdata.addQueryItem("password", password);
 
     // send the request
-    ReturnData_t ret = this->senddata(QUrl("http://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata);
+    QVariantMap ret = this->senddata(QUrl("http://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata);
 
-    if(ret.status_code == 200){
+    if(ret["status"].toInt() == 200){
         // if not 200 was returned -> user data was correct
         // store username and password in the class variables
         this->username = username;
@@ -81,7 +102,7 @@ int ServerConn::login(QString username, QString password, bool permanent)
         pGlobalAppSettings->writeSetting("permanent", "0");
         pGlobalAppSettings->writeSetting("username", "");
         pGlobalAppSettings->writeSetting("password", "");
-        return(ret.status_code);
+        return(ret["status"].toInt());
     }
 }
 
@@ -119,19 +140,19 @@ int ServerConn::getEvents(QString day)
     pdata.addQueryItem("day", day);
 
     // send the request
-    ReturnData_t ret = this->senddata(QUrl("https://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata);
+    QVariantMap ret = this->senddata(QUrl("https://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata);
 
-    if(ret.status_code != 200){
+    if(ret["status"].toInt() != 200){
         // if the request didn't result in a success, clear the old events, as they are probaply incorrect and return the error code
         this->m_events.clear();
 
-        if(ret.status_code == 401){
+        if(ret["status"].toInt() == 401){
             // if the stats code is 401 -> userdata is incorrect
             qDebug() << "+----- checkconn: user data is incorrect -----+";
             logout();
         }
 
-        return ret.status_code;
+        return ret["status"].toInt();
     }
 
 
@@ -152,7 +173,7 @@ int ServerConn::getEvents(QString day)
     QStringList tmpEventHeader;
 
     //qDebug() << jsonString;
-    QJsonDocument jsonFilters = QJsonDocument::fromJson(ret.text.toUtf8());
+    QJsonDocument jsonFilters = QJsonDocument::fromJson(ret["text"].toString().toUtf8());
 
     // array with tghe whole response in it
     QJsonObject JsonArray = jsonFilters.object();
@@ -230,15 +251,68 @@ int ServerConn::getEvents(QString day)
     }
 
     // check if there is any valid data
-    if(tmpEvents.length() < 3){
+    if(tmpEvents.length() == 0 || tmpEvents.length() == 1) {
+        // no data was delivered at all -> the server encountered a parse error
+        tmpEvents.clear();
+        ret["status"].setValue(900);
+    }
+    else if(tmpEvents.length() == 2) {
         // remove the last (in this case the second) element, as it is unnecessary (it is the legend -> not needed when there is no data)
         tmpEvents.takeLast();
         // set return code to 'no data' (901)
-        ret.status_code = 901;
+        ret["status"].setValue(901);
     }
 
     this->m_events = tmpEvents;
-    return(ret.status_code);
+    return(ret["status"].toInt());
+}
+
+int ServerConn::openEventPdf(QString day) {
+    // day: 0-today; 1-tomorrow
+    if(this->state != "loggedIn"){
+        return 401;
+    }
+
+    if(pGlobalAppSettings->loadSetting("localDocPathError") == "true") {
+        // we have no local document path to work with -> this is not going to work!
+        return 905;
+    }
+
+    // add the data to the request
+    QUrlQuery pdata;
+    pdata.addQueryItem("username", this->username);
+    pdata.addQueryItem("password", this->password);
+    pdata.addQueryItem("mode", pGlobalAppSettings->loadSetting("teacherMode") == "true" ? "1":"0");
+    pdata.addQueryItem("day", day);
+    pdata.addQueryItem("asPdf", "true");
+
+    // send the request
+    QVariantMap ret = this->senddata(QUrl("https://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata, true);
+
+    if(ret["status"].toInt() != 200){
+        // if the request didn't result in a success, clear the old events, as they are probaply incorrect and return the error code
+        this->m_events.clear();
+
+        if(ret["status"].toInt() == 401){
+            // if the stats code is 401 -> userdata is incorrect
+            qDebug() << "+----- checkconn: user data is incorrect -----+";
+            logout();
+        }
+
+        return ret["status"].toInt();
+    }
+
+    QString path = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
+    QString filname = (QString(pGlobalAppSettings->loadSetting("teacherMode") == "true" ? "l":"s") + QString(day == "0" ? "heute":"morgen" ));
+    QFile file(mDocumentsWorkPath + "/" + filname + ".pdf");
+    file.remove();
+    file.open(QIODevice::ReadWrite);
+    file.write(ret["data"].toByteArray());
+    file.close();
+
+    this->fileHelper->viewFile(mDocumentsWorkPath + "/" + filname + ".pdf", "SMorgen", "application/pdf", 1);
+
+    return 200;
 }
 
 int ServerConn::getFoodPlan()
@@ -255,18 +329,18 @@ int ServerConn::getFoodPlan()
 
     QUrlQuery pdata;
     // send the request to the server
-    ReturnData_t ret = this->senddata(QUrl(url), pdata);
+    QVariantMap ret = this->senddata(QUrl(url), pdata);
 
-    if(ret.status_code != 200){
+    if(ret["status"].toInt() != 200){
         // if the request didn't result in a success, return the error code
 
         // if the request failed but there is still old data available
         if(!this->m_weekplan.isEmpty()){
             // set the status code to 902 (old data)
-            ret.status_code = 902;
+            ret["status"].setValue(902);
         }
 
-        return(ret.status_code);
+        return(ret["status"].toInt());
     }
 
     // list to be returned
@@ -274,8 +348,8 @@ int ServerConn::getFoodPlan()
     QList<QStringList> tmpWeekplan;
 
     //qDebug() << jsonString;
-    QJsonDocument jsonDoc = QJsonDocument::fromJson(ret.text.toUtf8());
-    //qDebug() << ret.text;
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(ret["text"].toString().toUtf8());
+    //qDebug() << ret["text"].toString();
     // array with the whole response in it
     QJsonArray foodplanDays = jsonDoc.array();
 
@@ -329,12 +403,12 @@ int ServerConn::getFoodPlan()
     return(200);
 }
 
-ReturnData_t ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata)
+QVariantMap ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata, bool raw)
 {
     // create network manager
     QNetworkAccessManager * networkManager = new QNetworkAccessManager();
 
-    ReturnData_t ret; //this is a custom type to store the return-data
+    QVariantMap ret; //this is a custom type to store the return-data
 
     // Create network request
     QNetworkRequest request(serviceUrl);
@@ -362,22 +436,33 @@ ReturnData_t ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata)
     // start the timer
     timer.start(10000);
 
-    qDebug() << "+--- starting request now...";
+    this->updateDownloadProgress(0, 1);
     reply = networkManager->post(request, pdata.toString(QUrl::FullyEncoded).toUtf8());
     connect(reply, &QNetworkReply::sslErrors, this, [=](){ reply->ignoreSslErrors(); });
+
+    connect(reply, SIGNAL(downloadProgress(qint64, qint64)),
+                this, SLOT(updateDownloadProgress(qint64, qint64)));
 
     // start the loop
     loop.exec();
 
-    qDebug() << "+--- request finished";
+    if(!timer.isActive()) {
+        // timeout
+        return {{"status", 0}};
+    }
 
     //get the status code
     QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
 
-    ret.status_code = status_code.toInt();
+    ret.insert("status", status_code.toInt());
 
     //get the full text response
-    ret.text = QString::fromUtf8(reply->readAll());
+    if(!raw) {
+        ret.insert("text", QString::fromUtf8(reply->readAll()));
+    }
+    else {
+        ret.insert("data", reply->readAll());
+    }
 
     // delete the reply object
     reply->deleteLater();
@@ -387,6 +472,22 @@ ReturnData_t ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata)
 
     //return the data
     return(ret);
+}
+
+void ServerConn::updateDownloadProgress(qint64 read, qint64 total)
+{
+    double progress;
+
+    if(total <= 0)
+        progress = 0;
+    else
+        progress = (double(read) / double(total));
+
+    if(progress < 0)
+        progress = 0;
+
+    this->downloadProgress = progress;
+    emit this->downloadProgressChanged();
 }
 
 QString ServerConn::getState() {
@@ -400,6 +501,10 @@ void ServerConn::setState(QString state) {
         this->state = state;
         this->stateChanged(this->state);
     }
+}
+
+double ServerConn::getDownloadProgress() {
+    return this->downloadProgress;
 }
 
 ServerConn::~ServerConn()

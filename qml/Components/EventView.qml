@@ -29,7 +29,6 @@ FannyDataListView {
         id: foodPlanModel
     }
 
-
     delegate: Button {
         id: delegate
 

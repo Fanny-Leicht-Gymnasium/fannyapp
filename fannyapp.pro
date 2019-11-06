@@ -20,6 +20,7 @@ TARGET = fannyapp
 ICON = shared/graphics/favicon.icns
 
 SOURCES += \
+    sources/filehelper.cpp \
     sources/serverconn.cpp \
     sources/main.cpp \
     sources/appsettings.cpp \
@@ -29,6 +30,7 @@ SOURCES += \
     sources/appstyle.cpp
 
 HEADERS += \
+    headers/filehelper.h \
     headers/serverconn.h \
     headers/appsettings.h \
     headers/foodplanmodel.h \
@@ -68,5 +70,8 @@ ios {
 
 DISTFILES += \
     android-sources/AndroidManifest.xml \
-    CHANGELOG.md
+    android-sources/build.gradle \
+    CHANGELOG.md \
+    android-sources/src/de/itsblue/fannyapp/MainActivity.java \
+    android-sources/src/org/ekkescorner/utils/QShareUtils.java
 
