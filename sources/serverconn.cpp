@@ -72,7 +72,7 @@ int ServerConn::login(QString username, QString password, bool permanent)
     pdata.addQueryItem("password", password);
 
     // send the request
-    QVariantMap ret = this->senddata(QUrl("http://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata);
+    QVariantMap ret = this->senddata(QUrl("https://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata);
 
     if(ret["status"].toInt() == 200){
         // if not 200 was returned -> user data was correct
@@ -360,7 +360,8 @@ int ServerConn::getFoodPlan()
             QString dataValue = foodplanDay.toObject().value(foodplanDataKey).toString();
             if(foodplanDataKey == foodplanDateKey){
                 QDateTime date;
-                date.setTime_t(uint(dataValue.toInt()));
+                date.setSecsSinceEpoch(uint(dataValue.toInt()));
+                date.setTimeSpec(Qt::UTC);
 
                 // get the current date and time
                 QDateTime currentDateTime = QDateTime::currentDateTimeUtc();
@@ -372,7 +373,7 @@ int ServerConn::getFoodPlan()
                     // the given day is today
                     readableDateString = "Heute";
                 }
-                else if (date.toTime_t() < ( currentDateTime.toTime_t() + ( 24 * 60 * 60 ))) {
+                else if (date.toTime_t() < ( currentDateTime.toTime_t() + ( 48 * 60 * 60 ) )) {
                     // the given day is tomorrow
                     readableDateString = "Morgen";
                 }

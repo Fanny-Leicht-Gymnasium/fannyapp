@@ -56,6 +56,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 android {
     QT += androidextras
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android-sources
+    include($$PWD/android_openssl-master/openssl.pri)
 }
 
 win {
@@ -74,4 +75,3 @@ DISTFILES += \
     CHANGELOG.md \
     android-sources/src/de/itsblue/fannyapp/MainActivity.java \
     android-sources/src/org/ekkescorner/utils/QShareUtils.java
-
