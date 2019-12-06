@@ -146,8 +146,8 @@ Page {
 
             spacing: width * 0.02
 
-            ToolButton {
-                id: toolButton
+            CompatibleToolButton {
+                id: backTb
 
                 enabled: !formStack.currentItem.locked
 
@@ -155,6 +155,9 @@ Page {
 
                 icon.name: "back"
                 icon.color: app.style.style.textColor
+
+                text: "\u2039"
+                fontPixelSize: height * 0.7
 
                 onClicked: {
                     if(!formStack.currentItem.locked){
@@ -186,8 +189,8 @@ Page {
                 }
             }
 
-            ToolButton {
-                id: pdfToolButton
+            CompatibleToolButton {
+                id: pdfTb
 
                 enabled: !formStack.currentItem.locked
 
@@ -197,6 +200,8 @@ Page {
 
                 icon.name: "pdf"
                 icon.color: app.style.style.textColor
+
+                text: "pdf ansehen"
 
                 onClicked: {
                     if(formStack.currentItem.pdfAction !== undefined) {

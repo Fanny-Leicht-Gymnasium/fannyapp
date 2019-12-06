@@ -140,7 +140,7 @@ Page {
                     rightMargin: root.width * 0.05
                 }
 
-                ToolButton{
+                CompatibleToolButton{
                     id: passwordHideShow
                     anchors {
                         top: parent.top
@@ -148,8 +148,6 @@ Page {
                         right: parent.right
                     }
 
-                    icon.height: parent.height * 0.5
-                    icon.width: parent.height * 0.5
                     icon.color: app.style.style.textColor
 
                     onClicked: {
@@ -169,6 +167,7 @@ Page {
                             PropertyChanges {
                                 target: passwordHideShow
                                 icon.name: "hide"
+                                text: "show"
                             }
 
                             PropertyChanges {
@@ -181,6 +180,7 @@ Page {
                             PropertyChanges {
                                 target: passwordHideShow
                                 icon.name: "view"
+                                text: "hide"
                             }
                             PropertyChanges {
                                 target: tipasswd

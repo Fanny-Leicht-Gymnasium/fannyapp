@@ -281,7 +281,7 @@ Page {
                 }
             }
 
-            ToolButton {
+            CompatibleToolButton {
                 id: deleteButton
 
                 anchors {
@@ -293,6 +293,8 @@ Page {
                 height: parent.height
 
                 icon.name: "delete"
+
+                text: "X"
 
                 onClicked: {
                     deleteAnimation.start()

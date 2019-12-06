@@ -91,16 +91,16 @@ ApplicationWindow {
                 mainStack.replace(currPage)
             }
 
-            //initialItem: mainPage
-
             Component {
                 id: loginPage
-                LoginPage {}
+                LoginPage {
+                }
             }
 
             Component {
                 id: mainPage
-                MainPage {}
+                MainPage {
+                }
             }
         }
 

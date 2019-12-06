@@ -58,15 +58,25 @@ int main(int argc, char *argv[])
     qmlRegisterType<AppStyle>("Backend", 1, 0, "AppStyle");
 
     QQuickStyle::setStyle("Material");
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 11, 0) )
     QIcon::setFallbackSearchPaths(QIcon::fallbackSearchPaths() << ":/shared/icons");
     QIcon::setThemeName("ibmaterial");
+#endif
 
     QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-    QQmlContext *context = engine.rootContext();
 
-    // context->setContextProperty("_cppServerConn", pServerConn);
+    QQmlContext *context = engine.rootContext();
     context->setContextProperty("_cppAppSettings", pAppSettings);
+    context->setContextProperty("QtCompatiblityMode",
+                            #if (QT_VERSION >= QT_VERSION_CHECK(5, 11, 0) )
+                                false
+                            #else
+                                true
+                            #endif
+                                );
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+
     if (engine.rootObjects().isEmpty())
         return -1;
 
