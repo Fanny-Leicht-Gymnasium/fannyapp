@@ -77,6 +77,14 @@ Page {
         }
     }
 
+    Connections {
+        target: pageLoader.item
+        onRefresh: {
+            pageLoader.newSource = "./LoadingForm.qml"
+            loadTimer.start()
+        }
+    }
+
     Timer {
         id: loadTimer
         interval: 500

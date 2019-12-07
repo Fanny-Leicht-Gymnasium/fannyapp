@@ -65,15 +65,4 @@ ListView {
         errorCode: control.status
         optionButtonFunction: control.optionButtonFunction
     }
-
-    PullRefresher{
-        target: control
-
-        backgroundColor: app.style.style.buttonColor
-        pullIndicatorColor: app.style.style.textColor
-
-        preRefreshDelay: 300
-
-        refreshPosition: height * 1.3
-    }
 }

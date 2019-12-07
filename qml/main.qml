@@ -131,7 +131,12 @@ ApplicationWindow {
             case 401:
                 infoLevel = 3
                 errorString = "Ungültige Zugangsdaten"
-                errorDescription = "Der Server hat den Zugang verweigert, bitte überprüfe deine Zugangsdaten und versuche es erneut"
+                errorDescription = "Der Server hat den Zugang verweigert, bitte überprüfe deine Zugangsdaten und versuche es erneut."
+                break
+            case 403:
+                infoLevel = 3
+                errorString = "Account nicht freigegeben"
+                errorDescription = "Die Anmeldedaten waren korrekt, der Account ist jedoch nicht freigegeben."
                 break
             case 500:
                 infoLevel = 3

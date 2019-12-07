@@ -44,12 +44,11 @@ class ServerConn : public QObject
 private:
     QString state;
         // can be: loggedIn ; notLoggedIn
-    QString username;
-    QString password;
+    QString token;
 
-    QVariantMap senddata(QUrl serviceUrl, QUrlQuery postData, bool raw = false);
+    QVariantMap senddata(QUrl serviceUrl, bool raw = false);
 
-    QList<int> apiVersion = {0,2,1};
+    QList<int> apiVersion = {1,0,0};
 
     FileHelper * fileHelper;
     QString mDocumentsWorkPath;

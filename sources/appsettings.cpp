@@ -42,6 +42,10 @@ AppSettings::AppSettings(QObject* parent)
         this->writeSetting("theme", "Light");
     }
 
+    // remove remainings of the former login mechsnism
+    this->writeSetting("username", "");
+    this->writeSetting("password", "");
+
     this->filtersFile = new QFile(path + "/fannyapp/filters.json");
 }
 

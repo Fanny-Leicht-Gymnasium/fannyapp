@@ -54,6 +54,8 @@ FannyDataListView {
                 // label for the cookteam
 
                 width: parent.width
+                height: text!=""? undefined:0
+
                 wrapMode: Label.Wrap
 
                 font.bold: true
@@ -84,14 +86,16 @@ FannyDataListView {
                 // label for the main dish
 
                 width: parent.width
+                height: text!=""? undefined:0
+
                 wrapMode: Label.Wrap
 
-                text: mainDish === "" ? "Aktuell keine Daten":mainDish
+                text: mainDish === ""&& mainDishLa === "" && garnish === "" ? "Aktuell keine Daten":mainDish
             }
 
             Rectangle {
                 width: parent.width / 10
-                height: mainDishVegLa.text!=""? 1:0
+                height: mainDishVegLa.text != "" && mainDishLa.text != "" ? 1:0
                 color: "grey"
             }
 

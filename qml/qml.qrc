@@ -17,7 +17,6 @@
         <file>Components/SettingsDelegate.qml</file>
         <file>Components/FannyDataListView.qml</file>
         <file>Components/ProgressCircle.qml</file>
-        <file>Components/PullRefresher.qml</file>
         <file>Components/CompatibleToolButton.qml</file>
         <file>Components/QIconSource.qml</file>
     </qresource>

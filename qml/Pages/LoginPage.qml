@@ -96,7 +96,7 @@ Page {
 
         Column {
             id: formCol
-            spacing: height * 0.01
+            spacing: height * 0.02
 
             width: app.landscape() ? root.width * 0.5:root.width
             height: app.landscape() ? root.height:root.height * 0.7
@@ -122,14 +122,13 @@ Page {
                 height: formCol.rowHeight
 
                 placeholderText: "Benutzername"
-                Keys.onReturnPressed: login(tiuname.text, tipasswd.text, cBperm.checked)
+                Keys.onReturnPressed: login(tiuname.text, tipasswd.text)
             }
-
 
             TextField {
                 id: tipasswd
                 placeholderText: "Passwort"
-                Keys.onReturnPressed: login(tiuname.text, tipasswd.text, cBperm.checked)
+                Keys.onReturnPressed: login(tiuname.text, tipasswd.text)
 
                 height: formCol.rowHeight
 
@@ -192,16 +191,22 @@ Page {
 
             }
 
-            CheckDelegate {
-                id: cBperm
+            Label {
+                id: laStatus
 
                 anchors.horizontalCenter: parent.horizontalCenter
 
-                height: formCol.rowHeight
+                height: formCol.rowHeight * 0.5
+                width: parent.width
 
-                checked: true
+                fontSizeMode: Text.Fit
+                font.pixelSize: height
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
 
-                text: qsTr("Angemeldet bleiben")
+                color: "red"
+
+                text: qsTr("")
             }
 
             FancyButton {
@@ -219,39 +224,27 @@ Page {
 
                 text: qsTr("Anmelden")
 
-                onClicked: root.login(tiuname.text, tipasswd.text, cBperm.checked)
-            }
-
-            FancyButton {
-                id: registerBt
-
-                anchors {
-                    horizontalCenter: parent.horizontalCenter
-                    left: parent.left
-                    margins: window.width * 0.05
-                }
-
-                height: formCol.rowHeight
-
-                enabled: true
-
-                text: qsTr("Registrieren")
-
-                onClicked: Qt.openUrlExternally("http://www.fanny-leicht.de/j34/index.php/login?view=registration")
+                onClicked: root.login(tiuname.text, tipasswd.text)
             }
 
             Label {
-                id: laStatus
+                id: registerAndForgotLa
 
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 height: formCol.rowHeight
 
+                verticalAlignment: Text.AlignVCenter
+
                 font.pixelSize: height * 0.3
+                horizontalAlignment: Text.AlignHCenter
 
-                color: "red"
+                text: "<html><a href=\"http://www.fanny-leicht.de/j34/index.php/login?view=registration\">Registrieren</a><br><a href=\"http://www.fanny-leicht.de/j34/index.php/login?view=reset\">Passwort vergessen?</a><br><a href=\"http://www.fanny-leicht.de/j34/index.php/login?view=remind\">Benutzername vergessen?</a>"
 
-                text: qsTr("")
+                onLinkActivated: {
+                    Qt.openUrlExternally(link)
+                }
+
             }
         }
 
@@ -291,7 +284,7 @@ Page {
         }
     }
 
-    function login(username, password, permanent){
+    function login(username, password){
         // hide the keyboard
         Qt.inputMethod.hide();
         // open the busy dialog
@@ -302,7 +295,7 @@ Page {
         loginButton.text = "Anmelden.."
 
         // trigger the login fucntion of the cpp backend and store the return code
-        var ret = serverConn.login(username, password, permanent);
+        var ret = serverConn.login(username, password, true);
 
         // the request has finished
         // close the busy dialog
@@ -312,17 +305,10 @@ Page {
         // change the text of the login button back to "Anmelden"
         loginButton.text = "Anmelden"
 
-        // chekc if the login was successfull
-        if(ret === 200){
-            // if it was -> set the app to inited and set the state of the app to loggedIn
-            _cppAppSettings.writeSetting("init", 1);
-            app.is_error = false;
-            app.state = "loggedIn"
-        }
-        else{
-            // if it wasn't -> set the error label to the error short description of the retuned error code
+        // chekc if the login was not successfull
+        if(ret !== 200){
+            // set the error label to the error short description of the retuned error code
             laStatus.text = app.getErrorInfo(ret)[1]
         }
     }
-
 }

@@ -94,7 +94,7 @@ Page {
                 property: "opacity"
                 from: 1
                 to: 0
-                duration: 200
+                duration: 300
                 easing.type: Easing.InExpo
             }
 
@@ -186,13 +186,8 @@ Page {
                             text: to !== "" && model.text !== "" ? to + " | " + model.text:model.to + model.text
                         }
                     }
-
                 }
-
-
-
             }
-
         }
 
         Component {
@@ -200,6 +195,14 @@ Page {
             LoadingForm {}
         }
 
+    }
+
+    Connections {
+        target: pageLoader.item
+        onRefresh: {
+            pageLoader.newSourceComponent = loadingFormComp
+            loadTimer.start()
+        }
     }
 
     Timer {

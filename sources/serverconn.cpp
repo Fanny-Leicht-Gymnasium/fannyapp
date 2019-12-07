@@ -53,8 +53,7 @@ ServerConn::ServerConn(QObject *parent) : QObject(parent)
 
     if(perm == 1){
         // permanent login -> restore login
-        this->username = pGlobalAppSettings->loadSetting("username");
-        this->password = pGlobalAppSettings->loadSetting("password");
+        this->token = pGlobalAppSettings->loadSetting("token");
 
         this->setState("loggedIn");
     }
@@ -65,57 +64,54 @@ ServerConn::ServerConn(QObject *parent) : QObject(parent)
 
 int ServerConn::login(QString username, QString password, bool permanent)
 {
-
-    // add the data to the request
-    QUrlQuery pdata;
-    pdata.addQueryItem("username", username);
-    pdata.addQueryItem("password", password);
-
     // send the request
-    QVariantMap ret = this->senddata(QUrl("https://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata);
+    QVariantMap ret = this->senddata(QUrl("https://www.fanny-leicht.de/j34/index.php/component/fannysubstitutionplan?task=api_login&username=" + username + "&password=" + password));
+
+    qDebug() << ret;
 
     if(ret["status"].toInt() == 200){
-        // if not 200 was returned -> user data was correct
-        // store username and password in the class variables
-        this->username = username;
-        this->password = password;
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(ret["text"].toString().toUtf8());
 
-        if(permanent){
-            // if the user wants to say logged in, store the username and password to the settings file
-            pGlobalAppSettings->writeSetting("permanent", "1");
-            pGlobalAppSettings->writeSetting("username", username);
-            pGlobalAppSettings->writeSetting("password", password);
+        if(jsonDoc.toVariant().toMap()["result"].toInt() == 200) {
+
+            this->token = jsonDoc.toVariant().toMap()["data"].toMap()["token"].toString();
+
+            if(permanent){
+                // if the user wants to say logged in, store the username and password to the settings file
+                pGlobalAppSettings->writeSetting("permanent", "1");
+                pGlobalAppSettings->writeSetting("token", this->token);
+                pGlobalAppSettings->writeSetting("password", password);
+            }
+
+            // set state to loggedIn
+            this->setState("loggedIn");
+
+            qDebug() << "+----- logged in -----+";
+
+            // return success
+            return 200;
         }
-
-        // set state to loggedIn
-        this->setState("loggedIn");
-
-        qDebug() << "+----- logged in -----+";
-
-        // return success
-        return(200);
+        else {
+            ret["status"] = jsonDoc.toVariant().toMap()["result"].toInt();
+        }
     }
-    else {
-        // if not 200 was returned -> error -> return the return code
-        this->setState("notLoggedIn");
-        // -> reset the stored credentinals
-        pGlobalAppSettings->writeSetting("permanent", "0");
-        pGlobalAppSettings->writeSetting("username", "");
-        pGlobalAppSettings->writeSetting("password", "");
-        return(ret["status"].toInt());
-    }
+
+    // if not 200 was returned -> error -> return the return code
+    this->setState("notLoggedIn");
+    // -> reset the stored credentinals
+    pGlobalAppSettings->writeSetting("permanent", "0");
+    pGlobalAppSettings->writeSetting("token", "");
+    return ret["status"].toInt();
 }
 
 int ServerConn::logout()
 {
     // reset the data stored in the class
-    this->username = "";
-    this->password = "";
+    this->token = "";
 
     // reset the data stored in the settings
     pGlobalAppSettings->writeSetting("permanent", "0");
-    pGlobalAppSettings->writeSetting("username", "");
-    pGlobalAppSettings->writeSetting("password", "");
+    pGlobalAppSettings->writeSetting("token", "");
 
     this->setState("notLoggedIn");
 
@@ -134,13 +130,13 @@ int ServerConn::getEvents(QString day)
 
     // add the data to the request
     QUrlQuery pdata;
-    pdata.addQueryItem("username", this->username);
-    pdata.addQueryItem("password", this->password);
+    pdata.addQueryItem("token", this->token);
     pdata.addQueryItem("mode", pGlobalAppSettings->loadSetting("teacherMode") == "true" ? "1":"0");
     pdata.addQueryItem("day", day);
 
     // send the request
-    QVariantMap ret = this->senddata(QUrl("https://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata);
+    QVariantMap ret = this->senddata(QUrl("https://www.fanny-leicht.de/j34/index.php/component/fannysubstitutionplan?task=api_getData&token=" + token
+                                          + "&mode=" + (pGlobalAppSettings->loadSetting("teacherMode") == "true" ? "1":"0") + "&day=" + day));
 
     if(ret["status"].toInt() != 200){
         // if the request didn't result in a success, clear the old events, as they are probaply incorrect and return the error code
@@ -280,14 +276,14 @@ int ServerConn::openEventPdf(QString day) {
 
     // add the data to the request
     QUrlQuery pdata;
-    pdata.addQueryItem("username", this->username);
-    pdata.addQueryItem("password", this->password);
+    pdata.addQueryItem("token", this->token);
     pdata.addQueryItem("mode", pGlobalAppSettings->loadSetting("teacherMode") == "true" ? "1":"0");
     pdata.addQueryItem("day", day);
     pdata.addQueryItem("asPdf", "true");
 
     // send the request
-    QVariantMap ret = this->senddata(QUrl("https://www.fanny-leicht.de/j34/templates/g5_helium/intern/events.php"), pdata, true);
+    QVariantMap ret = this->senddata(QUrl("https://www.fanny-leicht.de/j34/index.php/component/fannysubstitutionplan?task=api_getData&token=" + token
+                                          + "&mode=" + (pGlobalAppSettings->loadSetting("teacherMode") == "true" ? "1":"0") + "&day=" + day + "&asPdf=true"), true);
 
     if(ret["status"].toInt() != 200){
         // if the request didn't result in a success, clear the old events, as they are probaply incorrect and return the error code
@@ -327,9 +323,8 @@ int ServerConn::getFoodPlan()
         url.append("&fields[]="+foodplanDataKey);
     }
 
-    QUrlQuery pdata;
     // send the request to the server
-    QVariantMap ret = this->senddata(QUrl(url), pdata);
+    QVariantMap ret = this->senddata(QUrl(url));
 
     if(ret["status"].toInt() != 200){
         // if the request didn't result in a success, return the error code
@@ -404,7 +399,7 @@ int ServerConn::getFoodPlan()
     return(200);
 }
 
-QVariantMap ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata, bool raw)
+QVariantMap ServerConn::senddata(QUrl serviceUrl, bool raw)
 {
     // create network manager
     QNetworkAccessManager * networkManager = new QNetworkAccessManager();
@@ -438,11 +433,11 @@ QVariantMap ServerConn::senddata(QUrl serviceUrl, QUrlQuery pdata, bool raw)
     timer.start(10000);
 
     this->updateDownloadProgress(0, 1);
-    reply = networkManager->post(request, pdata.toString(QUrl::FullyEncoded).toUtf8());
+    reply = networkManager->get(request);
     connect(reply, &QNetworkReply::sslErrors, this, [=](){ reply->ignoreSslErrors(); });
 
     connect(reply, SIGNAL(downloadProgress(qint64, qint64)),
-                this, SLOT(updateDownloadProgress(qint64, qint64)));
+            this, SLOT(updateDownloadProgress(qint64, qint64)));
 
     // start the loop
     loop.exec();
