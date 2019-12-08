@@ -163,12 +163,13 @@ Page {
                             // label for the hour, replacement, subject and room
 
                             width: parent.width - 10
+                            height: text === "" ? 0:undefined
                             wrapMode: Label.Wrap
 
-                            text: hour + ( replace === "" ? "": ( " | "
-                                                                 + replace + ( subject === "" ? "": ( " | "
-                                                                                                     + subject + ( room === "" ? "": ( " | "
-                                                                                                                                      + room ) ) ) ) ) )
+                            text: hour +
+                                  (replace === "" ? "": ( " | "+ replace )) +
+                                  ( subject === "" ? "": ( " | " + subject )) +
+                                  ( room === "" ? "": ( " | " + room ))
                         }
 
                         Label {
@@ -176,14 +177,14 @@ Page {
                             // label for the new room (to) and the additional text (text)
 
                             width: parent.width - 10
+                            height: text === "" ? 0:undefined
                             wrapMode: Label.Wrap
 
                             font.pixelSize: gradeLa.font.pixelSize
                             font.bold: true
 
-                            visible: text !== ""
-
-                            text: to !== "" && model.text !== "" ? to + " | " + model.text:model.to + model.text
+                            text: to +
+                                  (model.text === " | " || model.text === "" ? "": ( " | "+ model.text ))
                         }
                     }
                 }
