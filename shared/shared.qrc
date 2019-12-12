@@ -98,5 +98,10 @@
         <file>icons/ibmaterial/20x20@3/view.png</file>
         <file>icons/ibmaterial/20x20@4/hide.png</file>
         <file>icons/ibmaterial/20x20@4/view.png</file>
+        <file>fonts/fontawesome.otf</file>
+        <file>graphics/Icon Big square.png</file>
+        <file>graphics/favicon.png</file>
+        <file>fonts/FontAwesomeCutsom.otf</file>
+        <file>fonts/IconFont.otf</file>
     </qresource>
 </RCC>

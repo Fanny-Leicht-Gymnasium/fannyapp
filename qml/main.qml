@@ -37,13 +37,6 @@ ApplicationWindow {
 
         anchors.fill: parent
 
-        property bool is_error
-        property string error
-
-        property string textColor: "black" // "#424753"
-        property string backgroundColor: "white"
-        property string toolbarColor: "#312f38"
-
         property QtObject style: style
 
         state: serverConn.state
@@ -106,8 +99,7 @@ ApplicationWindow {
 
         FontLoader {
             id: fontAwesome
-            name: "fontawesome"
-            source: "qrc:/fonts/fontawesome-webfont.ttf"
+            source: "qrc:/fonts/IconFont.otf"
         }
 
         function getErrorInfo(errorCode) {

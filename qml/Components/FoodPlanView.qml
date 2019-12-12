@@ -90,7 +90,7 @@ FannyDataListView {
 
                 wrapMode: Label.Wrap
 
-                text: mainDish === ""&& mainDishLa === "" && garnish === "" ? "Aktuell keine Daten":mainDish
+                text: mainDish === "" && mainDishVeg === "" && garnish === "" ? "Aktuell keine Daten":mainDish
             }
 
             Rectangle {
