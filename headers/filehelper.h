@@ -5,7 +5,7 @@
 #include <QDebug>
 
 #if defined(Q_OS_IOS)
-    mPlatformShareUtils = new IosShareUtils(this);
+    #include "ios/iosshareutils.hpp"
 #elif defined(Q_OS_ANDROID)
 #include <QtAndroid>
 #include <QAndroidActivityResultReceiver>
@@ -32,6 +32,7 @@ public:
 
 private:
 #if defined(Q_OS_IOS)
+
 #elif defined(Q_OS_ANDROID)
     void processActivityResult(int requestCode, int resultCode);
     static FileHelper* mInstance;

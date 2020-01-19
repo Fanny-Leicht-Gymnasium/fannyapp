@@ -1,10 +1,10 @@
-#include "../headers/filehelper.h"
+#include "headers/filehelper.h"
 
 #if defined(Q_OS_IOS)
 #include <QUrl>
 #include <QFileInfo>
 #include <QDateTime>
-
+#elif defined(Q_OS_ANDROID)
 #include <QtAndroidExtras/QAndroidJniObject>
 #include <jni.h>
 #endif
@@ -15,12 +15,15 @@ FileHelper::FileHelper(QObject *parent) : QObject(parent)
 #elif defined(Q_OS_ANDROID)
     mInstance = this;
 #else
+
 #endif
 }
 
 void FileHelper::viewFile(const QString &filePath, const QString &title, const QString &mimeType, const int &requestId)
 {
 #if defined(Q_OS_IOS)
+    IosShareUtils iosShareUtils;
+    iosShareUtils.sendFile(filePath, title, mimeType, requestId);
 #elif defined(Q_OS_ANDROID)
         QAndroidJniObject jsPath = QAndroidJniObject::fromString(filePath);
         QAndroidJniObject jsTitle = QAndroidJniObject::fromString(title);
