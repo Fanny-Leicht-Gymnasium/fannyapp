@@ -7,7 +7,7 @@ Loader {
 
     property QIconSource icon: QIconSource {}
 
-    property int fontPixelSize
+    property int fontPixelSize: height * 0.4
 
     property string text
 
@@ -15,6 +15,7 @@ Loader {
 
     Connections {
         target: icon
+
         onNameChanged: {
             control.syncProperties()
         }
@@ -82,12 +83,19 @@ Loader {
 
             contentItem: Text {
                 text: tb.text
-                font: tb.font
+                font.pixelSize: tb.height * 0.5
+                font.family: iconFont.name
                 color: app.style.style.textColor
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 elide: Text.ElideRight
             }
+
+            FontLoader {
+                id: iconFont
+                source: "qrc:/fonts/IconFont.otf"
+            }
+
         }
     }
 

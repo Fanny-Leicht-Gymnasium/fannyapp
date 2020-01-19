@@ -295,7 +295,7 @@ Page {
                 icon.name: "delete"
                 icon.color: app.style.style.textColor
 
-                text: "X"
+                text: "\u0083"
 
                 onClicked: {
                     deleteAnimation.start()

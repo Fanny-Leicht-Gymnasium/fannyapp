@@ -54,15 +54,15 @@ Page {
 
             Image {
                 id: bigLogo
-                source: "qrc:/graphics/images/FannyIcon.png"
+                source: "qrc:/graphics/favicon.png"
 
                 anchors {
                     left: parent.left
                     right: parent.right
+                    margins: height * 0.2
                 }
 
                 height: parent.height * 0.6
-
 
                 fillMode: Image.PreserveAspectFit
                 smooth: true
@@ -89,7 +89,6 @@ Page {
                 onLinkActivated: {
                     Qt.openUrlExternally(link)
                 }
-
             }
 
         }
@@ -166,7 +165,7 @@ Page {
                             PropertyChanges {
                                 target: passwordHideShow
                                 icon.name: "hide"
-                                text: "show"
+                                text: "\u0081"
                             }
 
                             PropertyChanges {
@@ -179,7 +178,7 @@ Page {
                             PropertyChanges {
                                 target: passwordHideShow
                                 icon.name: "view"
-                                text: "hide"
+                                text: "\u0080"
                             }
                             PropertyChanges {
                                 target: tipasswd

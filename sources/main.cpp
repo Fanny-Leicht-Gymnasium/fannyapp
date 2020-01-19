@@ -45,10 +45,9 @@
 int main(int argc, char *argv[])
 {
     AppSettings * pAppSettings = new AppSettings();
-    // ServerConn * pServerConn = new ServerConn();
 
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    //QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    //QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
     QGuiApplication app(argc, argv);
 
