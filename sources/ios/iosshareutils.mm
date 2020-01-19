@@ -15,7 +15,7 @@
 
 #import "headers/ios/docviewcontroller.hpp"
 
-IosShareUtils::IosShareUtils(QObject *parent) : QObject(parent)
+IosShareUtils::IosShareUtils() : QObject(nullptr)
 {
     // Sharing Files from other iOS Apps I got the ideas and some code contribution from:
     // Thomas K. Fischer (@taskfabric) - http://taskfabric.com - thx
@@ -68,7 +68,7 @@ void IosShareUtils::sendFile(const QString &filePath, const QString &title, cons
         // [documentInteractionController presentPreviewAnimated:YES];
         if(![documentInteractionController presentPreviewAnimated:YES])
         {
-            emit shareError(0, tr("No App found to open: %1").arg(filePath));
+            //emit shareError(0, tr("No App found to open: %1").arg(filePath));
         }
     }
 }

@@ -34,6 +34,7 @@
 #include <QScreen>
 #include <QQmlApplicationEngine>
 #include <QtQml/QQmlContext>
+
 #include "headers/serverconn.h"
 #include "headers/appsettings.h"
 #include "headers/foodplanmodel.h"

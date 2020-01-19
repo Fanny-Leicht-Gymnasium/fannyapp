@@ -67,6 +67,9 @@ win {
 
 ios {
     QMAKE_ASSET_CATALOGS += shared/Assets.xcassets
+    xcode_product_bundle_identifier_setting.value = "de.itsblue.fannyapp"
+
+    QMAKE_IOS_DEPLOYMENT_TARGET=9.0
 
     OBJECTIVE_SOURCES += \
         sources/ios/docviewcontroller.mm \

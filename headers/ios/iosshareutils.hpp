@@ -12,7 +12,7 @@ class IosShareUtils : public QObject
     Q_OBJECT
 
 public:
-    explicit IosShareUtils(QObject *parent = 0);
+    explicit IosShareUtils();
     bool checkMimeTypeView(const QString &mimeType);
     bool checkMimeTypeEdit(const QString &mimeType);
     void sendFile(const QString &filePath, const QString &title, const QString &mimeType, const int &requestId);
@@ -22,7 +22,7 @@ public:
 signals:
     void shareFinished(int requestCode);
     void shareNoAppAvailable(int requestCode);
-    void shareError(int requestCode, QString message);
+    //void shareError(int requestCode, QString message);
 };
 
 #endif
