@@ -18,6 +18,10 @@ Loader {
         onNameChanged: {
             control.syncProperties()
         }
+
+        onColorChanged: {
+            control.syncProperties()
+        }
     }
 
     onTextChanged: {

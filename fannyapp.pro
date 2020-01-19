@@ -67,6 +67,14 @@ win {
 
 ios {
     QMAKE_ASSET_CATALOGS += shared/Assets.xcassets
+
+    OBJECTIVE_SOURCES += \
+        sources/ios/docviewcontroller.mm \
+        sources/ios/iosshareutils.mm
+
+    HEADERS += \
+        headers/ios/docviewcontroller.hpp \
+        headers/ios/iosshareutils.hpp
 }
 
 DISTFILES += \

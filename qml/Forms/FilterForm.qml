@@ -293,6 +293,7 @@ Page {
                 height: parent.height
 
                 icon.name: "delete"
+                icon.color: app.style.style.textColor
 
                 text: "X"
 
