@@ -18,13 +18,10 @@ schreibe bitte eine Mail an contact@itsblue.de, oder frag mich in der Schule.
 Anpassung an neues Anmelddesystem fertiggestellt.
 
 ### Downloads:
-<p><a href="https://play.google.com/store/apps/details?id=com.itsblue.flgvertretung&amp;pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1" target="_blank"><img src="https://play.google.com/intl/en_us/badges/images/generic/de_badge_web_generic.png" alt="Jetzt bei Google Play" width="25%"/></a><p>
-- [Mac OS](https://git.itsblue.de/dorian/fanny-app/raw/master/release/mac%20OS/fannyapp.dmg")  <br>
-- [Windows](https://git.itsblue.de/dorian/fanny-app/raw/master/release/windows/fannyapp-setup.exe)  
-<br>
+<p><a href='https://play.google.com/store/apps/details?id=com.itsblue.flgvertretung&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width='150px;' alt='Jetzt bei Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/de_badge_web_generic.png'/></a></p>
+<p><a href="https://apps.apple.com/us/app/fannyapp/id1495583845?mt=8"><img width='130px;' alt='Laden im AppStore' src='resources/shared/graphics/AppStoreBadge.png'/></a></p>
+- [Android (direkter Download) (.apk)](https://git.itsblue.de/dorian/fanny-app/raw/master/release/android/fannyapp-latest.apk)  <br>
+- [Mac OS (.dmg)](https://git.itsblue.de/dorian/fanny-app/raw/master/release/mac%20OS/fannyapp.dmg")  <br>
+- [Windows (.exe)](https://git.itsblue.de/dorian/fanny-app/raw/master/release/windows/fannyapp-setup.exe)  <br>
 
 Verantwortlicher Entwickler: Dorian Zedler
-
-Credits:
-
-<div>eye icon by: <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" 		    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 		    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
