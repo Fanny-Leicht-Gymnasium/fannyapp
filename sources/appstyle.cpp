@@ -27,10 +27,9 @@ AppStyle::AppStyle(QObject *parent) : QObject(parent)
 
         {"lineColor", "grey"},
 
-        {"backIcon", "qrc:/icons/back.png"},
         {"settingsIcon", "qrc:/icons/settings.png"},
-        {"treffpunktFannyIcon", "qrc:/graphics/images/TreffpunktFannyLogoLight.png"},
-        {"fannyLogo", "qrc:/graphics/images/FannyLogoLight.png"},
+        {"treffpunktFannyIcon", "qrc:/icons/TreffpunktFannyLogoLight.png"},
+        {"fannyLogo", "qrc:/icons/FannyLogoLight.png"},
 
         {"nameMaterialStyle", "Dark"}
 
@@ -62,10 +61,9 @@ AppStyle::AppStyle(QObject *parent) : QObject(parent)
 
         {"lineColor", "grey"},
 
-        {"backIcon", "qrc:/icons/backDark.png"},
         {"settingsIcon", "qrc:/icons/settingsBlack.png"},
-        {"treffpunktFannyIcon", "qrc:/graphics/images/TreffpunktFannyLogoDark.png"},
-        {"fannyLogo", "qrc:/graphics/images/FannyLogoDark.jpg"}
+        {"treffpunktFannyIcon", "qrc:/icons/TreffpunktFannyLogoDark.png"},
+        {"fannyLogo", "qrc:/icons/FannyLogoDark.jpg"}
 
     };
     this->lightTheme = tmpLightTheme;

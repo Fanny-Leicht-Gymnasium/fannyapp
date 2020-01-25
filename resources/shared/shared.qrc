@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/FannyLogoDark.jpg</file>
+        <file>icons/FannyLogoLight.png</file>
+        <file>icons/TreffpunktFannyLogoDark.png</file>
+        <file>icons/TreffpunktFannyLogoLight.png</file>
+        <file>icons/logoutBlack.png</file>
+        <file>icons/logoutRed.png</file>
+        <file>icons/settings.png</file>
+        <file>icons/settingsBlack.png</file>
+        <file>icons/sheute.png</file>
+        <file>icons/smorgen.png</file>
+        <file>icons/TreffpunktFannyLogo.png</file>
+        <file>graphics/Icon Big square.png</file>
+        <file>graphics/favicon.png</file>
+        <file>fonts/IconFont.otf</file>
+    </qresource>
+</RCC>

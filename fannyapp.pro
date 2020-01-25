@@ -37,8 +37,8 @@ HEADERS += \
     headers/appstyle.h
 
 RESOURCES += \
-    shared/shared.qrc \
-    qml/qml.qrc
+    resources/shared/shared.qrc \
+    resources/qml/qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
