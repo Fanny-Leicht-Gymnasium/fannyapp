@@ -64,10 +64,17 @@ ServerConn::ServerConn(QObject *parent) : QObject(parent)
 
 int ServerConn::login(QString username, QString password, bool permanent)
 {
-    // send the request
-    QVariantMap ret = this->senddata(QUrl("https://www.fanny-leicht.de/j34/index.php/component/fannysubstitutionplan?task=api_login&username=" + username + "&password=" + password));
+    // prepare URL
 
-    qDebug() << ret;
+    QByteArray usernameByteArray = username.toUtf8();
+    QByteArray passwordByteArray = password.toUtf8();
+
+    QString url =
+            "https://www.fanny-leicht.de/j34/index.php/component/fannysubstitutionplan?task=api_login&username=" +
+            usernameByteArray.toBase64() + "&password=" + passwordByteArray.toBase64() + "&loginIsBase64=true";
+    qDebug() << url;
+    // send the request
+    QVariantMap ret = this->senddata(QUrl(url));
 
     if(ret["status"].toInt() == 200){
         QJsonDocument jsonDoc = QJsonDocument::fromJson(ret["text"].toString().toUtf8());
