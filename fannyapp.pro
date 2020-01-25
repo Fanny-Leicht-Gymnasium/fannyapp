@@ -1,7 +1,7 @@
 QT += qml quick quickcontrols2 widgets
 CONFIG += c++11
 
-VERSION = 1.0.1
+VERSION = 1.0.2
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -16,8 +16,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 TEMPLATE = app
 TARGET = fannyapp
-
-ICON = shared/graphics/favicon.icns
 
 SOURCES += \
     sources/filehelper.cpp \
@@ -73,11 +71,20 @@ ios {
 
     OBJECTIVE_SOURCES += \
         sources/ios/docviewcontroller.mm \
+        sources/ios/notch.mm \
         sources/ios/iosshareutils.mm
 
     HEADERS += \
         headers/ios/docviewcontroller.hpp \
+        headers/ios/notch.h \
         headers/ios/iosshareutils.hpp
+
+ QT += gui-private
+}
+
+osx {
+
+ICON = shared/graphics/favicon.icns
 }
 
 DISTFILES += \

@@ -135,15 +135,19 @@ Page {
                     left: parent.left
                     leftMargin: root.width * 0.05
                     right: parent.right
-                    rightMargin: root.width * 0.05
+                    rightMargin: root.width * 0.05 + passwordHideShow.width * 1.1
                 }
+
+                rightPadding: passwordHideShow.width
 
                 CompatibleToolButton{
                     id: passwordHideShow
+
                     anchors {
                         top: parent.top
                         bottom: parent.bottom
                         right: parent.right
+                        rightMargin: -width * 1.1
                     }
 
                     icon.color: app.style.style.textColor
@@ -230,6 +234,8 @@ Page {
                 id: registerAndForgotLa
 
                 anchors.horizontalCenter: parent.horizontalCenter
+
+                visible: Qt.platform.os !== "ios"
 
                 height: formCol.rowHeight
 

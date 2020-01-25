@@ -32,6 +32,8 @@ ApplicationWindow {
     width: 540
     height: 960
 
+
+
     Item {
         id: app
 
@@ -69,6 +71,10 @@ ApplicationWindow {
 
         AppStyle {
             id: style
+
+            onStyleChanged: {
+
+            }
         }
 
         Material.theme: app.style.style.nameMaterialStyle === "Dark" ? Material.Dark:Material.Light

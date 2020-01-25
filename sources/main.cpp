@@ -41,6 +41,7 @@
 #include "headers/eventmodel.h"
 #include "headers/filtermodel.h"
 #include "headers/appstyle.h"
+#include "headers/ios/notch.h"
 
 int main(int argc, char *argv[])
 {
@@ -67,6 +68,12 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
 
     QQmlContext *context = engine.rootContext();
+
+#if defined(Q_OS_IOS)
+    Notch pNotchController;
+    context->setContextProperty("_cppNotchController", &pNotchController);
+#endif
+
     context->setContextProperty("_cppAppSettings", pAppSettings);
     context->setContextProperty("QtCompatiblityMode",
                             #if (QT_VERSION >= QT_VERSION_CHECK(5, 11, 0) )
