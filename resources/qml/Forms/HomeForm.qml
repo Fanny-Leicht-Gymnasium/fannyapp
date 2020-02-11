@@ -88,6 +88,7 @@ Page {
                 id: foodplanButton
 
                 image: app.style.style.treffpunktFannyIcon
+                imageScale: 1.3
 
                 size: smallMenu.buttonSize
 
