@@ -72,7 +72,7 @@ int ServerConn::login(QString username, QString password, bool permanent)
     QString url =
             "https://www.fanny-leicht.de/j34/index.php/component/fannysubstitutionplan?task=api_login&username=" +
             usernameByteArray.toBase64() + "&password=" + passwordByteArray.toBase64() + "&loginIsBase64=true";
-    qDebug() << url;
+
     // send the request
     QVariantMap ret = this->senddata(QUrl(url));
 

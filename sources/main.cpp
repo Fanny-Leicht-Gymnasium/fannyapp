@@ -23,7 +23,6 @@
 #include <QFile>
 #include <QDesktopServices>
 
-#include <QIcon>
 #include <QStyleFactory>
 
 #include <QtCore/QUrl>
@@ -47,7 +46,7 @@ int main(int argc, char *argv[])
 {
     AppSettings * pAppSettings = new AppSettings();
 
-    //QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     //QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
     QGuiApplication app(argc, argv);
@@ -60,11 +59,6 @@ int main(int argc, char *argv[])
 
     QQuickStyle::setStyle("Material");
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 11, 0) )
-    QIcon::setFallbackSearchPaths(QIcon::fallbackSearchPaths() << ":/shared/icons");
-    QIcon::setThemeName("ibmaterial");
-#endif
-
     QQmlApplicationEngine engine;
 
     QQmlContext *context = engine.rootContext();
@@ -75,13 +69,7 @@ int main(int argc, char *argv[])
 #endif
 
     context->setContextProperty("_cppAppSettings", pAppSettings);
-    context->setContextProperty("QtCompatiblityMode",
-                            #if (QT_VERSION >= QT_VERSION_CHECK(5, 11, 0) )
-                                false
-                            #else
-                                true
-                            #endif
-                                );
+
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     if (engine.rootObjects().isEmpty())
