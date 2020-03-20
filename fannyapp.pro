@@ -83,8 +83,10 @@ ios {
 }
 
 osx {
-
-ICON = shared/graphics/favicon.icns
+    QMAKE_ASSET_CATALOGS += shared/Assets.xcassets
+    xcode_product_bundle_identifier_setting.value = "de.itsblue.fannyapp"
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.13
+#ICON = shared/graphics/favicon.icns
 }
 
 DISTFILES += \
