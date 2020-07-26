@@ -1,3 +1,5 @@
+# Dieses Projekt ist umgezogen:  https://github.com/Fanny-Leicht-Gymnasium/fannyapp
+
 # Die Fannyapp - App für das Fanny-Leicht-Gymnasium in Stuttgart
 Die App bietet die Möglichkeit, komfortabel auf den Vertretungsplan des Fanny-Leicht-Gymnasiums in Stuttgart zuzugreifen.  
 Wenn du immer der Erste sein willst, der über Updates und Neuerungen informiert wird, dann trete unserem Telegram-Channel bei: [https://t.me/FlgQtAg](https://t.me/FlgQtAg)
