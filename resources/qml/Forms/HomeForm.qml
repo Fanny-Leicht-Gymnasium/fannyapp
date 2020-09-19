@@ -48,28 +48,28 @@ Page {
             anchors.horizontalCenter: parent.horizontalCenter
 
             FancyButton {
-                id: todayButton
+                id: foodplanButton
 
-                image: "qrc:/icons/sheute.png"
+                image: app.style.style.treffpunktFannyIcon
+                imageScale: 1.3
 
                 size: mainMenu.buttonSize
 
                 onClicked: {
-                    formStack.eventDay = 0
-                    formStack.push(eventForm)
+                    formStack.push(foodPlanForm)
                 }
             }
 
             FancyButton {
-                id: tomorrowButton
+                id: fannyButton
 
-                image: "qrc:/icons/smorgen.png"
+                image: app.style.style.fannyLogo
+                imageScale: 1.2
 
                 size: mainMenu.buttonSize
 
                 onClicked: {
-                    formStack.eventDay = 1
-                    formStack.push(eventForm)
+                    Qt.openUrlExternally("http://www.fanny-leicht.de")
                 }
             }
 
@@ -83,32 +83,6 @@ Page {
             anchors.horizontalCenter: parent.horizontalCenter
 
             property int buttonSize: mainMenu.buttonSize * 0.7
-
-            FancyButton {
-                id: foodplanButton
-
-                image: app.style.style.treffpunktFannyIcon
-                imageScale: 1.3
-
-                size: smallMenu.buttonSize
-
-                onClicked: {
-                    formStack.push(foodPlanForm)
-                }
-            }
-
-            FancyButton {
-                id: fannyButton
-
-                image: app.style.style.fannyLogo
-                imageScale: 1.2
-
-                size: smallMenu.buttonSize
-
-                onClicked: {
-                    Qt.openUrlExternally("http://www.fanny-leicht.de")
-                }
-            }
 
             FancyButton {
                 id: settingsButton
@@ -132,9 +106,29 @@ Page {
                 size: smallMenu.buttonSize
 
                 onClicked: {
-                    logoutConfirmationDialog.open()
+                    Qt.quit() //logoutConfirmationDialog.open()
                 }
             }
+        }
+    }
+
+    Button {
+        id: whereIsTheSubstitutionplanButton
+
+        anchors {
+            bottom: parent.bottom
+            bottomMargin: root.height* 0.01
+            horizontalCenter: parent.horizontalCenter
+        }
+
+        flat: true
+
+        text: "Wo ist der Vertretungsplan?"
+
+        font.capitalization: Font.MixedCase
+
+        onClicked: {
+            formStack.push(postMortumForm)
         }
     }
 

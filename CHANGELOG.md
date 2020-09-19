@@ -4,9 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [1.1.0] - unreleased
+## [1.1.1] - 2020-09-19
 ### Hinzugefügt
-- PDF-Taste oben links in der Vertretungsplan-Ansicht, um den Vertretungsplan als PDF anzusehen
+- "Wo ist der Vertretungsplan?" - Menü
+
+### Entfernt
+- Anmeldung
+- Vertretungsplan
+- Einstellungen für den Vertretungsplan
+- "Folge uns" Taste in den Einstellungen
+
+## [1.1.0] - 2020-01
+### Hinzugefügt
+- PDF-Taste oben rechts in der Vertretungsplan-Ansicht, um den Vertretungsplan als PDF anzusehen
 - Fehlermeldung "Verarbeitungsfehler" mit Taste zum Ansehen der PDF Datei
 
 ### Entfernt
@@ -14,13 +24,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Geändert
 - einige Icons
-- pull-to-refresh indikator
 
 ##  [1.0.2] - 2019-03-14
 ### Hinzugefügt
 - Dunkler Modus
 - ssl (https) Verschlüsselung
-- "Support" und "Folge uns" Tasen in den Einstellungen
+- "Support" und "Folge uns" Tasten in den Einstellungen
 
 ### Behoben
 - Fehler, der dafür sorgte, dass fälschlicherweise 'keine Verbindung zum server' angezeigt wurde

@@ -18,5 +18,6 @@
         <file>Components/FannyDataListView.qml</file>
         <file>Components/ProgressCircle.qml</file>
         <file>Components/CompatibleToolButton.qml</file>
+        <file>Forms/PostMortumForm.qml</file>
     </qresource>
 </RCC>

@@ -62,6 +62,10 @@ ItemDelegate {
         text: control.description
 
         color: app.style.style.textColor
+
+        onLinkActivated: {
+            Qt.openUrlExternally(link)
+        }
     }
 
     Text {

@@ -41,7 +41,7 @@ ApplicationWindow {
 
         property QtObject style: style
 
-        state: serverConn.state
+        state: "loggedIn" //serverConn.state
 
         states: [
             State {
@@ -65,7 +65,7 @@ ApplicationWindow {
             id: serverConn
 
             onStateChanged: {
-                app.state = newState
+                //app.state = newState
             }
         }
 

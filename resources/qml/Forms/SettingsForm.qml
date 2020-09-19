@@ -36,7 +36,7 @@ Page {
 
         anchors.fill: parent
 
-        SettingsDelegate {
+        /*SettingsDelegate {
             width: parent.width
 
             onClicked: {
@@ -45,9 +45,9 @@ Page {
 
             title: "Filter"
             description: "Wähle die Klassen(stufen) bzw. Lehrerkürzel aus, für die du den Vertretungsplan ansehen möchtest"
-        }
+        }*/
 
-        SwitchDelegate {
+        /*SwitchDelegate {
             width: parent.width
             height: 10 + shortDescription.height + 2 + longDescription.height + 10
 
@@ -126,8 +126,7 @@ Page {
                     }
                 }
             }
-
-        }
+        }*/
 
         SwitchDelegate {
             width: parent.width
@@ -211,7 +210,7 @@ Page {
             }
         }
 
-        SettingsDelegate {
+        /*SettingsDelegate {
             width: parent.width
 
             title: "Folge uns"
@@ -235,6 +234,29 @@ Page {
             onClicked: {
                 Qt.openUrlExternally("https://t.me/FlgQtAgSupportbot")
             }
+        }*/
+
+        SettingsDelegate {
+            width: parent.width
+
+            title: "Support"
+            description: "Bei Fragen können sie sich gerne per mail unter <a href='none'>contact@itsblue.de</a> an den Entwickler der App wenden."
+
+            showForwardIcon: false
+
+            onClicked: {
+                Qt.openUrlExternally("mailto:contact@itsblue.de")
+            }
+        }
+
+        SettingsDelegate {
+            width: parent.width
+
+            showForwardIcon: false
+
+            title: "Open source notice"
+            description: "This app was built using the open source version of the <a href='https://qt.io'>Qt Framework</a> which is licensed under the <a href='https://www.gnu.org/licenses/lgpl-3.0.en.html'>lgplV3 license</a>.<br><br>This app is open source and licensed under the <a href='https://www.gnu.org/licenses/lgpl-3.0.en.html'>lgplV3 license</a>, the source code can be found <a href='https://github.com/Fanny-Leicht-Gymnasium/fannyapp'>here on GitHub</a>."
+
         }
     }
 }

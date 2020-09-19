@@ -92,6 +92,11 @@ Page {
             FilterForm {}
         }
 
+        Component {
+            id: postMortumForm
+            PostMortumForm {}
+        }
+
         popEnter: Transition {
             XAnimator {
                 from: (formStack.mirrored ? -1 : 1) * -formStack.width
